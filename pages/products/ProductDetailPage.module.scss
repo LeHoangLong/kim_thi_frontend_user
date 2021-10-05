@@ -1,0 +1,31 @@
+@import '../../styles/Common.scss';
+
+.main {
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    gap: $p3 $p6;
+    margin-top: $m3;
+    > * {
+        margin-top: $m2;
+        margin-bottom: $m2;
+    }
+}
+
+.defaultPrice {
+    font-weight: 600;
+}
+
+.priceTableTitle {
+    color: $primary-color;
+}
+
+.price {
+    white-space: nowrap;
+}
+
+.mesage {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: $p5;
+    transform: translate(-50%, -50%);
+}

@@ -1,0 +1,194 @@
+@import './Common.scss';
+
+:root {
+    font-size: 10px;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+ol,
+ul {
+    padding: 0px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+li {
+    list-style: none;
+}
+
+main {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h1, .h1 {
+    font-size: $h1;
+}
+
+h2, .h2 {
+    font-size: $h2;
+}
+
+h3, .h3 {
+    font-size: $h3;
+}
+
+h4, .h4 {
+    font-size: $h4;
+}
+
+h5, .h5 {
+    font-size: $h5;
+}
+
+h6, .h6 {
+    font-size: $h6;
+}
+
+.body-text-1 {
+    font-size: $body-text-1;
+}
+
+.body-text-2 {
+    font-size: $body-text-2;
+}
+
+$p0: 0em;
+$p1: 0.25em;
+$p2: 0.5em;
+$p3: 1em;
+$p4: 1.5em;
+$p5: 2em;
+$p6: 3em;
+
+$m0: 0rem;
+$m1: 0.25rem;
+$m2: 0.5rem;
+$m3: 1rem;
+$m4: 1.5rem;
+$m5: 2rem;
+$m6: 3rem;
+
+input {
+    min-width: 0px;
+}
+
+.pill {
+    border-radius: 1000px;
+}
+
+$border-color: rgba(0, 0, 0, 0.3);
+$danger-color: rgba(#FF0000, 0.5);
+
+.border {
+    border: 1px solid $border-color;
+}
+
+$shadow-color: rgba(0, 0, 0, 0.4);
+
+button {
+    padding: $m3 $m4;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 2px 4px 4px $shadow-color;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button[disabled] {
+    box-shadow: none;
+    background-color: #CCCCCC;
+    color: #848484;
+}
+
+.icon-button {
+    padding: $m3;
+    border-radius: 50%;
+    box-shadow: none;
+    font-weight: 600;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+$primary-color: #004800;
+$primary-color-2: #30a12f;
+$secondary-color: #96004B;
+$on-primary-color: white;
+
+.primary-button {
+    background-color: $primary-color;
+    color: white;
+}
+
+.loading-container {
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-text-input {
+    border-radius: 5px;
+    border: 1px solid $border-color;
+    padding: $m1 $m2;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    label {
+        margin-top: $m4;
+    }
+    input {
+        margin-top: $m1;
+        margin-bottom: $m3;
+    }
+}
+
+.required-label::after {
+    content: "*";
+    color: $danger-color
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 2px 4px 4px $shadow-color;
+    background-color: rgba(#FFFFFF, 0.7);
+    border: 1px solid $border-color;
+}
+
+.row {
+    display: flex;
+}
+
+.h-100pc {
+    height: 100%;
+}

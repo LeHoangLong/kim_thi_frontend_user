@@ -1,0 +1,20 @@
+@import '../widgets/components/Common.scss';
+
+.header,
+.main_area {
+	margin-left: $m3;
+	margin-right: $m3;	
+}
+
+.page_numbering {
+    display: flex;
+    justify-content: center;
+    margin-bottom: $m3;
+    & > * {
+    	max-width: 300px;
+    }
+    & .index {
+	    padding-left: $m3;
+	    padding-right: $m3;
+	}	
+}

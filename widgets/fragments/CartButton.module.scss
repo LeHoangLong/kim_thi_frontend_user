@@ -1,0 +1,18 @@
+.cart_icon_container {
+    position: relative;
+}
+
+.cart_icon {
+    font-size: 24px;
+}
+
+.quantity_number {
+    position: absolute;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    background: red;
+    color: white;
+    right: 0px;
+    top: -10px;
+}
