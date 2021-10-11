@@ -83,7 +83,7 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
     }
 
     function onSelectPage(pageNumber: number) {
-        window.location.href = `/?search=${ search }&category=${ category }&page=${ pageNumber }`
+        window.location.href = `/?search=${ search }&category=${ category }&page=${ pageNumber - 1 }`
     }
 
     function onSearchButtonClicked() {
@@ -96,10 +96,17 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
         </header>
         <main>
             <section>
-                <div className="slide-show">
-                    <img src="/public/logos/shop.png"/>
-                    <img src="/public/logos/shop_2.png"/>
+                <div className={ styles.images }>
+                    <div className={ styles.slide_show }>
+                        <img src="/public/logos/shop.png"/>
+                        <img src="/public/logos/shop_2.png"/>
+                    </div>
+                    <div className={ styles.side_images }>
+                        <img src="/public/logos/shop.png" className={ styles.top_side_image }/>
+                        <img src="/public/logos/shop.png" className={ styles.bottom_side_image }/>
+                    </div>
                 </div>
+
 
                 <h4 className={`${styles.header} category-title`}>Danh mục</h4>
 

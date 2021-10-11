@@ -499,21 +499,6 @@ input[type=number] {
     align-items: center;
 }
 
-.cart-page {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    height: 100vh;
-    width: 100vw;
-    overflow: auto;
-    background-color: white;
-}
-
-.cart-page header {
-    padding: var(--p4);
-    display: flex;
-    justify-content: space-between;
-}
 
 .cart-page .go-back-button {
     border: none;

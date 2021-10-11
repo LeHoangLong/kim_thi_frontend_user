@@ -1,5 +1,8 @@
 export interface CartItemUnitModel {
-    [index: string]: number,
+    [index: string]: {
+        quantity: number,
+        selected: boolean,
+    },
 }
 
 export interface CartModel {

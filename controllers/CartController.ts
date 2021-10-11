@@ -13,6 +13,28 @@ export class CartController {
 
     constructor() {}
 
+    async getCart() : Promise<CartModel> {
+        if (this.cart == undefined) {
+            this.cart = await this.repository.fetchCart()
+        }
+        return this.cart
+    }
+
+    async setCartItemSelect(
+        productId: number,
+        unit: string,
+        selected: boolean,
+    ) {
+        if (this.cart == undefined) {
+            this.cart = await this.repository.fetchCart()
+        }
+
+        if (productId in this.cart && unit in this.cart[productId]) {
+            this.cart[productId][unit].selected = selected
+            await this.repository.saveCart(this.cart)
+        }
+    }
+
     async setItemQuantity(
         productId: number,
         unit: string,
@@ -27,9 +49,16 @@ export class CartController {
         }
 
         if (!(unit in this.cart[productId])) {
-            this.cart[productId][unit] = quantity
+            this.cart[productId][unit] = {
+                quantity,
+                selected: true
+            }
+        } else {
+            this.cart[productId][unit] = {
+                quantity,
+                selected: this.cart[productId][unit].selected
+            }
         }
-
         await this.repository.saveCart(this.cart)
     }
 
@@ -37,9 +66,19 @@ export class CartController {
         productId: number,
         unit: string,
     ) {
+        if (this.cart == undefined) {
+            this.cart = await this.repository.fetchCart()
+        }
+        
         if (productId in this.cart) {
             delete this.cart[productId][unit]
         }
+
+        if (Object.keys(this.cart[productId]).length == 0) {
+            delete this.cart[productId]
+        }
+
+        await this.repository.saveCart(this.cart)
     }
 
     // Number of items (1 per unit)

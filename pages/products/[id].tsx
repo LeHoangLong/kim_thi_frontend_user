@@ -7,12 +7,16 @@ import { ProductPrice } from '../../models/ProductPrice'
 import { useEffect, useState } from 'react'
 import styles from './ProductDetailPage.module.scss'
 import { GetServerSideProps } from 'next'
-import { addItem } from '../../reducers/cartReducer'
 import { useAppDispatch } from '../../hooks/Hooks'
 import { Message } from '../../widgets/components/Message'
 import container from '../../container'
 import { CartController } from '../../controllers/CartController'
 import { CartButton } from '../../widgets/fragments/CartButton'
+import { PageTransition } from '../../widgets/components/PageTransition'
+import { ConditionalRendering } from '../../widgets/components/ConditionalRendering'
+import { CartPage } from '../../widgets/fragments/CartPage'
+import { setCart } from '../../reducers/cartReducer'
+import { addProduct } from '../../reducers/productReducer'
 
 export interface ProductDetailPageProps {
 	product: ProductDetailModel
@@ -27,6 +31,12 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     let [showAddedToCartMessage, setShowAddedToCartMessage] = useState(false)
     let dispatch = useAppDispatch();
     let cartController = container.get<CartController>(Symbols.CART_CONTROLLER)
+    let [showCartPage, setShowCartPage] = useState(false)
+    let [renderCartPage, setRenderCartPage] = useState(false)
+
+    useEffect(() => {
+        dispatch(addProduct(props.product))
+    }, [])
 
     useEffect(() => {
         let prices = [
@@ -105,12 +115,14 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         setDisplayQuantityAndUnitSelection(true)
     }
 
-    function confirmButtonClicked() {
-        dispatch(addItem({
-            productId: props.product.id,
-            unit: unit,
-            quantity: quantity
-        }))
+    async function confirmButtonClicked() {
+        await cartController.setItemQuantity(
+            props.product.id,
+            unit,
+            quantity
+        )
+        let cart = await cartController.getCart()
+        dispatch(setCart(cart))
 
         setDisplayQuantityAndUnitSelection(false)
         setShowAddedToCartMessage(true)
@@ -120,7 +132,12 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 
     function onCartButtonClicked() {
+        setShowCartPage(true)
+        setRenderCartPage(true)
+    }
 
+    function onCartPageBackClicked() {
+        setShowCartPage(false)
     }
 
     let quantityAndUnitSelection = 'quantity-and-unit-selection '
@@ -129,6 +146,12 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 	return (
 		<React.Fragment>
+            <PageTransition show={ showCartPage } zIndex={ 1000 }>
+                <ConditionalRendering display={ renderCartPage }>
+                    <CartPage onBack={ onCartPageBackClicked }></CartPage>
+                </ConditionalRendering>
+            </PageTransition>
+
             <Message message="Đã thêm vào giỏ" show={ showAddedToCartMessage } className={ styles.mesage }></Message>
 	        <header>
 	            <NavigationBar></NavigationBar>
@@ -223,8 +246,10 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 }
 
 export default ProductDetailPage
-    export const getServerSideProps : GetServerSideProps =  async (context) => {
+
+export const getServerSideProps : GetServerSideProps =  async (context) => {
     let productRepositories = container.get<IProductRepositories>(Symbols.PRODUCT_REPOSITORY)
+
 	let idStr = context.query.id
     let id: number = 0
     if (typeof(idStr) === 'string') {
@@ -235,6 +260,7 @@ export default ProductDetailPage
     }
 
 	let productDetail = await productRepositories.fetchProductDetailById(id)
+
 	return {
 		props: {
 			product: productDetail

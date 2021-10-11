@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { CartState } from '../states/cartState'
+import { CartModel } from '../models/CartModel'
 
 const initialState : CartState = {
     cart: {}
@@ -15,22 +16,11 @@ const slice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addItem: (state, action: PayloadAction<CartItemQuantity>) => {
-            if (action.payload.quantity >= 0) {
-                if (!(action.payload.productId in state.cart)) {
-                    state.cart[action.payload.productId] = {}
-                }
-
-                if (action.payload.unit in state.cart[action.payload.productId]) {
-                    state.cart[action.payload.productId][action.payload.unit] += action.payload.quantity
-                } else {
-                    state.cart[action.payload.productId][action.payload.unit] = action.payload.quantity
-                }
-            }
-
+        setCart: (state, action: PayloadAction<CartModel>) => {
+            state.cart = action.payload
         }
     }
 })
 
-export const { addItem } = slice.actions
+export const { setCart } = slice.actions
 export default slice.reducer

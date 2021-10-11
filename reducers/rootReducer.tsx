@@ -2,9 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import { HYDRATE } from "next-redux-wrapper";
 import { combineReducers } from "redux";
 import cartReducer from './cartReducer'
+import productReducer from './productReducer'
 
 const rootReducers = combineReducers({
     cart: cartReducer,
+    products: productReducer,
 });
 
 
@@ -16,6 +18,7 @@ export const store = configureStore({
                 ...action.payload,
             }
             nextState.cart = state.cart
+            nextState.products = state.products
             return nextState
         } else {
             return rootReducers(state, action)

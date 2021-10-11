@@ -32,3 +32,18 @@ $primary-color: #004800;
 $primary-color-2: #30a12f;
 $secondary-color: #96004B;
 $on-primary-color: white;
+
+$red: red;
+
+.row {
+    display: flex;
+}
+
+.icon-button {
+    padding: $m3;
+    border-radius: 50%;
+    box-shadow: none;
+    font-weight: 600;
+    background-color: transparent;
+    cursor: pointer;
+}

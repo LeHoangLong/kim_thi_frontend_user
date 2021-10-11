@@ -1,0 +1,81 @@
+@import '../../styles/Common.scss';
+
+.nav_link {
+    cursor: pointer;
+    margin: auto $p4;
+    text-decoration: none;
+    font-weight: bolder;
+    white-space: nowrap;
+}
+
+.logo {
+    height: 100px;
+}
+
+.navigation_bar_container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navigation_bar {
+    display: flex;
+}
+
+@media (max-width: 600px) {
+    .navigation_bar {
+        display: none;
+    }
+}
+
+.selected {
+    color: $primary-color;
+}
+
+.show_menu_button {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    position: relative;
+    height: 100%;
+    padding-left: $p4;
+}
+
+.hidden_menu_container {
+    position: relative;
+}
+
+.expanded_menu {
+    transition: opacity 0.2s ease-in-out;
+    position: absolute;
+    top: 80%;
+    width: min-content;
+    min-width: 150px;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid $border-color;
+    margin: $m3;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.expanded_menu > * {
+    padding-top: $p3;
+    padding-bottom: $p3;
+    padding-left: $p2;
+}
+
+.expanded_menu_hidden {
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+}
+
+@media (min-width: 600px) {
+    .hidden_menu_container {
+        display: none;
+    }
+}

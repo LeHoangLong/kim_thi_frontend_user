@@ -4,6 +4,7 @@ import { ProductSummary } from "../models/ProductSummary";
 import { ProductDetailModel } from '../models/ProductDetailModel'
 import { ProductCategoryModel } from "../models/ProductCategoryModel";
 import { GetCategoriesArgs, GetProductSummariesArgs, IProductRepositories } from "./IProductRepositories";
+import { NotFound } from '../exceptions/NotFound'
 
 @injectable()
 export class MockProductRepositories implements IProductRepositories {
@@ -60,6 +61,7 @@ export class MockProductRepositories implements IProductRepositories {
                 },
                 rank: i / 50,
                 categories: categories,
+                isDeleted: false,
             })
         }
     }
@@ -77,7 +79,7 @@ export class MockProductRepositories implements IProductRepositories {
         let summaries: ProductSummary[] = []
         let count = 0
         for (let i = args.offset; i < this.products.length && count < args.limit; i++) {
-            if (args.categories.length === 0 || this.products[i].categories.findIndex(e => args.categories.indexOf(e.category) !== -1) !== -1) {
+            if (args.categories.length === 0 || args.categories[0] == '' || this.products[i].categories.findIndex(e => args.categories.indexOf(e.category) !== -1) !== -1) {
                 summaries.push(this.productDetailToSummary(this.products[i]))
                 count++
             }
@@ -97,6 +99,9 @@ export class MockProductRepositories implements IProductRepositories {
 
     async fetchProductDetailById(id: number) : Promise<ProductDetailModel> {
         let productDetail = this.products.find(e => e.id == id)
+        if (productDetail === undefined) {
+            throw new NotFound("product", "id", id.toString());
+        }
         return productDetail
     }
 }

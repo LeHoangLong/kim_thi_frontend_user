@@ -5,6 +5,7 @@ import { Container } from 'inversify'
 import { IProductRepositories } from './repositories/IProductRepositories'
 import { ICartRepository } from './repositories/ICartRepository'
 import { CartController } from './controllers/CartController'
+import { useAppDispatch } from './hooks/Hooks' 
 
 const myContainer = new Container()
 
