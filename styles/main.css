@@ -21,7 +21,7 @@
     --border-color: rgba(0, 0, 0, 0.5);
     --shadow-color: rgba(0, 0, 0, 0.4);
     --disabled-color: rgba(239, 240, 245, 1);
-    --image-size: 150px;
+    --image-size: 350px;
     --h1: 4.8rem;
     --h2: 4rem;
     --h3: 3.2rem;
@@ -251,7 +251,6 @@ strong {
 }
 
 .product-summary-card {
-    width: var(--image-size);
     border-radius: 10px;
     border: 1px solid var(--border-color);
     box-shadow: 2px 4px 4px var(--shadow-color);
@@ -259,8 +258,8 @@ strong {
 }
 
 .product-summary-card img {
-    width: var(--image-size);
-    height: 150px;
+    width: 100%;
+    height: 100%;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }

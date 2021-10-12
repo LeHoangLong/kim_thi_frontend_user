@@ -21,7 +21,9 @@ export const NavigationBar = () => {
 
     return (
         <div className={ styles.navigation_bar_container }>
-            <img className={ styles.logo } src="/public/logos/logo.png"/>
+            <Link href="/">
+                <img className={ styles.logo } src="/public/logos/logo.png"/>
+            </Link>
 
             <nav className={ styles.navigation_bar }>
                 <div className={ `${selectedMenu == '/'? styles.selected : '' } ${styles.nav_link}` }>

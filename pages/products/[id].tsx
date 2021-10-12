@@ -17,9 +17,14 @@ import { ConditionalRendering } from '../../widgets/components/ConditionalRender
 import { CartPage } from '../../widgets/fragments/CartPage'
 import { setCart } from '../../reducers/cartReducer'
 import { addProduct } from '../../reducers/productReducer'
+import { Pagination } from '../../config/Pagination'
+import { SearchBar } from '../../widgets/components/SearchBar';
+import { ProductSummaries } from '../../widgets/fragments/ProductSummaries';
+import { ProductSummary } from '../../models/ProductSummary'
 
 export interface ProductDetailPageProps {
-	product: ProductDetailModel
+	product: ProductDetailModel,
+    relatedProductSummaries: ProductSummary[]
 }
 
 export const ProductDetailPage = (props: ProductDetailPageProps) => {
@@ -33,6 +38,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     let cartController = container.get<CartController>(Symbols.CART_CONTROLLER)
     let [showCartPage, setShowCartPage] = useState(false)
     let [renderCartPage, setRenderCartPage] = useState(false)
+    let [searchPhrase, setSearhPhrase] = useState('')
 
     useEffect(() => {
         dispatch(addProduct(props.product))
@@ -140,6 +146,10 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         setShowCartPage(false)
     }
 
+    function onSearchButtonClicked() {
+        window.location.href = `/?search=${ searchPhrase }&page=${ 0 }`
+    }
+
     let quantityAndUnitSelection = 'quantity-and-unit-selection '
     if (!displayQuantityAndUnitSelection) {
         quantityAndUnitSelection += 'quantity-and-unit-selection-hidden '
@@ -216,6 +226,11 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		                <h4>
 		                    Sản phẩm khác
 		                </h4>
+
+                        <div>
+                            <SearchBar onSearchButtonClicked={ onSearchButtonClicked } phrase={ searchPhrase } onChange={ setSearhPhrase }></SearchBar>
+                            <ProductSummaries products={ props.relatedProductSummaries } singleRow={ true }></ProductSummaries>
+                        </div>
 		            </section>
 
 		            <section>
@@ -261,9 +276,27 @@ export const getServerSideProps : GetServerSideProps =  async (context) => {
 
 	let productDetail = await productRepositories.fetchProductDetailById(id)
 
+    let categories: string[] = []
+    for (let i = 0; i < productDetail.categories.length; i++) {
+        categories.push(productDetail.categories[i].category)
+    }
+    let relatedProductSummaries = await productRepositories.getProductSummaries({
+        categories: categories,
+        limit: Pagination.DEFAULT_PAGE_SIZE,
+        offset: 0,
+    })
+
+    let relatedProductSummariesExceptThis = []
+    for (let i = 0; i < relatedProductSummaries.length; i++) {
+        if (relatedProductSummaries[i].id != id) {
+            relatedProductSummariesExceptThis.push(relatedProductSummaries[i])
+        }
+    }
+
 	return {
 		props: {
-			product: productDetail
+			product: productDetail,
+            relatedProductSummaries: relatedProductSummariesExceptThis,
 		}
 	}
 }

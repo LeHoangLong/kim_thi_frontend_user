@@ -67,7 +67,7 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
                 )
             } else {
                 ret.push(
-                    <Link key={ props.categories[i] } href={`/?search=${ search }&category=${ props.categories[i] }&page=${ page }`}>
+                    <Link key={ props.categories[i] } href={`/?search=${ search }&category=${ encodeURIComponent(props.categories[i]) }&page=${ page }`}>
                         <div className="clickable category">
                             <h6>
                                 <strong>
@@ -83,11 +83,11 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
     }
 
     function onSelectPage(pageNumber: number) {
-        window.location.href = `/?search=${ search }&category=${ category }&page=${ pageNumber - 1 }`
+        window.location.href = `/?search=${ search }&category=${ encodeURIComponent((category?? '').toString()) }&page=${ pageNumber - 1 }`
     }
 
     function onSearchButtonClicked() {
-        window.location.href = `/?search=${ searchPhrase }&category=${ category }&page=${ page }`
+        window.location.href = `/?search=${ searchPhrase }&category=${ encodeURIComponent((category?? '').toString()) }&page=${ page }`
     }
 
     return <React.Fragment>

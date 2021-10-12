@@ -9,12 +9,18 @@
 }
 
 .logo {
-    height: 100px;
+    height: 70px;
+    width: 70px;
+    padding-left: $p3;
+    margin-top: $m3;
+    padding-bottom: $p2;
 }
 
 .navigation_bar_container {
     display: flex;
     justify-content: space-between;
+    margin-bottom: $m6;
+    box-shadow: 2px 4px 4px $shadow-color;
 }
 
 .navigation_bar {

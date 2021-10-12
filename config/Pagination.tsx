@@ -1,3 +1,3 @@
 export const Pagination = {
-    DEFAULT_PAGE_SIZE: 4
+    DEFAULT_PAGE_SIZE: 10
 }

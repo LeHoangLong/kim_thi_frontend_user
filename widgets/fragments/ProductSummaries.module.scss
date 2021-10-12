@@ -1,0 +1,10 @@
+.single_row {
+    display: flex;
+    overflow-x: scroll;
+}
+
+@media (min-width: 800px) {
+    .single_row {
+        overflow-x: hidden;
+    }
+}
