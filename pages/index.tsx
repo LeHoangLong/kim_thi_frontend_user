@@ -56,24 +56,20 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
             if ( isSelected ) {
                 ret.push(
                     <Link key={ props.categories[i] } href={`/?search=${ search }&category=&page=${ page }`}>
-                        <div className="clickable category selected">
-                            <h6>
-                                <strong>
-                                    { props.categories[i] }
-                                </strong>
-                            </h6>
+                        <div className={ styles.selected_category }>
+                            <strong>
+                                { props.categories[i] }
+                            </strong>
                         </div>
                     </Link>
                 )
             } else {
                 ret.push(
                     <Link key={ props.categories[i] } href={`/?search=${ search }&category=${ encodeURIComponent(props.categories[i]) }&page=${ page }`}>
-                        <div className="clickable category">
-                            <h6>
-                                <strong>
-                                    { props.categories[i] }
-                                </strong>
-                            </h6>
+                        <div className={ styles.category }>
+                            <p>
+                                { props.categories[i] }
+                            </p>
                         </div>
                     </Link>
                 )
@@ -96,27 +92,28 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
         </header>
         <main>
             <section>
-                <div className={ styles.images }>
-                    <div className={ styles.slide_show }>
-                        <img src="/public/logos/shop.png"/>
-                        <img src="/public/logos/shop_2.png"/>
-                    </div>
-                    <div className={ styles.side_images }>
-                        <img src="/public/logos/shop.png" className={ styles.top_side_image }/>
-                        <img src="/public/logos/shop.png" className={ styles.bottom_side_image }/>
-                    </div>
+                <div className={ styles.search_bar }>
+                    <SearchBar onSearchButtonClicked={ onSearchButtonClicked } phrase={ searchPhrase } onChange={ setSearhPhrase }></SearchBar>
                 </div>
-
-
-                <h4 className={`${styles.header} category-title`}>Danh mục</h4>
-
-                <div className={ styles.main_area }>
-                    <nav className="categories">
+                <div className={ styles.banner }>
+                    <nav className={ styles.categories }>
                         { displayCategories() }
                     </nav>
 
+                    <div className={ styles.images }>
+                        <div className={ styles.slide_show }>
+                            <img src="/public/logos/shop.png"/>
+                            <img src="/public/logos/shop_2.png"/>
+                        </div>
+                        <div className={ styles.side_images }>
+                            <img src="/public/logos/shop.png" className={ styles.top_side_image }/>
+                            <img src="/public/logos/shop.png" className={ styles.bottom_side_image }/>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={ styles.main_area }>
                     <div>
-                        <SearchBar onSearchButtonClicked={ onSearchButtonClicked } phrase={ searchPhrase } onChange={ setSearhPhrase }></SearchBar>
                         <ProductSummaries products={ props.productSummaries }></ProductSummaries>
                     </div>
 

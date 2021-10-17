@@ -1,0 +1,30 @@
+@import '../../styles/Common.scss';
+
+.footer {
+    background-color: $primary-color;
+    color: $on-primary-color;
+    padding: $p4;
+}
+
+.footer header {
+    padding: $p2;
+}
+
+.row {
+    display: flex;
+    padding: $p2;
+}
+
+.social_buttons {
+    margin: $m4;
+    display: flex;
+    justify-content: center;
+}
+
+.social_button {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    cursor: pointer;
+}
