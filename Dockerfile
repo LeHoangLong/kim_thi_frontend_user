@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install
+RUN git submodule init && git submodule update && npm install
 
 COPY . .
 
