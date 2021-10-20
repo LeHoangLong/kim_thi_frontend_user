@@ -36,5 +36,5 @@ steps:
       
 availableSecrets:
   secretManager:
-    - versionName: projects/878404965327/secrets/SSH_KEY
+    - versionName: projects/878404965327/secrets/SSH_KEY/versions/1
       env: 'SSH_KEY'
