@@ -1,10 +1,13 @@
 steps:
   - name: 'gcr.io/cloud-builders/git'
+    secretEnv: ['SSH_KEY']
     entrypoint: 'bash'
     args:
       - -c
       - |
-        ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
+        echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+        chmod 400 /root/.ssh/id_rsa
+        cp known_hosts.github /root/.ssh/known_hosts
     volumes:
       - name: 'ssh'
         path: /root/.ssh
