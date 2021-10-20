@@ -1,12 +1,10 @@
 steps:
   - name: 'gcr.io/cloud-builders/git'
     args:
-      - git
       - submodule
       - init
   - name: 'gcr.io/cloud-builders/git'
     args:
-      - git
       - submodule
       - update
   - name: 'gcr.io/cloud-builders/docker'
