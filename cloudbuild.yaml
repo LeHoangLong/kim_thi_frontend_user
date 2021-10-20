@@ -15,10 +15,16 @@ steps:
     args:
       - submodule
       - init
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
   - name: 'gcr.io/cloud-builders/git'
     args:
       - submodule
       - update
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - build
