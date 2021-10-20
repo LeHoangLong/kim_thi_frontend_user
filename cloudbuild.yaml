@@ -21,7 +21,7 @@ steps:
       - update
     volumes:
       - name: 'ssh'
-        path: ~/.ssh
+        path: /root/.ssh
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - build
