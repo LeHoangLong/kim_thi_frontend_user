@@ -4,17 +4,17 @@ steps:
     args:
       - -c
       - |
-        ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+        ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
     volumes:
       - name: 'ssh'
-        path: ~/.ssh
+        path: /root/.ssh
   - name: 'gcr.io/cloud-builders/git'
     args:
       - submodule
       - init
     volumes:
       - name: 'ssh'
-        path: ~/.ssh
+        path: /root/.ssh
   - name: 'gcr.io/cloud-builders/git'
     args:
       - submodule
