@@ -57,7 +57,8 @@ export class MockProductRepositories implements IProductRepositories {
                 name: 'product_' + i.toString(),
                 avatar: {
                     id: 'image_id',
-                    path: 'public/products/images/product_images/07633c67-0145-43ee-aa04-f84048f23824'
+                    path: '/public/products/images/product_images/07633c67-0145-43ee-aa04-f84048f23824'
+                    // path: 'https://static.theprint.in/wp-content/uploads/2020/12/randomnumber.jpg'
                 },
                 rank: i / 50,
                 categories: categories,

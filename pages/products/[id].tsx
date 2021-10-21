@@ -200,7 +200,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 
 		            <section className="product-detail">
 		                <figure>
-		                    <img className="main-img" src={ `/${props.product.avatar.path}` }/>
+		                    <img className="main-img" src={ `${props.product.avatar.path}` }/>
 		                </figure>
 		                <article>
 		                    <header>

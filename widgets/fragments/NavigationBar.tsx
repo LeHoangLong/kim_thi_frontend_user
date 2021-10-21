@@ -8,7 +8,7 @@ export const NavigationBar = () => {
 
     useEffect(() => {
         let hrefSplit = document.location.href.split('/')
-        let href = hrefSplit[hrefSplit.length - 1]
+        let href = '/' + hrefSplit[hrefSplit.length - 1]
         if (href != '/about' && href != '/contact') {
             href = '/'
         }

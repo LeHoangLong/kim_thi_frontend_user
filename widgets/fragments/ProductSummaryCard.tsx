@@ -10,7 +10,7 @@ export interface ProductSummaryCardProps {
 export const ProductSummaryCard = React.forwardRef<HTMLElement, ProductSummaryCardProps>((props, ref) => {
     return <article className={ styles.product_summary_card } ref={ref}>
         <figure>
-            <img src={`/${props.product.avatar.path}`}/>
+            <img src={`${props.product.avatar.path}`}/>
         </figure>
         <div className={ styles.content }>
             <div className={ styles.title }>
