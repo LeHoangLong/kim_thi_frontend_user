@@ -1,0 +1,42 @@
+@import '../../styles/Common.scss';
+
+.add_address_page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main > * {
+    width: 80%;
+}
+
+.form {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form > * {
+    width: 100%;
+    margin: $m4;
+    padding: $p3;
+    border-radius: 6px;
+    border: none;
+    background-color: $grey-color;
+    color: $grey-color-2;
+    font-size: $h5;
+}
+
+.save_button {
+    background-color: $primary-color;
+    color: $on-primary-color;
+    margin-bottom: $m4;
+}

@@ -13,41 +13,40 @@ import { setCart } from '../../reducers/cartReducer'
 import { Dialog } from '../components/Dialog'
 
 import { Loading } from '../components/Loading'
+import { HeaderBar } from '../components/HeaderBar'
+import { PageTransition } from '../components/PageTransition'
+import CheckoutPage from './CheckoutPage'
+import { CheckoutPageZ } from '../../config/ZIndex'
+import { EStatus } from '../../models/StatusModel'
+import { withCart } from '../hocs/withCart'
+import { calculatePriceAndMinQuantity } from '../../services/CalculatePriceAndMinQuantity'
+
 export interface CartPageProps {
     onBack?(): void
 }
 
 export const CartPage = (props: CartPageProps) => {
-    let removeCartItemClass = ""
-    removeCartItemClass = styles.hide
-
-    let cart = useAppSelector<RootState>(state => state.cart.cart)
-    let productDetails = useAppSelector<RootState>(state => state.products.productDetails)
+    let cart = useAppSelector(state => state.cart.cart)
+    let productDetails = useAppSelector(state => state.products.productDetails)
     let [isLoading, setIsLoading] = useState(true)
-    let [isFetching, setIsFetching] = useState(false)
-    let productRepository = myContainer.get<IProductRepositories>(Symbols.PRODUCT_REPOSITORY)
     let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
     let dispatch = useAppDispatch()
     let [total, setTotal] = useState(0)
     let [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false)
+    let [showCheckoutPage, setShowCheckoutPage] = useState(false)
+
+    let cartOperationStatus = useAppSelector(state => state.cart.operationStatus)
+    let productOperationStatus = useAppSelector(state => state.products.operationStatus)
 
     useEffect(() => {
-        async function fetchProductDetails() {
-            setIsFetching(true)
-            for (let productId in cart) {
-                if (!(productId in productDetails)) {
-                    // fetch product id
-                    let product = await productRepository.fetchProductDetailById(parseInt(productId))
-                    dispatch(addProduct(product))
-                }
-            }
-            setIsFetching(false)
+        if (cartOperationStatus.status === EStatus.IN_PROGRESS ||
+            productOperationStatus.status === EStatus.IN_PROGRESS
+        ) {
+            setIsLoading(true)
+        } else {
+            setIsLoading(false)
         }
-
-        if (!isFetching) {
-            fetchProductDetails()
-        }
-    }, [cart, isLoading])
+    }, [cartOperationStatus, productOperationStatus])
 
     function calculateTotal() {
         let total = 0
@@ -69,45 +68,6 @@ export const CartPage = (props: CartPageProps) => {
     useEffect(() => {
         calculateTotal()
     }, [cart, productDetails])
-
-    useEffect(() => {
-        if (isFetching) {
-            setIsLoading(true)
-        } else {
-            setIsLoading(false)
-        }
-    }, [isFetching])
-
-    function calculatePriceAndMinQuantity(
-        productDetail: ProductDetailModel,
-        unit: string,
-        quantity: number,
-    ) : [number, number] {
-
-        let productPrice : ProductPrice
-        if (productDetail.defaultPrice.unit == unit) {
-            productPrice = productDetail.defaultPrice
-        } else {
-            for (let i = 0; i < productDetail.alternativePrices.length; i++) {
-                if (productDetail.alternativePrices[i].unit == unit) {
-                    productPrice = productDetail.alternativePrices[i]
-                    break
-                }
-            }
-        }
-        console.assert(productPrice != undefined)
-
-        let price = productPrice.defaultPrice
-        let minQuantity = 0
-        for (let i = 0; i < productPrice.priceLevels.length; i++) {
-            if (quantity >= productPrice.priceLevels[i].minQuantity) {
-                price = productPrice.priceLevels[i].price
-                minQuantity = productPrice.priceLevels[i].minQuantity
-            }
-        }
-
-        return [price, minQuantity]
-    }
 
     async function onCartItemSelectChanged(
         productId: number,
@@ -140,7 +100,7 @@ export const CartPage = (props: CartPageProps) => {
                             </aside>
                             <figure>
                                 <a className="cart-item-avatar-link">
-                                    <img className={ styles.cart_item_avatar } src={ `/${productDetail.avatar.path}` }/>
+                                    <img className={ styles.cart_item_avatar } src={ `${productDetail.avatar.path}` }/>
                                 </a>
                             </figure>
                             <div>
@@ -279,6 +239,10 @@ export const CartPage = (props: CartPageProps) => {
         return <Loading/>
     }
 
+    function onOrderButtonClicked() {
+        setShowCheckoutPage(true)
+    }
+
     function buildMain() {
         let cartEmpty = Object.keys(cart).length == 0
         if (cartEmpty) {
@@ -329,9 +293,9 @@ export const CartPage = (props: CartPageProps) => {
                         </p>
                         <strong className={ styles.total }>{ total.toLocaleString() } đ</strong>
                     </div>
-                    <button id="checkout-button" className="primary-button">
+                    <button id="checkout-button" className="primary-button" onClick={ onOrderButtonClicked }>
                         <strong className="body-1">
-                            Thanh toán
+                            Đặt hàng
                         </strong>
                     </button>
                 </footer>
@@ -339,19 +303,16 @@ export const CartPage = (props: CartPageProps) => {
         }
     }
 
-    return <section className={ styles.cart_page }>
-        <header className={ styles.header }>
-            {(() => {
-                if (props.onBack) {
-                    return <button className={ styles.go_back_button } onClick={ props.onBack }>
-                        <h5>
-                            <i className="fas fa-arrow-left"></i>
-                        </h5>
-                    </button>
-                }
-            })()}
-            <p className={ styles.title }> Giỏ hàng </p>
-        </header>
-        { buildMain() }
-    </section>
+    return <React.Fragment>
+        <PageTransition show={ showCheckoutPage } zIndex={ CheckoutPageZ }>
+            <CheckoutPage display={ showCheckoutPage } onBack={() => setShowCheckoutPage(false)}></CheckoutPage>
+        </PageTransition>
+        <section className={ styles.cart_page }>
+            <HeaderBar title="Giỏ hàng" onBack={ props.onBack }></HeaderBar>
+            { buildMain() }
+        </section>
+    </React.Fragment> 
 }
+
+export const CartPageWithCart = withCart(CartPage)
+export default CartPageWithCart

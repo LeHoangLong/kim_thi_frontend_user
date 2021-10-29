@@ -1,5 +1,7 @@
 import { CartModel } from '../models/CartModel'
+import { StatusModel } from '../models/StatusModel';
 
 export interface CartState {
-    cart : CartModel
+    cart : CartModel,
+    operationStatus: StatusModel,
 }

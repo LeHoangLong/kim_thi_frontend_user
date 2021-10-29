@@ -14,7 +14,7 @@ import { CartController } from '../../controllers/CartController'
 import { CartButton } from '../../widgets/fragments/CartButton'
 import { PageTransition } from '../../widgets/components/PageTransition'
 import { ConditionalRendering } from '../../widgets/components/ConditionalRendering'
-import { CartPage } from '../../widgets/fragments/CartPage'
+import CartPage from '../../widgets/fragments/CartPage'
 import { setCart } from '../../reducers/cartReducer'
 import { addProduct } from '../../reducers/productReducer'
 import { Pagination } from '../../config/Pagination'
@@ -28,6 +28,9 @@ export interface ProductDetailPageProps {
 }
 
 export const ProductDetailPage = (props: ProductDetailPageProps) => {
+    console.log('typeof CartPage')
+    console.log(typeof CartPage)
+
     let [prices, setPrices] = useState<ProductPrice[]>([])
     let [displayQuantityAndUnitSelection, setDisplayQuantityAndUnitSelection] = useState(false)
     let [isBuyNowButtonClicked, setIsBuyNowButtonClicked] = useState(false)
@@ -154,6 +157,9 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     if (!displayQuantityAndUnitSelection) {
         quantityAndUnitSelection += 'quantity-and-unit-selection-hidden '
     }
+
+    console.log('CartPage')
+    console.log(CartPage)
 	return (
 		<React.Fragment>
             <PageTransition show={ showCartPage } zIndex={ 1000 }>

@@ -1,0 +1,31 @@
+@import '../../styles/Common.scss';
+
+.address_page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.add_adddress_button_center_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.add_adddress_button {
+    background-color: $primary-color;
+    color: $on-primary-color;
+    width: 80%;
+    margin: auto;
+    display: block;
+}
+
+.addresses {
+    width: 80%;
+    margin: $m3 auto;
+}
+
+.addresses > * {
+    margin: $m3 0px;
+}

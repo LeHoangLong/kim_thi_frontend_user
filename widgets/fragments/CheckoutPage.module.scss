@@ -1,0 +1,66 @@
+@import '../../styles/Common.scss';
+
+.address_card {
+    width: 80%;
+    margin: auto;
+}
+
+.item_card {
+    display: flex;
+    width: 80%;
+    margin: $m6 auto;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+}
+
+.cart_item_avatar {
+    height: 120px;
+    width: 120px;
+    margin-right: $m4;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.row {
+    margin-top: $m3;
+}
+
+.item_name {
+    @extend .row;
+}
+
+.item_quantity {
+    @extend .row;
+}
+
+.item_total {
+    @extend .row;
+}
+
+.transport_fee {
+    font-size: $h6;
+    width: 80%;
+    margin: $m6 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.transport_fee * {
+    font-size: $h6;
+}
+
+.total_fee {
+    @extend .transport_fee;
+}
+
+.total_fee * {
+    font-size: $h5;
+}
+
+.send_order_button {
+    @extend .primary-button;
+    display: block;
+    width: 80%;
+    margin: $m6 auto;
+    font-size: $h5;
+}

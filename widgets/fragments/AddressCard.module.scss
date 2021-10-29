@@ -1,0 +1,21 @@
+@import '../../styles/Common.scss';
+
+.address_card {
+    display: flex;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+    padding: $p3;
+    cursor: pointer;
+    width: 100%;
+    &:hover {
+        border-color: $primary-color;
+    }
+}
+
+.main {
+    margin-left: $m3;
+}
+
+.main > * {
+    margin: $m2 0px;
+}

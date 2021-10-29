@@ -55,6 +55,7 @@
 .delivery  img, .food_certificate img, .map iframe {
     object-fit: contain;
     max-height: 350px;
+    max-width: 100%;
     margin: auto;
 }
 

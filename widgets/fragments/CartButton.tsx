@@ -15,7 +15,7 @@ export interface CartButtonProps {
 }
 
 export const CartButton = (props: CartButtonProps) => {
-    let cart : CartModel = useAppSelector(state => state.cart)
+    let cart : CartModel = useAppSelector(state => state.cart.cart)
     let cartController = container.get<CartController>(Symbols.CART_CONTROLLER)
     let [totalItemCount, setTotalItemCount] = useState(0)
     let dispatch = useAppDispatch()
