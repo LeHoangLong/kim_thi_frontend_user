@@ -40,7 +40,8 @@ export const CartPage = (props: CartPageProps) => {
 
     useEffect(() => {
         if (cartOperationStatus.status === EStatus.IN_PROGRESS ||
-            productOperationStatus.status === EStatus.IN_PROGRESS
+            productOperationStatus.status === EStatus.IN_PROGRESS || 
+            productOperationStatus.status === EStatus.INIT
         ) {
             setIsLoading(true)
         } else {
@@ -235,9 +236,6 @@ export const CartPage = (props: CartPageProps) => {
     let isAllSelected = checkIfAllItemsSelected()
     let isAllUnselected = checkIfAllItemsUnselected()
     let numberOfSelected = countNumberOfSelectedItems()
-    if (isLoading) {
-        return <Loading/>
-    }
 
     function onOrderButtonClicked() {
         setShowCheckoutPage(true)
@@ -309,8 +307,15 @@ export const CartPage = (props: CartPageProps) => {
         </PageTransition>
         <section className={ styles.cart_page }>
             <HeaderBar title="Giỏ hàng" onBack={ props.onBack }></HeaderBar>
-            { buildMain() }
+            {(() => {
+                if (isLoading) {
+                    return <Loading/>
+                } else {
+                    return buildMain()
+                }
+            })()} 
         </section>
+
     </React.Fragment> 
 }
 

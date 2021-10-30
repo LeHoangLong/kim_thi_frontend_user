@@ -42,10 +42,10 @@ export function withCart<T>(Component: ComponentType<T>) {
                 }
             }
 
-            if (productOperationStatus.status === EStatus.INIT || productOperationStatus.status === EStatus.IDLE) {
-                if (!isAllCartItemDetailsFetched()) {
-                    fetchProductDetails()
-                } 
+            if (productOperationStatus.status === EStatus.INIT ||
+                (productOperationStatus.status === EStatus.IN_PROGRESS && !isAllCartItemDetailsFetched())
+            ) {
+                fetchProductDetails()
             }
         }, [cart, productOperationStatus])
 
@@ -54,7 +54,7 @@ export function withCart<T>(Component: ComponentType<T>) {
                 if (!(productId in productDetails)) {
                     return false
                 }
-            } 
+            }
             return true
         }
 

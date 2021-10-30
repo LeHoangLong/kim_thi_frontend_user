@@ -334,27 +334,32 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     }
 
     let transportFee = getSelectedAddressShippingFee()
-    if (isLoading || !transportFee) {
-        return <Loading></Loading>
-    }
 
     return <React.Fragment>
         <PageTransition show={ showAddressPage } zIndex={ AddressPageZ }>
             <AddressPage onBack={ onAddressPageBack } onAddressSelected={ onAddressSelected }></AddressPage>
         </PageTransition>
         <HeaderBar onBack={ props.onBack } title="Thanh toán"></HeaderBar>
-        { displayAddressCard() } 
-        { displayCheckedOutItems() }
-        { displayTransportFees(calculateItemsValue(), transportFee.transportFee) }
-        <div className={ styles.transport_fee }>
-            <p>Phí vận chuyển đến địa điểm:</p> 
-            <p>{ transportFee.transportFee.toLocaleString()} đ</p>
-        </div>
-        <div className={ styles.total_fee }>
-            <strong>Tổng cộng:</strong> 
-            <strong>{ calculateTotalValue(transportFee.transportFee).toNumber().toLocaleString() } đ</strong>
-        </div>
-        <button onClick={ onSendOrderButtonClicked } className={ styles.send_order_button }>Gửi đơn hàng</button>
+        {(() => {
+            if (isLoading || !transportFee) {
+                return <Loading></Loading>
+            } else {
+                return <React.Fragment>
+                    { displayAddressCard() } 
+                    { displayCheckedOutItems() }
+                    { displayTransportFees(calculateItemsValue(), transportFee.transportFee) }
+                    <div className={ styles.transport_fee }>
+                        <p>Phí vận chuyển đến địa điểm:</p> 
+                        <p>{ transportFee.transportFee.toLocaleString()} đ</p>
+                    </div>
+                    <div className={ styles.total_fee }>
+                        <strong>Tổng cộng:</strong> 
+                        <strong>{ calculateTotalValue(transportFee.transportFee).toNumber().toLocaleString() } đ</strong>
+                    </div>
+                    <button onClick={ onSendOrderButtonClicked } className={ styles.send_order_button }>Gửi đơn hàng</button>
+                </React.Fragment>
+            }
+        })()}
     </React.Fragment>
 }
 
