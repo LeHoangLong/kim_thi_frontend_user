@@ -62,6 +62,33 @@ export class CartController {
         await this.repository.saveCart(this.cart)
     }
 
+    async addItemQuantity(
+        productId: number,
+        unit: string,
+        quantity: number,
+    ) {
+        if (this.cart == undefined) {
+            this.cart = await this.repository.fetchCart()
+        }
+
+        if (!(productId in this.cart)) {
+            this.cart[productId] = {}
+        }
+
+        if (!(unit in this.cart[productId])) {
+            this.cart[productId][unit] = {
+                quantity,
+                selected: true
+            }
+        } else {
+            this.cart[productId][unit] = {
+                quantity: this.cart[productId][unit].quantity + quantity,
+                selected: this.cart[productId][unit].selected
+            }
+        }
+        await this.repository.saveCart(this.cart)
+    }
+
     async removeItem(
         productId: number,
         unit: string,
@@ -69,7 +96,7 @@ export class CartController {
         if (this.cart == undefined) {
             this.cart = await this.repository.fetchCart()
         }
-        
+
         if (productId in this.cart) {
             delete this.cart[productId][unit]
         }

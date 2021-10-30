@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styles from './CartPage.module.scss'
 import { useAppSelector, useAppDispatch } from '../../hooks/Hooks'
-import { RootState } from '../../reducers/rootReducer'
 import myContainer from '../../container'
-import { IProductRepositories } from '../../repositories/IProductRepositories'
 import { Symbols } from '../../config/Symbols'
-import { addProduct } from '../../reducers/productReducer'
-import { ProductPrice } from '../../models/ProductPrice'
-import { ProductDetailModel } from '../../models/ProductDetailModel'
 import { CartController } from '../../controllers/CartController'
 import { setCart } from '../../reducers/cartReducer'
 import { Dialog } from '../components/Dialog'
@@ -40,7 +35,7 @@ export const CartPage = (props: CartPageProps) => {
 
     useEffect(() => {
         if (cartOperationStatus.status === EStatus.IN_PROGRESS ||
-            productOperationStatus.status === EStatus.IN_PROGRESS || 
+            productOperationStatus.status === EStatus.IN_PROGRESS ||
             productOperationStatus.status === EStatus.INIT
         ) {
             setIsLoading(true)
@@ -313,10 +308,10 @@ export const CartPage = (props: CartPageProps) => {
                 } else {
                     return buildMain()
                 }
-            })()} 
+            })()}
         </section>
 
-    </React.Fragment> 
+    </React.Fragment>
 }
 
 export const CartPageWithCart = withCart(CartPage)

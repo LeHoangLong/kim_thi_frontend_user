@@ -12,9 +12,6 @@ import { Message } from '../../widgets/components/Message'
 import container from '../../container'
 import { CartController } from '../../controllers/CartController'
 import { CartButton } from '../../widgets/fragments/CartButton'
-import { PageTransition } from '../../widgets/components/PageTransition'
-import { ConditionalRendering } from '../../widgets/components/ConditionalRendering'
-import CartPage from '../../widgets/fragments/CartPage'
 import { setCart } from '../../reducers/cartReducer'
 import { addProduct } from '../../reducers/productReducer'
 import { Pagination } from '../../config/Pagination'
@@ -108,11 +105,6 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 
     async function addToCartButtonClicked() {
-        await cartController.setItemQuantity(
-            props.product.id,
-            unit,
-            quantity
-        )
         setIsBuyNowButtonClicked(false)
         setDisplayQuantityAndUnitSelection(true)
     }
@@ -123,7 +115,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 
     async function confirmButtonClicked() {
-        await cartController.setItemQuantity(
+        await cartController.addItemQuantity(
             props.product.id,
             unit,
             quantity
