@@ -1,16 +1,20 @@
 import Decimal from "decimal.js"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Symbols from "../../config/Symbols"
 import { AddressPageZ, CheckoutPageZ } from "../../config/ZIndex"
 import myContainer from "../../container"
+import { CartController } from "../../controllers/CartController"
 import { useAppDispatch, useAppSelector } from "../../hooks/Hooks"
 import { Address } from "../../models/Address"
 import { EStatus } from "../../models/StatusModel"
 import { BillBasedTransportFee } from "../../models/TransportFee"
 import { setAddreses } from "../../reducers/addressReducer"
+import { setMessage } from "../../reducers/messageReducer"
+import { setOrderOperationStatus, setOrders } from "../../reducers/orderReducer"
 import { RootState } from "../../reducers/rootReducer"
 import { addAddressTransportFees, setBillBasedFees, setShippingFeeOperationStatus } from "../../reducers/shippingFeeReducer"
 import { IAddressRepository } from "../../repositories/IAddressRepository"
+import { IOrderRepository } from "../../repositories/IOrderRepository"
 import { IShippingFeeRepository } from "../../repositories/IShippingFeeRepository"
 import { calculatePriceAndMinQuantity } from "../../services/CalculatePriceAndMinQuantity"
 import { HeaderBar } from "../components/HeaderBar"
@@ -21,6 +25,7 @@ import { withCart } from "../hocs/withCart"
 import { AddressCard } from "./AddressCard"
 import AddressPage from "./AddressPage"
 import styles from './CheckoutPage.module.scss'
+import router from 'next/router'
 
 export interface CheckoutPageProps {
     display: boolean
@@ -38,6 +43,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     let numberOfAddresses = useAppSelector((state: RootState) => state.addresses.numberOfAddresses)
     let addressRepository = myContainer.get<IAddressRepository>(Symbols.ADDRESS_REPOSITORY)
     let addressOperationStatus = useAppSelector(state => state.addresses.operationStatus)
+    let orderOperationStatus = useAppSelector(state => state.orders.operationStatus)
     let productDetails = useAppSelector(state => state.products.productDetails)
     let dispatch = useAppDispatch()
 
@@ -45,6 +51,9 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     let billBasedTransportFees = useAppSelector(state => state.shippingFee.billBasedFees)
     let transportFeeOperationStatus = useAppSelector(state => state.shippingFee.operationStatus)
     let shippingFeeRepository = myContainer.get<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY)
+    let orderRepository = myContainer.get<IOrderRepository>(Symbols.ORDER_REPOSITORY)
+    let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
+    let linkRef = useRef(null)
 
     async function fetchBillBasedTransportFees() {
         try {
@@ -95,22 +104,22 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         }
     }, [transportFeeOperationStatus])
 
-    function getSelectedAddressShippingFee() {
+    function getSelectedAddress() {
         let selectedAddress = addresses.find(e => e.isSelected)
         if (!selectedAddress) {
             selectedAddress = addresses.find(e => e.isDefault)
         }
-
+        return selectedAddress
+    }
+    function getSelectedAddressShippingFee() {
+        let selectedAddress = getSelectedAddress()
         if (selectedAddress) {
             return addressTransportFee.find(e => e.addressId === selectedAddress.id)
         }
     }
 
     useEffect(() => {
-        let selectedAddress = addresses.find(e => e.isSelected)
-        if (!selectedAddress) {
-            selectedAddress = addresses.find(e => e.isDefault)
-        }
+        let selectedAddress = getSelectedAddress()
 
         if (selectedAddress) {
             let shippingFee = addressTransportFee.find(e => e.addressId === selectedAddress.id)
@@ -130,7 +139,8 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         if (cartOperationStatus.status === EStatus.IN_PROGRESS ||
             productOperationStatus.status === EStatus.IN_PROGRESS ||
             productOperationStatus.status === EStatus.INIT ||
-            cartOperationStatus.status === EStatus.INIT
+            cartOperationStatus.status === EStatus.INIT ||
+            orderOperationStatus.status === EStatus.IN_PROGRESS
         ) {
             setIsLoading(true)
         } else {
@@ -295,6 +305,34 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         return total
     }
 
+    async function onSendOrderButtonClicked() {
+        try {
+            dispatch(setOrderOperationStatus({
+                status: EStatus.IN_PROGRESS
+            }))
+            let selectedAddress = getSelectedAddress()
+            let transportFee = getSelectedAddressShippingFee()
+            let order = await orderRepository.createOrder(
+                cart, 
+                selectedAddress, 
+                billBasedTransportFees, 
+                [transportFee]
+            )
+            // order created, then clear cart
+            await cartController.clearCart()
+            dispatch(setMessage('Đơn hàng đã được gửi đi và sớm sẽ được xử lí.\n Cảm ơn bạn đã ủng hộ chúng tôi'))
+            dispatch(setOrders([order]))
+            dispatch(setOrderOperationStatus({
+                status: EStatus.SUCCESS
+            }))
+            router.replace('/')
+        } finally {
+            dispatch(setOrderOperationStatus({
+                status: EStatus.IDLE
+            }))
+        }
+    }
+
     let transportFee = getSelectedAddressShippingFee()
     if (isLoading || !transportFee) {
         return <Loading></Loading>
@@ -316,7 +354,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             <strong>Tổng cộng:</strong> 
             <strong>{ calculateTotalValue(transportFee.transportFee).toNumber().toLocaleString() } đ</strong>
         </div>
-        <button className={ styles.send_order_button }>Gửi đơn hàng</button>
+        <button onClick={ onSendOrderButtonClicked } className={ styles.send_order_button }>Gửi đơn hàng</button>
     </React.Fragment>
 }
 

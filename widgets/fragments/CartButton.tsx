@@ -40,13 +40,11 @@ export const CartButton = (props: CartButtonProps) => {
     }, [cart])
 
     return (
-        <Link href="/cart">
-            <FloatingActionButton onClick={ props.onClick }>
-                <div className={ styles.cart_icon_container }>
-                    <p className={ styles.quantity_number }> { totalItemCount } </p>
-                    <i className={`fas fa-shopping-cart ${styles.cart_icon}`}></i>
-                </div>
-            </FloatingActionButton>
-        </Link>
+        <FloatingActionButton onClick={ props.onClick }>
+            <div className={ styles.cart_icon_container }>
+                <p className={ styles.quantity_number }> { totalItemCount } </p>
+                <i className={`fas fa-shopping-cart ${styles.cart_icon}`}></i>
+            </div>
+        </FloatingActionButton>
     )
 }

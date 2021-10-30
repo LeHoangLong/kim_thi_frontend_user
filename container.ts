@@ -11,6 +11,8 @@ import { IGeocodingService } from './services/IGeocodingService';
 import { MockGeocodingService } from './services/MockGeocodingService';
 import { IShippingFeeRepository } from './repositories/IShippingFeeRepository';
 import { MockShippingFeeRepository } from './repositories/MockShippingFeeRepository';
+import { IOrderRepository } from './repositories/IOrderRepository';
+import { MockOrderRepository } from './repositories/MockOrderRepository';
 
 const myContainer = new Container()
 
@@ -20,5 +22,6 @@ myContainer.bind<CartController>(Symbols.CART_CONTROLLER).to(CartController)
 myContainer.bind<IAddressRepository>(Symbols.ADDRESS_REPOSITORY).to(LocalAddressRepository)
 myContainer.bind<IGeocodingService>(Symbols.GEOCODING_SERVICE).to(MockGeocodingService)
 myContainer.bind<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY).to(MockShippingFeeRepository)
+myContainer.bind<IOrderRepository>(Symbols.ORDER_REPOSITORY).to(MockOrderRepository)
 
 export default myContainer

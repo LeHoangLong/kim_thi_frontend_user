@@ -12,11 +12,15 @@ import { Pagination } from '../config/Pagination';
 import styles from './index.module.scss';
 import { GetServerSideProps } from 'next'
 import container from '../container'
+import { withMessage } from '../widgets/hocs/withMessage';
+import { CartButton } from '../widgets/fragments/CartButton';
+import { withCartPage } from '../widgets/hocs/withCartPage';
 
 interface ProductSummaryPageProps {
     productSummaries: ProductSummary[],
     categories: string[],
     numberOfPages: number,
+    showCartPage(): void,
 }
 
 const ProductSummaryPage = (props: ProductSummaryPageProps) => {
@@ -91,6 +95,7 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
             <NavigationBar></NavigationBar>
         </header>
         <main>
+            <CartButton onClick={ props.showCartPage }></CartButton>
             <section>
                 <div className={ styles.search_bar }>
                     <SearchBar onSearchButtonClicked={ onSearchButtonClicked } phrase={ searchPhrase } onChange={ setSearhPhrase }></SearchBar>
@@ -130,7 +135,9 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
     </React.Fragment>
 }
 
-export default ProductSummaryPage
+const ProductSummaryPageWithMessage = withMessage(ProductSummaryPage)
+const ProductSummaryPageWithMessageWithCartPage = withCartPage(ProductSummaryPageWithMessage)
+export default ProductSummaryPageWithMessageWithCartPage
 
 export const getServerSideProps : GetServerSideProps = async (context) => {
     let productRepositories = container.get<IProductRepositories>(Symbols.PRODUCT_REPOSITORY)

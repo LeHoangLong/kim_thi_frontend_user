@@ -21,15 +21,15 @@ import { Pagination } from '../../config/Pagination'
 import { SearchBar } from '../../widgets/components/SearchBar';
 import { ProductSummaries } from '../../widgets/fragments/ProductSummaries';
 import { ProductSummary } from '../../models/ProductSummary'
+import { withCartPage } from '../../widgets/hocs/withCartPage';
 
 export interface ProductDetailPageProps {
 	product: ProductDetailModel,
     relatedProductSummaries: ProductSummary[]
+    showCartPage(): void
 }
 
 export const ProductDetailPage = (props: ProductDetailPageProps) => {
-    console.log('typeof CartPage')
-    console.log(typeof CartPage)
 
     let [prices, setPrices] = useState<ProductPrice[]>([])
     let [displayQuantityAndUnitSelection, setDisplayQuantityAndUnitSelection] = useState(false)
@@ -39,8 +39,6 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     let [showAddedToCartMessage, setShowAddedToCartMessage] = useState(false)
     let dispatch = useAppDispatch();
     let cartController = container.get<CartController>(Symbols.CART_CONTROLLER)
-    let [showCartPage, setShowCartPage] = useState(false)
-    let [renderCartPage, setRenderCartPage] = useState(false)
     let [searchPhrase, setSearhPhrase] = useState('')
 
     useEffect(() => {
@@ -140,15 +138,6 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         }, 1500)
     }
 
-    function onCartButtonClicked() {
-        setShowCartPage(true)
-        setRenderCartPage(true)
-    }
-
-    function onCartPageBackClicked() {
-        setShowCartPage(false)
-    }
-
     function onSearchButtonClicked() {
         window.location.href = `/?search=${ searchPhrase }&page=${ 0 }`
     }
@@ -158,22 +147,14 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         quantityAndUnitSelection += 'quantity-and-unit-selection-hidden '
     }
 
-    console.log('CartPage')
-    console.log(CartPage)
 	return (
 		<React.Fragment>
-            <PageTransition show={ showCartPage } zIndex={ 1000 }>
-                <ConditionalRendering display={ renderCartPage }>
-                    <CartPage onBack={ onCartPageBackClicked }></CartPage>
-                </ConditionalRendering>
-            </PageTransition>
-
             <Message message="Đã thêm vào giỏ" show={ showAddedToCartMessage } className={ styles.mesage }></Message>
 	        <header>
 	            <NavigationBar></NavigationBar>
 	        </header>
 		    <main>
-                <CartButton onClick={ onCartButtonClicked }></CartButton>
+                <CartButton onClick={ props.showCartPage }></CartButton>
 		        <section id="product-detail-page">
 		            <section id="quantity-and-unit-selection" className={ quantityAndUnitSelection }>
 		                <div className="background" onClick={() => setDisplayQuantityAndUnitSelection(false)}></div>
@@ -266,7 +247,8 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 	)
 }
 
-export default ProductDetailPage
+const ProductDetailPageWithCartPage = withCartPage(ProductDetailPage)
+export default ProductDetailPageWithCartPage
 
 export const getServerSideProps : GetServerSideProps =  async (context) => {
     let productRepositories = container.get<IProductRepositories>(Symbols.PRODUCT_REPOSITORY)

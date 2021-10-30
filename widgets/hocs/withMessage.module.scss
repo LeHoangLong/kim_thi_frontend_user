@@ -1,0 +1,9 @@
+@import '../../styles/Common.scss';
+
+.mesage {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: $p5;
+    transform: translate(-50%, -50%);
+    white-space: pre-line;
+}

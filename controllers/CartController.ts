@@ -95,4 +95,10 @@ export class CartController {
         }
         return count
     }
+
+    async clearCart() : Promise<void> {
+        this.cart = {
+        }
+        await this.repository.saveCart(this.cart)
+    }
 }
