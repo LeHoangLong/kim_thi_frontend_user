@@ -29,3 +29,42 @@
     padding: $p5;
     transform: translate(-50%, -50%);
 }
+
+.wholesalePrice {
+    margin-top: $m5;
+}
+
+.wholesalePriceTitleRow {
+    display: flex;
+    align-items: center;
+    margin-top: $m3;
+    margin-bottom: $m3;
+}
+
+.help_icon {
+    margin-left: $m4;
+    font-size: $h5;
+    color: $primary-color;
+    cursor: pointer;
+}
+
+.wholesalePriceTitle {
+    @extend .priceTableTitle;
+}
+
+.tooltip {
+    min-width: 150px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: $p4;
+    color: white;
+    font-size: $h6;
+}
+
+.link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.wholesalePriceValue {
+    margin-top: $m4;
+}

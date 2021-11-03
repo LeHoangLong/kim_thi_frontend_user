@@ -19,6 +19,8 @@ import { SearchBar } from '../../widgets/components/SearchBar';
 import { ProductSummaries } from '../../widgets/fragments/ProductSummaries';
 import { ProductSummary } from '../../models/ProductSummary'
 import { withCartPage } from '../../widgets/hocs/withCartPage';
+import { Tooltip } from '../../widgets/components/Tooltip';
+import Link from 'next/link'
 
 export interface ProductDetailPageProps {
 	product: ProductDetailModel,
@@ -27,7 +29,6 @@ export interface ProductDetailPageProps {
 }
 
 export const ProductDetailPage = (props: ProductDetailPageProps) => {
-
     let [prices, setPrices] = useState<ProductPrice[]>([])
     let [displayQuantityAndUnitSelection, setDisplayQuantityAndUnitSelection] = useState(false)
     let [isBuyNowButtonClicked, setIsBuyNowButtonClicked] = useState(false)
@@ -89,6 +90,38 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
             )
         }
         return ret
+    }
+
+    function displayWholesalePrice() {
+        if (props.product.wholesalePrice !== undefined) {
+            let icon = <div className={ styles.help_icon }>
+                <i className="fas fa-question-circle"></i>
+            </div>
+            let priceValues : React.ReactNode[] = []
+            for (let i = 0; i < props.product.wholesalePrice.length; i++) {
+                priceValues.push(
+                    <p key={props.product.wholesalePrice[i]} className={ styles.wholesalePriceValue }>{ props.product.wholesalePrice[i] }</p>
+                )
+            }
+            return (
+                <article className={ styles.wholesalePrice }>
+                    <div className={ styles.wholesalePriceTitleRow }>
+                        <strong>
+                            <h3 className={ styles.wholesalePriceTitle }>Giá bán sỉ</h3>
+                        </strong>
+                        <Tooltip icon={icon}>
+                            <div className={ styles.tooltip }>
+                                <p>Vui lòng</p> 
+                                <Link href='/about'><p className={ styles.link }>liên hệ</p></Link> 
+                                <p>với chúng tôi để được hưởng giá ưu đãi nhất</p>
+                            </div>
+                        </Tooltip>
+                    </div>
+                    
+                    { priceValues }
+                </article>
+            )
+        }
     }
 
     function onQuantityChanged(event: React.ChangeEvent<HTMLInputElement>) {
@@ -198,6 +231,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
                                 </strong>
                                 { displayPrices() }
 		                    </div>
+                            { displayWholesalePrice() }
 		                </article>
 		            </section>
 

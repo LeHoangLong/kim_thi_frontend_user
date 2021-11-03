@@ -63,6 +63,10 @@ export class MockProductRepositories implements IProductRepositories {
                 rank: i / 50,
                 categories: categories,
                 isDeleted: false,
+                wholesalePrice: [
+                    '1xx,000 đ / kg > 100kg',
+                    '9x,000 đ / kg > 200kg',
+                ]
             })
         }
     }
