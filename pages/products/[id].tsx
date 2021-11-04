@@ -93,7 +93,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 
     function displayWholesalePrice() {
-        if (props.product.wholesalePrice !== undefined) {
+        if (props.product.wholesalePrice.length > 0) {
             let icon = <div className={ styles.help_icon }>
                 <i className="fas fa-question-circle"></i>
             </div>
