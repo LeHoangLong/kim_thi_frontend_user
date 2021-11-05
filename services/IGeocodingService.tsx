@@ -8,5 +8,6 @@ export interface GeocodedAddress {
 }
 
 export interface IGeocodingService {
+    // throw UnsupportedCity if we dont deliver to this address
     geocode(address: string) : Promise<GeocodedAddress> // lat
 }

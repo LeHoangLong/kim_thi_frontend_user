@@ -40,3 +40,16 @@
     color: $on-primary-color;
     margin-bottom: $m4;
 }
+
+.error_message {
+    font-size: $h6;
+    background-color: transparent;
+    padding-top: $p1;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: $red;
+}
+
+.error_message_hidden {
+    display: none;
+}
