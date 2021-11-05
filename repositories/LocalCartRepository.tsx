@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { injectable } from 'inversify'
 import { ICartRepository } from './ICartRepository'
 import { CartModel } from '../models/CartModel'

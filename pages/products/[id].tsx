@@ -93,14 +93,14 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 
     function displayWholesalePrice() {
-        if (props.product.wholesalePrice.length > 0) {
+        if (props.product.wholesalePrices.length > 0) {
             let icon = <div className={ styles.help_icon }>
                 <i className="fas fa-question-circle"></i>
             </div>
             let priceValues : React.ReactNode[] = []
-            for (let i = 0; i < props.product.wholesalePrice.length; i++) {
+            for (let i = 0; i < props.product.wholesalePrices.length; i++) {
                 priceValues.push(
-                    <p key={props.product.wholesalePrice[i]} className={ styles.wholesalePriceValue }>{ props.product.wholesalePrice[i] }</p>
+                    <p key={props.product.wholesalePrices[i]} className={ styles.wholesalePriceValue }>{ props.product.wholesalePrices[i] }</p>
                 )
             }
             return (

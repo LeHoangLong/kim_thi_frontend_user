@@ -15,10 +15,11 @@ import container from '../container'
 import { withMessage } from '../widgets/hocs/withMessage';
 import { CartButton } from '../widgets/fragments/CartButton';
 import { withCartPage } from '../widgets/hocs/withCartPage';
+import { ProductCategoryModel } from '../models/ProductCategoryModel';
 
 interface ProductSummaryPageProps {
     productSummaries: ProductSummary[],
-    categories: string[],
+    categories: ProductCategoryModel[],
     numberOfPages: number,
     showCartPage(): void,
 }
@@ -53,26 +54,26 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
 
     function displayCategories() {
         let ret: React.ReactNode[] = [];
-        let selectedIndex = props.categories.indexOf( category as string )
+        let selectedIndex = props.categories.findIndex(e => e.category == (category as string) )
         for (var i = 0; i < props.categories.length; i++) {
             let isSelected = selectedIndex === i
 
             if ( isSelected ) {
                 ret.push(
-                    <Link key={ props.categories[i] } href={`/?search=${ search }&category=&page=${ page }`}>
+                    <Link key={ props.categories[i].category } href={`/?search=${ search }&category=&page=${ page }`}>
                         <div className={ styles.selected_category }>
                             <strong>
-                                { props.categories[i] }
+                                { props.categories[i].category }
                             </strong>
                         </div>
                     </Link>
                 )
             } else {
                 ret.push(
-                    <Link key={ props.categories[i] } href={`/?search=${ search }&category=${ encodeURIComponent(props.categories[i]) }&page=${ page }`}>
+                    <Link key={ props.categories[i].category } href={`/?search=${ search }&category=${ encodeURIComponent(props.categories[i].category) }&page=${ page }`}>
                         <div className={ styles.category }>
                             <p>
-                                { props.categories[i] }
+                                { props.categories[i].category }
                             </p>
                         </div>
                     </Link>
@@ -153,23 +154,27 @@ export const getServerSideProps : GetServerSideProps = async (context) => {
     } else if (typeof(queryCategories) === 'string') {
         queryCategories = [queryCategories]
     }
+
     let productSummaries = await productRepositories.getProductSummaries({
         categories: queryCategories,
         limit: Pagination.DEFAULT_PAGE_SIZE,
         offset: pageNumber * Pagination.DEFAULT_PAGE_SIZE
     })
+
     let categories = await productRepositories.getCategories({
         limit: 10,
         offset: 0
     })
+
     let numberOfProducts = await productRepositories.getNumberOfProducts()
+
     let numberOfPages = Math.ceil(numberOfProducts / Pagination.DEFAULT_PAGE_SIZE)
     return {
-      props: {
+        props: {
             productSummaries,
-          categories,
-          numberOfProducts,
-          numberOfPages,
-      }, // will be passed to the page component as props
+            categories,
+            numberOfProducts,
+            numberOfPages,
+        }, // will be passed to the page component as props
     }
-  }
+}

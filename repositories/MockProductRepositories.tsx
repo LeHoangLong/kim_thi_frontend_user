@@ -63,7 +63,7 @@ export class MockProductRepositories implements IProductRepositories {
                 rank: i / 50,
                 categories: categories,
                 isDeleted: false,
-                wholesalePrice: [
+                wholesalePrices: [
                     '1xx,000 đ / kg > 100kg',
                     '9x,000 đ / kg > 200kg',
                 ]
@@ -96,9 +96,9 @@ export class MockProductRepositories implements IProductRepositories {
         return this.products.length
     }
 
-    async getCategories(args: GetCategoriesArgs): Promise<string[]> {
+    async getCategories(args: GetCategoriesArgs): Promise<ProductCategoryModel[]> {
         void(args)
-        return ['cat 1', 'cat 2']
+        return [{category: 'cat 1'}, {category: 'cat 2'}]
     }
 
 

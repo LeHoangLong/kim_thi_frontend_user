@@ -7,7 +7,7 @@ export interface ProductDetailModel {
     serialNumber: string,
     defaultPrice: ProductPrice,
     alternativePrices: ProductPrice[],
-    wholesalePrice: string[],
+    wholesalePrices: string[],
     name: string,
     avatar: ImageModel,
     rank: number,

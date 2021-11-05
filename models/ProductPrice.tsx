@@ -1,5 +1,5 @@
 export const EPriceUnit : any = {
-    KG: "KG"
+    0: "kg"
 }
 
 export interface PriceLevel {
