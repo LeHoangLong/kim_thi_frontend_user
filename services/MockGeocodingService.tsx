@@ -9,6 +9,7 @@ export class MockGeocodingService implements IGeocodingService {
             address: address, 
             latitude: '120.000001',  
             longitude: '20.000001',
+            city: 'Thành phố Hồ Chí Minh'
         }
     }
 }

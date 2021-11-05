@@ -40,6 +40,7 @@ export class LocalAddressRepository implements IAddressRepository {
             address: geocodedAddress.address,
             latitude: geocodedAddress.latitude,
             longitude: geocodedAddress.longitude,
+            city: geocodedAddress.city,
             recipientName: recipientName,
             phoneNumber: recipientPhoneNumber,
             isDefault: addresses.length == 0, // if first address created then is default

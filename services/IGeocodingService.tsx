@@ -4,6 +4,7 @@ export interface GeocodedAddress {
     address: string,
     latitude: string,
     longitude: string,
+    city: string,
 }
 
 export interface IGeocodingService {

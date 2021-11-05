@@ -14,6 +14,7 @@ export class RemoteGeocodingSerivce implements IGeocodingService {
             address: address, 
             latitude: response.data.latitude,  
             longitude: response.data.longitude,
+            city: response.data.city,
         }
     }
 }
