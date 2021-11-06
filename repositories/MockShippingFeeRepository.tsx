@@ -1,12 +1,12 @@
 import Decimal from "decimal.js";
 import { injectable } from "inversify";
 import { Address } from "../models/Address";
-import { BillBasedTransportFee } from "../models/TransportFee";
+import { AddressTransportFee, BillBasedTransportFee } from "../models/TransportFee";
 import { IShippingFeeRepository } from "./IShippingFeeRepository";
 
 @injectable()
 export class MockShippingFeeRepository implements IShippingFeeRepository {
-    async fetchBillBasedTransportFees() : Promise<BillBasedTransportFee[]> {
+    async fetchBillBasedTransportFees(city: string, latitude: Decimal, longitude: Decimal) : Promise<BillBasedTransportFee[]> {
         return [
             {
                 minBillValue: '10000',
@@ -21,7 +21,10 @@ export class MockShippingFeeRepository implements IShippingFeeRepository {
         ]
     }
 
-    async fetchAreaTransportFee(latitude: Decimal, longitude: Decimal) : Promise<number> {
-        return 100000
+    async fetchAreaTransportFee(city: string, latitude: Decimal, longitude: Decimal) : Promise<AddressTransportFee> {
+        return { 
+            addressId: 0, 
+            transportFee: 100000
+        }
     }
 }

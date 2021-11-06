@@ -20,7 +20,5 @@ export interface IOrderRepository {
     createOrder(
         orderItems: OrderItemsModel,
         address: Address,
-        bilLBasedTransportFee: BillBasedTransportFee[],
-        addressTransportFee: AddressTransportFee[],
     ) : Promise<OrderModel>
 }

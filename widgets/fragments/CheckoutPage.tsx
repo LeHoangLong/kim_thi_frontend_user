@@ -53,14 +53,13 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     let shippingFeeRepository = myContainer.get<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY)
     let orderRepository = myContainer.get<IOrderRepository>(Symbols.ORDER_REPOSITORY)
     let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
-    let linkRef = useRef(null)
 
-    async function fetchBillBasedTransportFees() {
+    async function fetchBillBasedTransportFees(address: Address) {
         try {
             dispatch(setShippingFeeOperationStatus({
                 status: EStatus.IN_PROGRESS
             }))
-            let newBillBasedTransportFees = await shippingFeeRepository.fetchBillBasedTransportFees()
+            let newBillBasedTransportFees = await shippingFeeRepository.fetchBillBasedTransportFees(address.city, new Decimal(address.latitude), new Decimal(address.longitude))
             dispatch(setBillBasedFees(newBillBasedTransportFees))
             dispatch(setShippingFeeOperationStatus({
                 status: EStatus.SUCCESS
@@ -77,10 +76,10 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     async function fetchAddressShippingFee(address: Address) {
         try {
             setIsFetchingAddressShippingFee(true)
-            let transportFee = await shippingFeeRepository.fetchAreaTransportFee(new Decimal(address.latitude), new Decimal(address.longitude))
+            let transportFee = await shippingFeeRepository.fetchAreaTransportFee(address.city, new Decimal(address.latitude), new Decimal(address.longitude))
             dispatch(addAddressTransportFees({
                 addressId: address.id,
-                transportFee: transportFee,
+                transportFee: transportFee.transportFee,
             }))
         } finally {
             setIsFetchingAddressShippingFee(false)
@@ -98,11 +97,16 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         }
     }, [addressOperationStatus])
 
+    let [fetchedBillBasedTransportFeeAddressId, setFetchedBillBasedTransportFeeAddressId] = useState(-1)
     useEffect(() => {
-        if (transportFeeOperationStatus.status === EStatus.INIT) {
-            fetchBillBasedTransportFees()
+        let selectedAddress = getSelectedAddress()
+        if ((transportFeeOperationStatus.status === EStatus.INIT || transportFeeOperationStatus.status === EStatus.IDLE) && 
+            selectedAddress &&
+            selectedAddress.id !== fetchedBillBasedTransportFeeAddressId) {
+            fetchBillBasedTransportFees(selectedAddress)
+            setFetchedBillBasedTransportFeeAddressId(selectedAddress.id)
         }
-    }, [transportFeeOperationStatus])
+    }, [transportFeeOperationStatus, addresses])
 
     function getSelectedAddress() {
         let selectedAddress = addresses.find(e => e.isSelected)
@@ -315,8 +319,6 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             let order = await orderRepository.createOrder(
                 cart, 
                 selectedAddress, 
-                billBasedTransportFees, 
-                [transportFee]
             )
             // order created, then clear cart
             await cartController.clearCart()

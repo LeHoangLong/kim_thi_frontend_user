@@ -23,9 +23,9 @@ export const AddressCard = (props: AddressCardProps) => {
     async function fetchShippingFee() {
         try {
             setIsLoading(true)
-            let shippingFee = await shippingFeeRepository.fetchAreaTransportFee(new Decimal(props.address.latitude), new Decimal(props.address.longitude))
+            let shippingFee = await shippingFeeRepository.fetchAreaTransportFee(props.address.city, new Decimal(props.address.latitude), new Decimal(props.address.longitude))
             dispatch(addAddressTransportFees({
-                transportFee: shippingFee,
+                transportFee: shippingFee.transportFee,
                 addressId: props.address.id,
             }))
         } finally {

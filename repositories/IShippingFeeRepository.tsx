@@ -1,7 +1,7 @@
 import Decimal from "decimal.js";
-import { BillBasedTransportFee } from "../models/TransportFee";
+import { AddressTransportFee, BillBasedTransportFee } from "../models/TransportFee";
 
 export interface IShippingFeeRepository {
-    fetchBillBasedTransportFees() : Promise<BillBasedTransportFee[]>
-    fetchAreaTransportFee(latitude: Decimal, longitude: Decimal) : Promise<number>
+    fetchBillBasedTransportFees(city: string, latitude: Decimal, longitude: Decimal) : Promise<BillBasedTransportFee[]>
+    fetchAreaTransportFee(city: string, latitude: Decimal, longitude: Decimal) : Promise<AddressTransportFee>
 }
