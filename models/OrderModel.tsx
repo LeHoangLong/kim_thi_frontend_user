@@ -13,6 +13,4 @@ export interface OrderModel {
         [index: number] : OrderItemUnitModel,
     },
     address: Address,
-    billBasedTransportFees: BillBasedTransportFee[],
-    addressTransportFees: AddressTransportFee[],
 }

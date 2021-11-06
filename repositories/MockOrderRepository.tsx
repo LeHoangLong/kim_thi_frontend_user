@@ -9,15 +9,11 @@ export class MockOrderRepository implements IOrderRepository {
     async createOrder(
         orderItems: OrderItemsModel,
         address: Address,
-        bilLBasedTransportFee: BillBasedTransportFee[],
-        addressTransportFee: AddressTransportFee[],
     ) : Promise<OrderModel> {
         return {
             id: 0,
             items: orderItems,
             address: address,
-            billBasedTransportFees: bilLBasedTransportFee,
-            addressTransportFees: addressTransportFee,
         }
     }
 }
