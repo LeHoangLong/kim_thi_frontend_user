@@ -7,4 +7,6 @@ export interface IAddressRepository {
     createAddress(address: string, recipientName: string, recipientPhoneNumber: string): Promise<Address>
     fetchNumberOfAddresses(): Promise<number>
     fetchAddresses(offset: number, limit: number) : Promise<Address[]>
+
+    removeAddress(id: number): Promise<void>
 }

@@ -24,7 +24,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "../kim_thi_backend/src/services/EmailService.tsx"  ],
   "exclude": [
     "node_modules"
   ]

@@ -298,7 +298,7 @@ export const CartPage = (props: CartPageProps) => {
 
     return <React.Fragment>
         <PageTransition show={ showCheckoutPage } zIndex={ CheckoutPageZ }>
-            <CheckoutPage display={ showCheckoutPage } onBack={() => setShowCheckoutPage(false)}></CheckoutPage>
+            <CheckoutPage onOrderSent={ props.onBack } display={ showCheckoutPage } onBack={() => setShowCheckoutPage(false)}></CheckoutPage>
         </PageTransition>
         <section className={ styles.cart_page }>
             <HeaderBar title="Giỏ hàng" onBack={ props.onBack }></HeaderBar>

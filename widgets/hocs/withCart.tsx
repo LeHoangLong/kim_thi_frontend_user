@@ -2,7 +2,9 @@ import { ComponentType, useEffect, useState } from "react";
 import Symbols from "../../config/Symbols";
 import myContainer from "../../container";
 import { CartController } from "../../controllers/CartController";
+import { NotFound } from "../../exceptions/NotFound";
 import { useAppDispatch, useAppSelector } from "../../hooks/Hooks";
+import { CartModel } from "../../models/CartModel";
 import { EStatus } from "../../models/StatusModel";
 import { setCart, setCartOperationStatus } from "../../reducers/cartReducer";
 import { addProduct, setProductOperationStatus } from "../../reducers/productReducer";
@@ -17,6 +19,7 @@ export function withCart<T>(Component: ComponentType<T>) {
         let productRepository = myContainer.get<IProductRepositories>(Symbols.PRODUCT_REPOSITORY)
         let dispatch = useAppDispatch()
         let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
+        let [stop, setStop] = useState(false)
 
         useEffect(() => {
             async function fetchProductDetails() {
@@ -24,12 +27,28 @@ export function withCart<T>(Component: ComponentType<T>) {
                     status: EStatus.IN_PROGRESS,
                 }))
                 try {
+                    let cartChanged: boolean = false
+                    let newCart: CartModel = {...cart}
                     for (let productId in cart) {
                         if (!(productId in productDetails)) {
                             // fetch product id
-                            let product = await productRepository.fetchProductDetailById(parseInt(productId))
-                            dispatch(addProduct(product))
+                            try {
+                                let product = await productRepository.fetchProductDetailById(parseInt(productId))
+                                dispatch(addProduct(product))
+                            } catch(exception) {
+                                console.log('exception')
+                                console.log(exception)
+                                if (exception instanceof NotFound) {
+                                    delete newCart[productId]
+                                    await cartController.removeItem(parseInt(productId))
+                                    cartChanged = true
+                                }
+                            }
                         }
+                    }
+
+                    if (cartChanged) {
+                        dispatch(setCart(newCart))
                     }
 
                     dispatch(setProductOperationStatus({
@@ -43,7 +62,7 @@ export function withCart<T>(Component: ComponentType<T>) {
             }
 
             if (productOperationStatus.status === EStatus.INIT ||
-                (productOperationStatus.status === EStatus.IN_PROGRESS && !isAllCartItemDetailsFetched())
+                (productOperationStatus.status === EStatus.IDLE && !isAllCartItemDetailsFetched())
             ) {
                 fetchProductDetails()
             }

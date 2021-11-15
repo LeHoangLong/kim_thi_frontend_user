@@ -16,6 +16,7 @@ import { MockOrderRepository } from './repositories/MockOrderRepository';
 import { RemoteProductRepository } from './repositories/RemoteProductRepository';
 import { RemoteGeocodingSerivce } from './services/RemoteGeocodingService';
 import { RemoteShippingFeeRepository } from './repositories/RemoteShippingFeeRepository';
+import { RemoteOrderRepository } from './repositories/RemoteOrderRepository';
 
 const myContainer = new Container()
 
@@ -25,6 +26,6 @@ myContainer.bind<CartController>(Symbols.CART_CONTROLLER).to(CartController)
 myContainer.bind<IAddressRepository>(Symbols.ADDRESS_REPOSITORY).to(LocalAddressRepository)
 myContainer.bind<IGeocodingService>(Symbols.GEOCODING_SERVICE).to(RemoteGeocodingSerivce)
 myContainer.bind<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY).to(RemoteShippingFeeRepository)
-myContainer.bind<IOrderRepository>(Symbols.ORDER_REPOSITORY).to(MockOrderRepository)
+myContainer.bind<IOrderRepository>(Symbols.ORDER_REPOSITORY).to(RemoteOrderRepository)
 
 export default myContainer

@@ -11,6 +11,15 @@ export class LocalAddressRepository implements IAddressRepository {
     @inject( Symbols.GEOCODING_SERVICE ) private geocoder: IGeocodingService
     @inject( Symbols.SHIPPING_FEE_REPOSITORY ) private shippingFeeRepository: IShippingFeeRepository
 
+    async removeAddress(id: number): Promise<void> {
+        let addresses = this.fetchAllAddresses()
+        let index = addresses.findIndex(e => e.id === id)
+        if (index !== -1) {
+            addresses.splice(index, 1)
+        }
+        localStorage.setItem('addresses', JSON.stringify(addresses))
+    }
+
     async updateAddress(id: number, address: Address): Promise<Address> {
         let addresses = this.fetchAllAddresses()
         let index = addresses.findIndex(e => e.id === id)

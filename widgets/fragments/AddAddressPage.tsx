@@ -10,6 +10,7 @@ import Loading from "../components/Loading"
 import { useAppDispatch, useAppSelector } from "../../hooks/Hooks"
 import { RootState } from "../../reducers/rootReducer"
 import { UnsupportedCity } from "../../exceptions/UnsupportedCity"
+import { DuplicateResource } from "../../exceptions/DuplicateResource"
 
 export interface AddAddressPageProps {
     onBack() : void
@@ -38,6 +39,8 @@ export const AddAddressPage = (props: AddAddressPageProps) => {
             } catch (exception) {
                 if (exception instanceof UnsupportedCity) {
                     setAddressErrorMessage('Rất tiếc, chúng tôi hiện không giao được đến thành phố này')
+                } else if (exception instanceof DuplicateResource) {
+                    setAddressErrorMessage('Số điện thoại này đã tồn tại')
                 }
             } finally {
                 setIsCreatingAddress(false)

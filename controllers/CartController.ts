@@ -83,7 +83,7 @@ export class CartController {
         } else {
             this.cart[productId][unit] = {
                 quantity: this.cart[productId][unit].quantity + quantity,
-                selected: this.cart[productId][unit].selected
+                selected: true
             }
         }
         await this.repository.saveCart(this.cart)
@@ -91,21 +91,26 @@ export class CartController {
 
     async removeItem(
         productId: number,
-        unit: string,
+        unit?: string,
     ) {
         if (this.cart == undefined) {
             this.cart = await this.repository.fetchCart()
         }
+        
+        let newCart = {...this.cart}
+        if (unit) {
+            if (productId in newCart) {
+                delete newCart[productId][unit]
+            }
 
-        if (productId in this.cart) {
-            delete this.cart[productId][unit]
+            if (Object.keys(newCart[productId]).length == 0) {
+                delete newCart[productId]
+            }
+        } else {
+            delete newCart[productId]
         }
 
-        if (Object.keys(this.cart[productId]).length == 0) {
-            delete this.cart[productId]
-        }
-
-        await this.repository.saveCart(this.cart)
+        await this.repository.saveCart(newCart)
     }
 
     // Number of items (1 per unit)

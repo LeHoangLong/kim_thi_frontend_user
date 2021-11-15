@@ -161,6 +161,10 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         setTimeout(() => {
             setShowAddedToCartMessage(false)
         }, 1500)
+
+        if (isBuyNowButtonClicked) {
+            props.showCartPage()
+        }
     }
 
     function onSearchButtonClicked() {

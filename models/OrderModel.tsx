@@ -1,3 +1,4 @@
+import Decimal from "decimal.js";
 import { Address } from "./Address";
 import { AddressTransportFee, BillBasedTransportFee } from "./TransportFee";
 
@@ -13,4 +14,6 @@ export interface OrderModel {
         [index: number] : OrderItemUnitModel,
     },
     address: Address,
+    message: string,
+    paymentAmount: Decimal,
 }

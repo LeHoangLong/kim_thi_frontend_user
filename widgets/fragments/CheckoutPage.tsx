@@ -14,7 +14,7 @@ import { setOrderOperationStatus, setOrders } from "../../reducers/orderReducer"
 import { RootState } from "../../reducers/rootReducer"
 import { addAddressTransportFees, setBillBasedFees, setShippingFeeOperationStatus } from "../../reducers/shippingFeeReducer"
 import { IAddressRepository } from "../../repositories/IAddressRepository"
-import { IOrderRepository } from "../../repositories/IOrderRepository"
+import { IOrderRepository, OrderItemsModel } from "../../repositories/IOrderRepository"
 import { IShippingFeeRepository } from "../../repositories/IShippingFeeRepository"
 import { calculatePriceAndMinQuantity } from "../../services/CalculatePriceAndMinQuantity"
 import { HeaderBar } from "../components/HeaderBar"
@@ -26,10 +26,13 @@ import { AddressCard } from "./AddressCard"
 import AddressPage from "./AddressPage"
 import styles from './CheckoutPage.module.scss'
 import router from 'next/router'
+import { NotFound } from "../../exceptions/NotFound"
+import { setCart } from "../../reducers/cartReducer"
 
 export interface CheckoutPageProps {
     display: boolean
     onBack(): void
+    onOrderSent(): void
 }
 
 const CheckoutPage = (props: CheckoutPageProps) => {
@@ -41,7 +44,6 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     let addresses = useAppSelector((state: RootState) => state.addresses.addresses)
     let cart = useAppSelector(state => state.cart.cart)
     let numberOfAddresses = useAppSelector((state: RootState) => state.addresses.numberOfAddresses)
-    let addressRepository = myContainer.get<IAddressRepository>(Symbols.ADDRESS_REPOSITORY)
     let addressOperationStatus = useAppSelector(state => state.addresses.operationStatus)
     let orderOperationStatus = useAppSelector(state => state.orders.operationStatus)
     let productDetails = useAppSelector(state => state.products.productDetails)
@@ -53,6 +55,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     let shippingFeeRepository = myContainer.get<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY)
     let orderRepository = myContainer.get<IOrderRepository>(Symbols.ORDER_REPOSITORY)
     let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
+    let addressRepository = myContainer.get<IAddressRepository>(Symbols.ADDRESS_REPOSITORY)
 
     async function fetchBillBasedTransportFees(address: Address) {
         try {
@@ -64,6 +67,22 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             dispatch(setShippingFeeOperationStatus({
                 status: EStatus.SUCCESS
             }))
+        } catch (exception) {
+            console.log('exception')
+            console.log(exception)
+            if (exception instanceof NotFound) {
+                console.log('remove address')
+                // delete address
+                await addressRepository.removeAddress(address.id)
+                let newAddresses = [...addresses]
+                let index = newAddresses.findIndex(e => e.id === address.id)
+                newAddresses.splice(index, 1)
+                let defaultAddress = newAddresses.find(e => e.isDefault)
+                if (defaultAddress === undefined && newAddresses.length > 0) {
+                    newAddresses[0].isDefault = true
+                }
+                dispatch(setAddreses(newAddresses))
+            }
         } finally {
             dispatch(setShippingFeeOperationStatus({
                 status: EStatus.IDLE
@@ -100,7 +119,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     let [fetchedBillBasedTransportFeeAddressId, setFetchedBillBasedTransportFeeAddressId] = useState(-1)
     useEffect(() => {
         let selectedAddress = getSelectedAddress()
-        if ((transportFeeOperationStatus.status === EStatus.INIT || transportFeeOperationStatus.status === EStatus.IDLE) && 
+        if ((transportFeeOperationStatus.status === EStatus.INIT) && 
             selectedAddress &&
             selectedAddress.id !== fetchedBillBasedTransportFeeAddressId) {
             fetchBillBasedTransportFees(selectedAddress)
@@ -150,7 +169,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         } else {
             setIsLoading(false)
         }
-    }, [cartOperationStatus, productOperationStatus])
+    }, [cartOperationStatus, productOperationStatus, orderOperationStatus])
 
     function onAddressPageBack() {
         setShowAddressPage(false)
@@ -285,7 +304,6 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     }
 
     function calculateTotalValue(transportFee: number) : Decimal {
-
         let total = new Decimal(0)
         for (let itemName in cart) {
             let item = cart[itemName]
@@ -316,18 +334,36 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             }))
             let selectedAddress = getSelectedAddress()
             let transportFee = getSelectedAddressShippingFee()
+            let items: OrderItemsModel = {}
+            for (let productId in cart) {
+                items[productId] = {}
+                for (let unit in cart[productId]) {
+                    if (!(unit in items[productId])) {
+                        items[productId][unit] = {
+                            quantity: cart[productId][unit].quantity
+                        }
+                    }
+                }
+            }
             let order = await orderRepository.createOrder(
-                cart, 
+                items, 
                 selectedAddress, 
+                calculateTotalValue(transportFee.transportFee),
+                '',
             )
             // order created, then clear cart
             await cartController.clearCart()
+            dispatch(setCart({}))
             dispatch(setMessage('Đơn hàng đã được gửi đi và sớm sẽ được xử lí.\n Cảm ơn bạn đã ủng hộ chúng tôi'))
             dispatch(setOrders([order]))
             dispatch(setOrderOperationStatus({
                 status: EStatus.SUCCESS
             }))
             router.replace('/')
+            props.onOrderSent()
+        } catch (exception) {
+            console.log('create order exception')
+            console.log(exception)
         } finally {
             dispatch(setOrderOperationStatus({
                 status: EStatus.IDLE

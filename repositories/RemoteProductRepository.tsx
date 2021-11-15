@@ -2,12 +2,13 @@ import 'reflect-metadata'
 import { ProductDetailModel } from "../models/ProductDetailModel";
 import { ProductSummary } from "../models/ProductSummary";
 import { GetCategoriesArgs, GetProductSummariesArgs, IProductRepositories } from "./IProductRepositories";
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { BACKEND_URL, FILESERVER_URL } from "../config/Url";
 import { ProductCategoryModel } from "../models/ProductCategoryModel";
 import { EPriceUnit, PriceLevel, ProductPrice } from "../models/ProductPrice";
 import { ImageModel } from "../models/ImageModel";
 import { injectable } from 'inversify';
+import { NotFound } from '../exceptions/NotFound';
 
 export function jsonToProductSummary(json: any) : ProductSummary {
     return {
@@ -60,8 +61,6 @@ export function jsonToImageModel(json: any) : ImageModel {
 
 
 export function jsonToProductDetail(json: any) : ProductDetailModel {
-    console.log('json')
-    console.log(json)
     let ret : ProductDetailModel = {
         id: json.product.id,
         serialNumber: json.product.serialNumber,
@@ -118,7 +117,20 @@ export class RemoteProductRepository implements IProductRepositories {
     }
 
     async fetchProductDetailById(id: number): Promise<ProductDetailModel> {
-        let response = await axios.get(`${BACKEND_URL}/products/${id}`)
-        return jsonToProductDetail(response.data)
+        try {
+            let response = await axios.get(`${BACKEND_URL}/products/${id}`)
+            return jsonToProductDetail(response.data)
+        } catch (exception) {
+            if (axios.isAxiosError(exception)) {
+                let axiosError = exception as AxiosError
+                if (axiosError.response.status === 404) {
+                    throw new NotFound('Product', 'id', id.toString())
+                } else {
+                    throw exception
+                }
+            } else {
+                throw exception
+            }
+        }
     }
 }
