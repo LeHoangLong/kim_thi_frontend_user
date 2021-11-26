@@ -40,13 +40,6 @@ export const NavigationBar = () => {
                         </h4>
                     </Link>
                 </div>
-                <div className={ `${selectedMenu == '/contact'? styles.selected : '' } ${styles.nav_link}` }>
-                    <Link href="/contact">
-                        <h4>
-                            Liên hệ
-                        </h4>
-                    </Link>
-                </div>
             </nav>
 
             <div className={  styles.hidden_menu_container }>
@@ -68,13 +61,6 @@ export const NavigationBar = () => {
                         <Link href="/about">
                             <h4>
                                 Giới thiệu
-                            </h4>
-                        </Link>
-                    </div>
-                    <div className={ `${selectedMenu == '/contact'? styles.selected : '' } ${styles.nav_link}` }>
-                        <Link href="/contact">
-                            <h4>
-                                Liên hệ
                             </h4>
                         </Link>
                     </div>
