@@ -15,7 +15,7 @@ export function jsonToProductSummary(json: any) : ProductSummary {
         id: json['product']['id'],
         name: json['product']['name'],
         defaultPrice: {
-            unit: EPriceUnit[json['defaultPrice']['unit']],
+            unit:  (json['defaultPrice']['unit'] as string).toLowerCase(),
             isDefault: true,
             defaultPrice: json['defaultPrice']['defaultPrice'],
             priceLevels: json['defaultPrice']['priceLevels'],

@@ -1,0 +1,61 @@
+@import '../../styles/Common.scss';
+
+.categories_title {
+    font-weight: bold;
+    color: $primary-color;
+    margin-bottom: $m6;
+    margin-left: $m3;
+}
+
+
+.categories {
+    background-color: white;
+    height: 100%;
+    display: grid;
+    overflow-x: hidden;
+}
+
+.category {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(#000, 0.1);
+}
+
+.selected_category {
+    @extend .category;
+    color: $primary-color;
+}
+
+.category:hover {
+    border: 1px solid rgba(#000, 0.2);
+}
+
+.categories_list_container {
+    position: relative;
+}
+
+.button {
+    position: absolute;
+    border-radius: 50%;
+    padding: $p4;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.button:hover, .button:active {
+    opacity: 1;
+}
+
+.left_button {
+    @extend .button;
+    top: 50%;
+    left: -15px;
+}
+
+.right_button {
+    @extend .button;
+    top: 50%;
+    right: -15px;
+}

@@ -13,4 +13,3 @@ export interface ProductPrice {
     defaultPrice: number,
     priceLevels: PriceLevel[],
 }
-

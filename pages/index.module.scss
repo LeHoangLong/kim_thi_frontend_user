@@ -21,31 +21,8 @@
 }
 
 .banner {
-    display: grid;
-    grid-template-columns: 50px minmax(100px, 1fr) 50px 3fr 50px;
-    background-color: $primary-color;
-}
-
-.categories {
-    grid-column: 2;
-    background-color: white;
-    height: 100%;
-    border-top: 1px solid $border-color;
-    border-bottom: 1px solid $border-color;
-}
-
-.category {
-    padding: $p2 $p3;
-}
-
-.category:hover {
-    background: $primary-color-2;
-    color: $on-primary-color;
-}
-
-.selected_category {
-    @extend .category;
-    color: $primary-color;
+    display: flex;
+    justify-content: center;
 }
 
 .images {
@@ -59,9 +36,6 @@
     .banner {
         display: block;
         background-color: transparent;
-    }
-    .categories {
-        display: none;
     }
 }
 
@@ -119,4 +93,18 @@ $slide_show_height: 250px;
 
 .search_bar {
     margin-bottom: $m6;
+}
+
+.carousell_container {
+    max-width: 500px;
+    height: $slide_show_height;
+    margin-right: $m1;
+}
+
+.categories_container {
+    margin: $m6;
+}
+
+.main_page {
+    background-color: $background-color;
 }

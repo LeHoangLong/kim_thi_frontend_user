@@ -292,6 +292,11 @@ export const getServerSideProps : GetServerSideProps =  async (context) => {
         }
     }
 
+    let search: string = ''
+    if (typeof(context.query.search) === 'string') {
+        search = context.query.search
+    }
+
 	let productDetail = await productRepositories.fetchProductDetailById(id)
 
     let categories: string[] = []
@@ -302,6 +307,7 @@ export const getServerSideProps : GetServerSideProps =  async (context) => {
         categories: categories,
         limit: Pagination.DEFAULT_PAGE_SIZE,
         offset: 0,
+        productSearch: search,
     })
 
     let relatedProductSummariesExceptThis = []

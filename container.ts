@@ -28,4 +28,7 @@ myContainer.bind<IGeocodingService>(Symbols.GEOCODING_SERVICE).to(RemoteGeocodin
 myContainer.bind<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY).to(RemoteShippingFeeRepository)
 myContainer.bind<IOrderRepository>(Symbols.ORDER_REPOSITORY).to(RemoteOrderRepository)
 
+//let mockProductRepositories = new MockProductRepositories()
+//myContainer.rebind<IProductRepositories>(Symbols.PRODUCT_REPOSITORY).toConstantValue(mockProductRepositories)
+
 export default myContainer

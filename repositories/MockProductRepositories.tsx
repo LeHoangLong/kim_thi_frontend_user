@@ -84,11 +84,16 @@ export class MockProductRepositories implements IProductRepositories {
         let summaries: ProductSummary[] = []
         let count = 0
         for (let i = args.offset; i < this.products.length && count < args.limit; i++) {
-            if (args.categories.length === 0 || args.categories[0] == '' || this.products[i].categories.findIndex(e => args.categories.indexOf(e.category) !== -1) !== -1) {
+            if (args.categories.length === 0 || 
+                args.categories[0] == '' || 
+                this.products[i].categories.findIndex(e => args.categories.indexOf(e.category) !== -1) !== -1
+            ) {
                 summaries.push(this.productDetailToSummary(this.products[i]))
                 count++
             }
         }
+
+        summaries = summaries.filter(e => e.name.includes(args.productSearch))
         return summaries
     }
 
@@ -98,7 +103,13 @@ export class MockProductRepositories implements IProductRepositories {
 
     async getCategories(args: GetCategoriesArgs): Promise<ProductCategoryModel[]> {
         void(args)
-        return [{category: 'cat 1'}, {category: 'cat 2'}]
+        let ret: ProductCategoryModel[] = []
+        for (let i = 0; i < 10; i++) {
+            ret.push({
+                category: 'cat ' + i,
+            })
+        }
+        return ret
     }
 
 

@@ -6,6 +6,7 @@ export interface GetProductSummariesArgs {
     categories: string[],
     limit: number,
     offset: number,
+    productSearch: string,
 }
 
 export interface GetCategoriesArgs {
