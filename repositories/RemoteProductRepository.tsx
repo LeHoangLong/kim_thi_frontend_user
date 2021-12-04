@@ -53,9 +53,13 @@ export function jsonToProductPrice(json: any) : ProductPrice {
 }
 
 export function jsonToImageModel(json: any) : ImageModel {
+    let path = json['path']
+    if (!path.includes('http')) {
+        path = FILESERVER_URL + '/' + path 
+    }
     return {
         id: json['id'],
-        path: FILESERVER_URL + '/' + json['path'],
+        path: path,
     }
 }
 
