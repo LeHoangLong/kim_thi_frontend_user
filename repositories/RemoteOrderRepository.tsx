@@ -32,6 +32,7 @@ export class RemoteOrderRepository implements IOrderRepository {
                     longitude: address.longitude.toString(),
                 },
                 customerContact: {
+                    name: address.recipientName,
                     phoneNumber: address.phoneNumber,
                 },
                 expectedPrice: expectedPaymentAmount.toString(),
