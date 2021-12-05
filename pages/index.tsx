@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ProductSummary } from '../models/ProductSummary';
-import Link from 'next/link'
 import { SearchBar } from '../widgets/components/SearchBar';
 import { ProductSummaries } from '../widgets/fragments/ProductSummaries';
 import { ScrollingPageIndex } from '../widgets/components/ScrollingPageIndex'
@@ -17,8 +16,8 @@ import { CartButton } from '../widgets/fragments/CartButton';
 import { withCartPage } from '../widgets/hocs/withCartPage';
 import { ProductCategoryModel } from '../models/ProductCategoryModel';
 import { Carousell } from '../widgets/components/Carousell';
-import axios from 'axios';
 import { Categories } from '../widgets/fragments/Categories';
+import Head from 'next/head'
 
 interface ProductSummaryPageProps {
     productSummaries: ProductSummary[],
@@ -83,6 +82,9 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
     }, [])
 
     return <React.Fragment>
+        <Head>
+            <title>Trang chú</title>
+        </Head>
         <canvas style={{ display: 'none'}}/>
         <header>
             <NavigationBar></NavigationBar>

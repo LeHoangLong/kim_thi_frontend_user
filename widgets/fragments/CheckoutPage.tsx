@@ -28,6 +28,7 @@ import styles from './CheckoutPage.module.scss'
 import router from 'next/router'
 import { NotFound } from "../../exceptions/NotFound"
 import { setCart } from "../../reducers/cartReducer"
+import { sendGoogleAnalyticsEvent } from "../../services/GoogleAnalytics"
 
 export interface CheckoutPageProps {
     display: boolean
@@ -328,6 +329,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     }
 
     async function onSendOrderButtonClicked() {
+        sendGoogleAnalyticsEvent({ eventName: 'purchase', action: 'click', category: 'button', label: 'send_order', value: 0})
         try {
             dispatch(setOrderOperationStatus({
                 status: EStatus.IN_PROGRESS

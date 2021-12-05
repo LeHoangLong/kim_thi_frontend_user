@@ -21,6 +21,8 @@ import { ProductSummary } from '../../models/ProductSummary'
 import { withCartPage } from '../../widgets/hocs/withCartPage';
 import { Tooltip } from '../../widgets/components/Tooltip';
 import Link from 'next/link'
+import Head from 'next/head'
+import { sendGoogleAnalyticsEvent } from '../../services/GoogleAnalytics';
 
 export interface ProductDetailPageProps {
 	product: ProductDetailModel,
@@ -138,11 +140,13 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 
     async function addToCartButtonClicked() {
+        sendGoogleAnalyticsEvent({ eventName: 'add_to_cart', action: 'click', category: 'button', label: 'add_to_cart', value: 0})
         setIsBuyNowButtonClicked(false)
         setDisplayQuantityAndUnitSelection(true)
     }
 
     function buyNowButtonClicked() {
+        sendGoogleAnalyticsEvent({ eventName: 'add_to_cart', action: 'click', category: 'button', label: 'buy_now', value: 0})
         setIsBuyNowButtonClicked(true)
         setDisplayQuantityAndUnitSelection(true)
     }
@@ -178,6 +182,9 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 
 	return (
 		<React.Fragment>
+            <Head>
+                <title>{ props.product.name }</title>
+            </Head>
             <Message message="Đã thêm vào giỏ" show={ showAddedToCartMessage } className={ styles.mesage }></Message>
 	        <header>
 	            <NavigationBar></NavigationBar>
@@ -240,9 +247,9 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		            </section>
 
 		            <section className="search-related-products">
-		                <h4>
-		                    Sản phẩm khác
-		                </h4>
+                        <h4>
+                            Sản phẩm khác
+                        </h4>
 
                         <div>
                             <SearchBar onSearchButtonClicked={ onSearchButtonClicked } phrase={ searchPhrase } onChange={ setSearhPhrase }></SearchBar>
