@@ -244,12 +244,12 @@ const CheckoutPage = (props: CheckoutPageProps) => {
                 <div className={ styles.transport_fee } key={ 'bill_based_' + i }>
                     {(() => {
                         if (billBasedTransportFees[i].minBillValue) {
-                            return <p>{ feeOrDiscountStr } vận chuyển với hóa đơn&nbsp;&gt;&nbsp;{ parseInt(billBasedTransportFees[i].minBillValue).toLocaleString() } đ</p>
+                            return <p>{ feeOrDiscountStr } vận chuyển với hóa đơn&nbsp;&gt;&nbsp;{ parseInt(billBasedTransportFees[i].minBillValue).toLocaleString('en') } đ</p>
                         } else {
                             return <p>{ feeOrDiscountStr } vận chuyển theo hóa đơn</p>
                         }
                     })()}
-                    <p>{ total.toNumber().toLocaleString() } đ</p>
+                    <p>{ total.toNumber().toLocaleString('en') } đ</p>
                 </div>
             )
         }
@@ -292,7 +292,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
                                             { product.name }
                                         </strong>
                                     </h6>
-                                    <p className={ styles.item_total }>Tổng: { (price * quantity).toLocaleString() } đ </p>
+                                    <p className={ styles.item_total }>Tổng: { (price * quantity).toLocaleString('en') } đ </p>
                                     <p className={ styles.item_quantity }> S.lg: { quantity } { unit }</p>
                                 </div>
                             </article>
@@ -390,11 +390,11 @@ const CheckoutPage = (props: CheckoutPageProps) => {
                     { displayTransportFees(calculateItemsValue(), transportFee.transportFee) }
                     <div className={ styles.transport_fee }>
                         <p>Phí vận chuyển đến địa điểm:</p> 
-                        <p>{ transportFee.transportFee.toLocaleString()} đ</p>
+                        <p>{ transportFee.transportFee.toLocaleString('en')} đ</p>
                     </div>
                     <div className={ styles.total_fee }>
                         <strong>Tổng cộng:</strong> 
-                        <strong>{ calculateTotalValue(transportFee.transportFee).toNumber().toLocaleString() } đ</strong>
+                        <strong>{ calculateTotalValue(transportFee.transportFee).toNumber().toLocaleString('en') } đ</strong>
                     </div>
                     <button onClick={ onSendOrderButtonClicked } className={ styles.send_order_button }>Gửi đơn hàng</button>
                 </React.Fragment>

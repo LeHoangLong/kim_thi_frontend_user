@@ -106,7 +106,7 @@ export const CartPage = (props: CartPageProps) => {
                                     </strong>
                                 </h6>
                                 <div className="cart-item-row cart-item-price-row">
-                                    <h6 className="cart-item-price">{ price.toLocaleString() } đ </h6>
+                                    <h6 className="cart-item-price">{ price.toLocaleString('en') } đ </h6>
                                     <p className="cart-item-min-quantity body-2"> / { minQuantity > 0? minQuantity : "" } { unit }</p>
                                 </div>
                                 <input type="text" className="cart-item-quantity" value={ cart[productId][unit].quantity } onChange={(e) => onQuantityChanged(parseInt(productId), unit, parseInt(e.target.value))}></input>
@@ -284,7 +284,7 @@ export const CartPage = (props: CartPageProps) => {
                         <p className="total">
                             Tổng cộng&nbsp;
                         </p>
-                        <strong className={ styles.total }>{ total.toLocaleString() } đ</strong>
+                        <strong className={ styles.total }>{ total.toLocaleString('en') } đ</strong>
                     </div>
                     <button id="checkout-button" className="primary-button" onClick={ onOrderButtonClicked }>
                         <strong className="body-1">
