@@ -17,6 +17,6 @@ export const BACKEND_URL = _BACKEND_URL;
 
 let _FILESERVER_URL = "http://localhost/backend" 
 if (isRelease) {
-    _FILESERVER_URL = 'https://kim-thi-backend-rfqj7mlw2q-as.a.run.app/backend'
+    _FILESERVER_URL = 'https://storage.googleapis.com/kim-thi'
 }
 export const FILESERVER_URL = _FILESERVER_URL;
