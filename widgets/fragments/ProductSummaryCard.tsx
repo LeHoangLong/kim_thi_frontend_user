@@ -18,7 +18,7 @@ export const ProductSummaryCard = React.forwardRef<HTMLElement, ProductSummaryCa
             </div>
             <div>
                 <p className={ styles.price }>
-                    { props.product.defaultPrice.defaultPrice } đ / { props.product.defaultPrice.unit }
+                    { props.product.defaultPrice.defaultPrice.toLocaleString('en') } đ / { props.product.defaultPrice.unit }
                 </p>
             </div>
         </div>

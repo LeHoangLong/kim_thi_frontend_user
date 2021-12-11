@@ -72,7 +72,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         for (let i = 0; i < price.priceLevels.length; i++) {
             ret.push(
                 <React.Fragment key={ i } >
-                    <p className={ styles.price }> { price.priceLevels[i].price }&nbsp;&#8363; /  { price.unit } </p>
+                    <p className={ styles.price }> { price.priceLevels[i].price.toLocaleString('en') }&nbsp;&#8363; /  { price.unit } </p>
                     <p> &ge; { price.priceLevels[i].minQuantity } { price.unit } </p>
                 </React.Fragment>
             )
@@ -85,7 +85,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         for (let i = 0; i < prices.length; i++) {
             ret.push(
                 <React.Fragment key={i}>
-                    <p className={ styles.defaultPrice + ' ' + styles.price }> { prices[i].defaultPrice }&nbsp;&#8363; / { prices[i].unit }</p>
+                    <p className={ styles.defaultPrice + ' ' + styles.price }> { prices[i].defaultPrice.toLocaleString('en') }&nbsp;&#8363; / { prices[i].unit }</p>
                     <p className={ styles.defaultPrice }>  Mặc định </p>
                     { displayPriceLevels( prices[i] ) }
                 </React.Fragment>

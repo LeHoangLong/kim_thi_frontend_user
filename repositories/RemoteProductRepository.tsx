@@ -14,12 +14,7 @@ export function jsonToProductSummary(json: any) : ProductSummary {
     return {
         id: json['product']['id'],
         name: json['product']['name'],
-        defaultPrice: {
-            unit:  (json['defaultPrice']['unit'] as string).toLowerCase(),
-            isDefault: true,
-            defaultPrice: json['defaultPrice']['defaultPrice'],
-            priceLevels: json['defaultPrice']['priceLevels'],
-        },
+        defaultPrice: jsonToProductPrice(json['defaultPrice']),
         avatar: jsonToImageModel(json['avatar']),
     }
 }
@@ -39,7 +34,7 @@ export function jsonToPriceLevel(json: any) : PriceLevel {
 
 export function jsonToProductPrice(json: any) : ProductPrice {
     let ret: ProductPrice =   {
-        unit: json['unit'],
+        unit: (json['unit'] as string).toLowerCase(),
         isDefault: json['isDefault'],
         defaultPrice: parseInt(json['defaultPrice']),
         priceLevels: [],
