@@ -68,8 +68,8 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
 
     useEffect(() => {
         function resizeHandler() {
-            if (screen.width < 500) {
-                setCarousellWidth(screen.width)
+            if (window.innerWidth < 500) {
+                setCarousellWidth(window.innerWidth)
             } else {
                 setCarousellWidth(500)
             }
@@ -100,8 +100,8 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
                         <div className={ styles.carousell_container }>
                             <Carousell 
                                 images={[
-                                    "/public/logos/shop.png",
-                                    "/public/logos/shop_2.png"
+                                    "/public/logos/shop_orig.webp",
+                                    "/public/logos/shop_2.webp"
                                 ]} 
                                 width={ carousellWidth }
                             />

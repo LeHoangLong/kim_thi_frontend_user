@@ -5,6 +5,7 @@ import { ProductDetailModel } from '../models/ProductDetailModel'
 import { ProductCategoryModel } from "../models/ProductCategoryModel";
 import { GetCategoriesArgs, GetProductSummariesArgs, IProductRepositories } from "./IProductRepositories";
 import { NotFound } from '../exceptions/NotFound'
+import Decimal from 'decimal.js';
 
 @injectable()
 export class MockProductRepositories implements IProductRepositories {
@@ -28,11 +29,11 @@ export class MockProductRepositories implements IProductRepositories {
                     defaultPrice: i * 1000,
                     priceLevels: [
                         {
-                            minQuantity: i * 10,
+                            minQuantity: new Decimal(i * 10),
                             price: i * 1000 + 100,
                         },
                         {
-                            minQuantity: i * 20,
+                            minQuantity: new Decimal(i * 20),
                             price: i * 1000 + 200,
                         }
                     ]
@@ -44,11 +45,11 @@ export class MockProductRepositories implements IProductRepositories {
                         defaultPrice: i * 100,
                         priceLevels: [
                             {
-                                minQuantity: i * 10,
+                                minQuantity: new Decimal(i * 10),
                                 price: i * 100 + 10,
                             },
                             {
-                                minQuantity: i * 20,
+                                minQuantity: new Decimal(i * 20),
                                 price: i * 100 + 20,
                             }
                         ]
@@ -66,7 +67,9 @@ export class MockProductRepositories implements IProductRepositories {
                 wholesalePrices: [
                     '1xx,000 đ / kg > 100kg',
                     '9x,000 đ / kg > 200kg',
-                ]
+                ],
+                description: 'description-1',
+                images: [],
             })
         }
     }
