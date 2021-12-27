@@ -73,6 +73,7 @@ export function jsonToProductDetail(json: any) : ProductDetailModel {
         categories: [],
         isDeleted: json.product.isDeleted,
         description: json.product.description,
+        images: [],
     }
 
     for (let i = 0; i < json['alternativePrices'].length; i++) {
@@ -81,6 +82,10 @@ export function jsonToProductDetail(json: any) : ProductDetailModel {
 
     for (let i = 0; i < json['categories'].length; i++) {
         ret.categories.push(jsonToProductCategory(json['categories'][i]))
+    }
+
+    for (let i = 0; i < json['images'].length; i++) {
+        ret.images.push(jsonToImageModel(json['images'][i]))
     }
 
     return ret

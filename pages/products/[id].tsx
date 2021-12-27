@@ -25,6 +25,7 @@ import Head from 'next/head'
 import { sendGoogleAnalyticsEvent } from '../../services/GoogleAnalytics';
 import Decimal from 'decimal.js';
 import { NotFound } from '../../exceptions/NotFound';
+import { ImageModel } from '../../models/ImageModel';
 
 export interface ProductDetailPageProps {
 	product: ProductDetailModel,
@@ -42,6 +43,8 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     let dispatch = useAppDispatch();
     let cartController = container.get<CartController>(Symbols.CART_CONTROLLER)
     let [searchPhrase, setSearhPhrase] = useState('')
+    let [images, setImages] = useState<ImageModel[]>([])
+    let [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
     useEffect(() => {
         dispatch(addProduct(props.product))
@@ -59,7 +62,12 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
             setPrices([...props.product.alternativePrices])
             setUnit('kg')
         }
-
+        let images = [
+            props.product.avatar,
+            ...props.product.images,
+        ]
+        setImages(images)
+        setSelectedImageIndex(0)
     }, [props.product])
 
 
@@ -236,6 +244,28 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         quantityAndUnitSelection += 'quantity-and-unit-selection-hidden '
     }
 
+    function displaySideImages() : React.ReactNode[] {
+        let ret: React.ReactNode[] = []
+        if (images.length > 1) {
+            for (let j = 0; j < 5; j++) {
+                for (let i = 0; i < images.length; i++) {
+                    let className = styles.side_image_container
+                    if (i === selectedImageIndex) {
+                        className = styles.selected_side_image_container
+                    }
+
+                    ret.push(
+                        <li key={ i + j * 100 } className={ className } onClick={() => setSelectedImageIndex(i)}>
+                            <img className={ styles.side_image } src={ `${ images[i].path }` }/>
+                        </li>
+                    )
+                }
+            }
+
+        }
+        return ret
+    }
+
 	return (
 		<React.Fragment>
             <Head>
@@ -281,12 +311,20 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		            </section>
 
 		            <section className="product-detail">
-		                <figure>
-		                    <img className="main-img" src={ `${props.product.avatar.path}` }/>
-		                </figure>
+                        <div className={ styles.images }>
+                            <figure>
+                                <img className="main-img" src={ `${images[selectedImageIndex]?.path ?? ""}` }/>
+                            </figure>
+
+                            <aside>
+                                <ol className={ styles.side_images }>
+                                    { displaySideImages() }
+                                </ol>
+                            </aside>
+                        </div>
 		                <article>
 		                    <header>
-		                        <h3>
+		                        <h3 className={ styles.product_name }>
 		                            { props.product.name }
 		                        </h3>
 		                    </header>

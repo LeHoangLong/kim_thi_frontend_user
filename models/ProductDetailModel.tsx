@@ -14,4 +14,5 @@ export interface ProductDetailModel {
     categories: ProductCategoryModel[],
     isDeleted: boolean,
     description: string,
+    images: ImageModel[],
 }

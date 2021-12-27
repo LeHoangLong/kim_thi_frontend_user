@@ -13,7 +13,7 @@ export const Footer = () => {
             </div>
             <div className={ styles.row }>
                 <strong>Email:&nbsp;</strong>
-                <p>le.hoang.long@outlook.com</p>
+                <p>lecong364@gmail.com</p>
             </div>
         </article>
         <div className={ styles.social_buttons }>
