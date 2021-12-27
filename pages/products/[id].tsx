@@ -24,6 +24,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { sendGoogleAnalyticsEvent } from '../../services/GoogleAnalytics';
 import Decimal from 'decimal.js';
+import { NotFound } from '../../exceptions/NotFound';
 
 export interface ProductDetailPageProps {
 	product: ProductDetailModel,
@@ -354,7 +355,22 @@ export const getServerSideProps : GetServerSideProps =  async (context) => {
         search = context.query.search
     }
 
-	let productDetail = await productRepositories.fetchProductDetailById(id)
+    let productDetail: ProductDetailModel
+    try {
+        productDetail = await productRepositories.fetchProductDetailById(id)
+    } catch (exception) {
+        if (exception instanceof NotFound) {
+            // if product is deleted, redirect to home page
+            return {
+                redirect: {
+                  permanent: false,
+                  destination: "/"
+                }
+            }
+        } else {
+            throw exception
+        }
+    }
 
     let categories: string[] = []
     for (let i = 0; i < productDetail.categories.length; i++) {
