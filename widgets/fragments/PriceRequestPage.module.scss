@@ -1,0 +1,108 @@
+@import '../../styles/Common.scss';
+
+.item_card {
+    display: flex;
+    width: 80%;
+    margin: $m6 auto;
+    border: 1px solid $border-color;
+    border-radius: 12px;
+}
+
+.cart_item_avatar {
+    height: 120px;
+    width: 120px;
+    margin-right: $m4;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.row {
+    margin-top: $m3;
+}
+
+.item_name {
+    @extend .row;
+}
+
+.item_quantity {
+    @extend .row;
+}
+
+.error_message {
+    color: $red;
+    transition: height 0.2s;
+    overflow: hidden;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form > * {
+    width: 80%;
+}
+
+.form label {
+    font-size: $body-text-1;
+    font-weight: bold;
+    margin: $m3;
+}
+
+.input {
+    border-radius: 5px;
+    font-size: $body-text-1;
+    padding: $p1;
+    border-width: 1px;
+}
+
+.required:after {
+    content: "*";
+    color:red;
+}
+
+.input:focus {
+    border-color: $primary-color-2;
+    border-width: 2px;
+    outline: none;
+    border-style: solid;
+}
+
+.send_request_button {
+    @extend .primary-button;
+    font-size: $body-text-1;
+}
+
+.footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    box-shadow: 0px 0px 8px 3px $shadow-color;
+    padding: $p3;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.send_request_button_container {
+    @extend .footer;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: $p3;
+}
+
+.fake_footer {
+    @extend .footer;
+    position: relative;
+    box-shadow: none;
+}
+
+.fake_footer::after {
+    content: "";
+    margin-top: $m6;
+}
+
+

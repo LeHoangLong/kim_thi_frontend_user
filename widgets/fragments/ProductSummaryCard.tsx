@@ -17,9 +17,15 @@ export const ProductSummaryCard = React.forwardRef<HTMLElement, ProductSummaryCa
                 <strong> { props.product.name } </strong>
             </div>
             <div>
-                <p className={ styles.price }>
-                    { props.product.defaultPrice.defaultPrice.toLocaleString('en') } đ / { props.product.defaultPrice.unit }
-                </p>
+                {(() => {
+                    if (props.product.defaultPrice !== null) {
+                        return (
+                            <p className={ styles.price }>
+                                { props.product.defaultPrice.defaultPrice.toLocaleString('en') } đ / { props.product.defaultPrice.unit }
+                            </p>
+                        );
+                    }
+                })()}
             </div>
         </div>
     </article>

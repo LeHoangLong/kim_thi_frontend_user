@@ -6,6 +6,7 @@ export const Symbols = {
     GEOCODING_SERVICE: Symbol.for("GEOCODING_SERVICE"),
     SHIPPING_FEE_REPOSITORY: Symbol.for("SHIPPING_FEE_REPOSITORY"),
     ORDER_REPOSITORY: Symbol.for("ORDER_REPOSITORY"),
+    PRICE_REQUEST_REPOSITORY: Symbol.for('PRICE_REQUEST_REPOSITORY'),
 }
 
 export default Symbols;

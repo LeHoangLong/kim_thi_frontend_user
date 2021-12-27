@@ -90,3 +90,59 @@
     align-items: center;
     flex-grow: 1;
 }
+
+.product_name {
+    font-size: $h6;
+    color: $red;
+}
+
+.label {
+    font-size: $body-text-1;
+    display: block;
+    margin: $m3 0px;
+    font-weight: bold;
+}
+
+.quantity_form input {
+    font-size: $body-text-1;
+}
+
+.request_price_button {
+    @extend .primary-button;
+    margin-left: auto;
+    font-size: $body-text-1;
+}
+
+.unit_display h6 {
+    font-weight: bold;
+    font-size: $h6;
+    margin: $m3 0px;
+}
+
+.unit_display p {
+    font-size: $body-text-1;
+}
+
+.footer {
+    position: fixed;
+    width: 100%;
+    bottom: 0px;
+    left: 0px;
+    box-shadow: 0px 0px 8px 3px $shadow-color;
+    padding: $p3;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}
+
+
+.fake_footer {
+    @extend .footer;
+    position: relative;
+    box-shadow: none;
+}
+
+.fake_footer::after {
+    content: "";
+    margin-top: $m6;
+}

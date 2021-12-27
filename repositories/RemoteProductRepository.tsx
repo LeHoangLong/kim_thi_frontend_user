@@ -9,12 +9,13 @@ import { EPriceUnit, PriceLevel, ProductPrice } from "../models/ProductPrice";
 import { ImageModel } from "../models/ImageModel";
 import { injectable } from 'inversify';
 import { NotFound } from '../exceptions/NotFound';
+import Decimal from 'decimal.js';
 
 export function jsonToProductSummary(json: any) : ProductSummary {
     return {
         id: json['product']['id'],
         name: json['product']['name'],
-        defaultPrice: jsonToProductPrice(json['defaultPrice']),
+        defaultPrice: json['defaultPrice'] !== undefined? jsonToProductPrice(json['defaultPrice']) : null,
         avatar: jsonToImageModel(json['avatar']),
     }
 }
@@ -27,13 +28,13 @@ export function jsonToProductCategory(json: any) : ProductCategoryModel {
 
 export function jsonToPriceLevel(json: any) : PriceLevel {
     return {
-        minQuantity: parseInt(json['minQuantity']), 
+        minQuantity: new Decimal(json['minQuantity']), 
         price: parseInt(json['price'])
     }
 }
 
 export function jsonToProductPrice(json: any) : ProductPrice {
-    let ret: ProductPrice =   {
+    let ret: ProductPrice =  {
         unit: (json['unit'] as string).toLowerCase(),
         isDefault: json['isDefault'],
         defaultPrice: parseInt(json['defaultPrice']),
@@ -63,7 +64,7 @@ export function jsonToProductDetail(json: any) : ProductDetailModel {
     let ret : ProductDetailModel = {
         id: json.product.id,
         serialNumber: json.product.serialNumber,
-        defaultPrice: jsonToProductPrice(json['defaultPrice']),
+        defaultPrice: json['defaultPrice'] !== undefined? jsonToProductPrice(json['defaultPrice']) : null,
         alternativePrices: [],
         wholesalePrices: json.product.wholesalePrices,
         name: json.product.name,

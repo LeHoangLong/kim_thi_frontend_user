@@ -22,10 +22,12 @@ declare global {
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
 export const sendGoogleAnalyticsEvent = ({ eventName, action, category, label, value }: GTagEvent) => {
+  if (window.location.hostname != 'localhost') {
     gtag('event', eventName, {
-        action: action,
-        event_category: category,
-        event_label: label,
-        value: value
+      action: action,
+      event_category: category,
+      event_label: label,
+      value: value
     })
+  }  
 };

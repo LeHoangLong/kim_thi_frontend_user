@@ -17,6 +17,7 @@
 
 .priceTableTitle {
     color: $primary-color;
+    font-weight: bold;
 }
 
 .price {
@@ -43,7 +44,7 @@
 
 .help_icon {
     margin-left: $m4;
-    font-size: $h5;
+    font-size: $body-text-2;
     color: $primary-color;
     cursor: pointer;
 }
@@ -57,7 +58,7 @@
     background-color: rgba(0, 0, 0, 0.7);
     padding: $p4;
     color: white;
-    font-size: $h6;
+    font-size: $body-text-2;
 }
 
 .link {
@@ -67,4 +68,33 @@
 
 .wholesalePriceValue {
     margin-top: $m4;
+}
+
+.select_unit {
+    width: 100%;
+}
+
+.select_unit > * {
+    width: 100%;
+}
+
+.quantity_input {
+    display: flex;
+}
+
+.quantity_input input {
+    @extend .input;
+    flex-grow: 1;
+    text-align: center;
+    border-color: transparent;
+}
+
+.quantity_input input:focus {
+    border-color: transparent;
+}
+
+.change_quantity_button {
+    border-radius: 10px;
+    box-shadow: none;
+    background-color: transparent;
 }

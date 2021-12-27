@@ -23,6 +23,7 @@ import { Tooltip } from '../../widgets/components/Tooltip';
 import Link from 'next/link'
 import Head from 'next/head'
 import { sendGoogleAnalyticsEvent } from '../../services/GoogleAnalytics';
+import Decimal from 'decimal.js';
 
 export interface ProductDetailPageProps {
 	product: ProductDetailModel,
@@ -34,7 +35,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     let [prices, setPrices] = useState<ProductPrice[]>([])
     let [displayQuantityAndUnitSelection, setDisplayQuantityAndUnitSelection] = useState(false)
     let [isBuyNowButtonClicked, setIsBuyNowButtonClicked] = useState(false)
-    let [quantity, setQuantity] = useState(1)
+    let [quantity, setQuantity] = useState('1')
     let [unit, setUnit] = useState("")
     let [showAddedToCartMessage, setShowAddedToCartMessage] = useState(false)
     let dispatch = useAppDispatch();
@@ -46,23 +47,35 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }, [])
 
     useEffect(() => {
-        let prices = [
-            props.product.defaultPrice,
-            ...props.product.alternativePrices,
-        ]
-        setPrices(prices)
+        if (props.product.defaultPrice != null) {
+            let prices = [
+                props.product.defaultPrice,
+                ...props.product.alternativePrices,
+            ]
+            setPrices(prices)
+            setUnit(props.product.defaultPrice.unit)
+        } else {
+            setPrices([...props.product.alternativePrices])
+            setUnit('kg')
+        }
 
-        setUnit(props.product.defaultPrice.unit)
     }, [props.product])
 
 
 	function displayUnits() {
         let ret : React.ReactNode[] = []
-        for (let i = 0; i < prices.length; i++) {
+        if (prices.length > 0) {
+            for (let i = 0; i < prices.length; i++) {
+                ret.push(
+                    <option className="body-text-1" key={ i } value={ prices[i].unit }> { prices[i].unit } </option>
+                )
+            }
+        } else {
             ret.push(
-                <option className="h4" key={ i } value={ prices[i].unit }> { prices[i].unit } </option>
+                <option className="body-text-1" key={ 0 } value={ 'kg' }> { 'kg' } </option>
             )
         }
+            
 
         return ret
 	}
@@ -94,6 +107,24 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         return ret
     }
 
+    function displayRetailPrice() {
+        if (prices.length > 0) {
+            return (
+                <div className={ styles.main }>
+                    <strong>
+                        <h5 className={ styles.priceTableTitle }>Giá</h5>
+                    </strong>
+                    <strong>
+                        <h5 className={ styles.priceTableTitle }>
+                            Số lượng tối thiểu
+                        </h5>
+                    </strong>
+                    { displayPrices() }
+                </div>
+            )
+        }
+    }
+
     function displayWholesalePrice() {
         if (props.product.wholesalePrices.length > 0) {
             let icon = <div className={ styles.help_icon }>
@@ -109,7 +140,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
                 <article className={ styles.wholesalePrice }>
                     <div className={ styles.wholesalePriceTitleRow }>
                         <strong>
-                            <h3 className={ styles.wholesalePriceTitle }>Giá bán sỉ</h3>
+                            <h5 className={ styles.wholesalePriceTitle }>Giá bán sỉ</h5>
                         </strong>
                         <Tooltip icon={icon}>
                             <div className={ styles.tooltip }>
@@ -127,15 +158,21 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 
     function onQuantityChanged(event: React.ChangeEvent<HTMLInputElement>) {
-        let quantity = parseInt(event.target.value)
-        changeQuantity(quantity)
+        setQuantity(event.target.value)
     }
 
-    function changeQuantity(value: number) {
-        if (!isNaN(value)) {
-            if (value > 0) {
-                setQuantity(value)
+    function changeQuantity(value: string, step: number) {
+        try {
+            let valueDec = new Decimal(value)
+            if (!valueDec.isNaN()) {
+                valueDec = valueDec.add(step)
+                if (valueDec.lessThan(0)) {
+                    valueDec = new Decimal(0)
+                }
+                setQuantity(valueDec.toString())
             }
+        } catch (exception) {
+
         }
     }
 
@@ -152,22 +189,25 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     }
 
     async function confirmButtonClicked() {
-        await cartController.addItemQuantity(
-            props.product.id,
-            unit,
-            quantity
-        )
-        let cart = await cartController.getCart()
-        dispatch(setCart(cart))
+        let quantityDec = new Decimal(quantity)
+        if (!quantityDec.isNaN()) {
+            await cartController.addItemQuantity(
+                props.product.id,
+                unit,
+                quantityDec
+            )
+            let cart = await cartController.getCart()
+            dispatch(setCart(cart))
 
-        setDisplayQuantityAndUnitSelection(false)
-        setShowAddedToCartMessage(true)
-        setTimeout(() => {
-            setShowAddedToCartMessage(false)
-        }, 1500)
+            setDisplayQuantityAndUnitSelection(false)
+            setShowAddedToCartMessage(true)
+            setTimeout(() => {
+                setShowAddedToCartMessage(false)
+            }, 1500)
 
-        if (isBuyNowButtonClicked) {
-            props.showCartPage()
+            if (isBuyNowButtonClicked) {
+                props.showCartPage()
+            }
         }
     }
 
@@ -194,21 +234,24 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		        <section id="product-detail-page">
 		            <section id="quantity-and-unit-selection" className={ quantityAndUnitSelection }>
 		                <div className="background" onClick={() => setDisplayQuantityAndUnitSelection(false)}></div>
-		                <form>
+		                <form onSubmit={e => {
+                           e.preventDefault()
+                           confirmButtonClicked()
+                        }}>
 		                    <div className="input-container">
 		                        <label htmlFor="unit">Đơn vị</label>
-		                        <div className="input">
-		                            <select value={unit} onChange={e => setUnit(e.target.value)} id="unit-select" className="input h4">
+		                        <div className={ styles.select_unit }>
+		                            <select value={unit} onChange={e => setUnit(e.target.value)} id="unit-select" className="input body-text-1">
 		                            	{ displayUnits() }
 		                            </select>
 		                        </div>
 		                        <label htmlFor="quantity-input">Số lượng</label>
-		                        <div className="quantity-input-container input">
-                                    <button type="button" className="icon-button change-quantity-button" onClick={() => changeQuantity(quantity - 1)}>
+		                        <div className={ styles.quantity_input }>
+                                    <button type="button" className={ styles.change_quantity_button } onClick={() => changeQuantity(quantity, -1)}>
                                         <i id="remove-quantity-button" className="fas fa-minus"></i>
                                     </button>
-		                            <input id="quantity-input" type="number" value={ quantity } onChange={ onQuantityChanged }></input>
-		                            <button type="button" className="icon-button change-quantity-button" onClick={() => changeQuantity(quantity + 1)}>
+		                            <input id="quantity-input" type="text" value={ quantity } onChange={ onQuantityChanged }></input>
+		                            <button type="button" className={ styles.change_quantity_button } onClick={() => changeQuantity(quantity, 1)}>
 		                                <i id="add-quantity-button" className="fas fa-plus"></i>
 		                            </button>
 		                        </div>
@@ -227,21 +270,11 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		                </figure>
 		                <article>
 		                    <header>
-		                        <h1>
+		                        <h3>
 		                            { props.product.name }
-		                        </h1>
+		                        </h3>
 		                    </header>
-		                    <div className={ styles.main }>
-	                            <strong>
-                                    <h3 className={ styles.priceTableTitle }>Giá</h3>
-                                </strong>
-                                <strong>
-                                    <h3 className={ styles.priceTableTitle }>
-    		                            Số lượng tối thiểu
-    		                        </h3>
-                                </strong>
-                                { displayPrices() }
-		                    </div>
+                            { displayRetailPrice() }
                             { displayWholesalePrice() }
 		                </article>
 		            </section>
@@ -273,7 +306,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		                    </button>
 		                    <button className="secondary-button" id="buy-now-button" onClick={ buyNowButtonClicked }>
 		                        <strong>
-		                            Mua ngay
+		                            Yêu cầu báo giá
 		                        </strong>
 		                    </button>
 		                </div>

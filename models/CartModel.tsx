@@ -1,6 +1,7 @@
+
 export interface CartItemUnitModel {
     [index: string]: {
-        quantity: number,
+        quantity: string,
         selected: boolean,
     },
 }

@@ -168,9 +168,6 @@ export const getServerSideProps : GetServerSideProps = async (context) => {
         productSearch: search,
     })
 
-    console.log('productSummaries')
-    console.log(productSummaries)
-
     let categories = await productRepositories.getCategories({
         limit: 10,
         offset: 0

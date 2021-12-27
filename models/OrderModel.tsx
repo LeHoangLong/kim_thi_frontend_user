@@ -4,7 +4,7 @@ import { AddressTransportFee, BillBasedTransportFee } from "./TransportFee";
 
 export interface OrderItemUnitModel {
     [index: string]: {
-        quantity: number,
+        quantity: Decimal,
     },
 }
 

@@ -1,11 +1,11 @@
-$h1: 3rem;
-$h2: 2.5rem;
-$h3: 2rem;
-$h4: 1.75rem;
-$h5: 1.5rem;
-$h6: 1.25rem;
-$body-text-1: 1rem;
-$body-text-2: 0.9rem;
+$h1: 4.8rem;
+$h2: 4rem;
+$h3: 3.2rem;
+$h4: 2.4rem;
+$h5: 2.2rem;
+$h6: 2rem;
+$body-text-1: 1.6rem;
+$body-text-2: 1.4rem;
 
 $p0: 0em;
 $p1: 0.25em;
@@ -54,5 +54,9 @@ $grey-color-2: #7a7a7a;
 .primary-button {
     background-color: $primary-color;
     color: white;
+}
+
+.input:focus {
+    border: 2px $primary-color-2 solid;
 }
 

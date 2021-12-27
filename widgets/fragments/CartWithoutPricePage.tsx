@@ -14,20 +14,19 @@ import CheckoutPage from './CheckoutPage'
 import { CheckoutPageZ } from '../../config/ZIndex'
 import { EStatus } from '../../models/StatusModel'
 import { withCart } from '../hocs/withCart'
-import { calculatePriceAndMinQuantity } from '../../services/CalculatePriceAndMinQuantity'
+import PriceRequestPageWithCart from './PriceRequestPage'
 import Decimal from 'decimal.js'
 
 export interface CartPageProps {
     onBack?(): void
 }
 
-const CartPage = (props: CartPageProps) => {
+const CartWithoutPricePage = (props: CartPageProps) => {
     let cart = useAppSelector(state => state.cart.cart)
     let productDetails = useAppSelector(state => state.products.productDetails)
     let [isLoading, setIsLoading] = useState(true)
     let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
     let dispatch = useAppDispatch()
-    let [total, setTotal] = useState(new Decimal(0))
     let [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false)
     let [showCheckoutPage, setShowCheckoutPage] = useState(false)
 
@@ -45,27 +44,6 @@ const CartPage = (props: CartPageProps) => {
         }
     }, [cartOperationStatus, productOperationStatus])
 
-    function calculateTotal() {
-        let total = new Decimal(0)
-        for (let productId in cart) {
-            if ((productId in productDetails)) {
-                let productDetail = productDetails[productId]
-                for (let unit in cart[productId]) {
-                    if (cart[productId][unit].selected) {
-                        let quantity = new Decimal(cart[productId][unit].quantity)
-                        let [price, _] = calculatePriceAndMinQuantity(productDetail, unit, quantity)
-                        total = total.add(quantity.mul(new Decimal(price)))
-                    }
-                }
-            }
-        }
-        setTotal(total)
-    }
-
-    useEffect(() => {
-        calculateTotal()
-    }, [cart, productDetails])
-
     async function onCartItemSelectChanged(
         productId: number,
         unit: string,
@@ -82,12 +60,6 @@ const CartPage = (props: CartPageProps) => {
             if (productId in productDetails) {
                 let productDetail = productDetails[productId]
                 for (let unit in cart[productId]) {
-                    let [price, minQuantity] = calculatePriceAndMinQuantity(
-                        productDetail,
-                        unit,
-                        new Decimal(cart[productId][unit].quantity)
-                    )
-
                     let isSelected = cart[productId][unit].selected
 
                     ret.push(
@@ -102,15 +74,18 @@ const CartPage = (props: CartPageProps) => {
                             </figure>
                             <div>
                                 <h6>
-                                    <strong className="cart-item-product-name">
+                                    <strong className={ styles.product_name }>
                                         { productDetail.name }
                                     </strong>
                                 </h6>
-                                <div className="cart-item-row cart-item-price-row">
-                                    <h6 className="cart-item-price">{ price.toLocaleString('en') } đ </h6>
-                                    <p className="cart-item-min-quantity body-2"> / { minQuantity.greaterThan(0) ? minQuantity.toString() : "" } { unit }</p>
+                                <div className={ styles.quantity_form }>
+                                    <label className={ styles.label } htmlFor={`quantity-${productId}_${unit}`}>Số lượng</label>
+                                    <input id={`quantity-${productId}_${unit}`} type="number" step={ 0.01 } className="cart-item-quantity" value={ cart[productId][unit].quantity.toString() } onChange={(e) => onQuantityChanged(parseInt(productId), unit, new Decimal(e.target.value))}></input>
                                 </div>
-                                <input type="text" className="cart-item-quantity" value={ cart[productId][unit].quantity.toString() } onChange={(e) => onQuantityChanged(parseInt(productId), unit, new Decimal(e.target.value))}></input>
+                                <article className={ styles.unit_display }>
+                                    <p className={ styles.label }>Đơn vị</p>
+                                    <p> kg </p>
+                                </article>
                             </div>
                         </article>
                     )
@@ -255,7 +230,7 @@ const CartPage = (props: CartPageProps) => {
                 >
                     <p className={ styles.cart_page_title_text }> Bạn có muốn xóa { numberOfSelected } món hàng khỏi giỏ </p>
                 </Dialog>
-                <div id="cart-item-list">
+                <div>
                     <article className={ styles.select_all }>
                         <aside className={ styles.cart_item_select }>
                             <input checked={ isAllSelected } type="radio" onClick={ onSelectAllClicked } readOnly></input>
@@ -275,19 +250,13 @@ const CartPage = (props: CartPageProps) => {
                         </div>
                     </article>
                     { buildCartItems() }
+                    <div className={ styles.fake_footer }>
+                    </div>
                 </div>
 
-                <footer className="total-and-checkout">
-                    <div className="total-text">
-                        <p className="total">
-                            Tổng cộng&nbsp;
-                        </p>
-                        <strong className={ styles.total }>{ total.toNumber().toLocaleString('en') } đ</strong>
-                    </div>
-                    <button id="checkout-button" className="primary-button" onClick={ onOrderButtonClicked }>
-                        <strong className="body-1">
-                            Đặt hàng
-                        </strong>
+                <footer className={ styles.footer }>
+                    <button id="checkout-button" className={ styles.request_price_button } onClick={ onOrderButtonClicked }>
+                        Yêu cầu báo giá
                     </button>
                 </footer>
             </React.Fragment>
@@ -296,7 +265,7 @@ const CartPage = (props: CartPageProps) => {
 
     return <React.Fragment>
         <PageTransition show={ showCheckoutPage } zIndex={ CheckoutPageZ }>
-            <CheckoutPage onOrderSent={ props.onBack } display={ showCheckoutPage } onBack={() => setShowCheckoutPage(false)}></CheckoutPage>
+            <PriceRequestPageWithCart onPriceRequestSent={ props.onBack } onBack={() => setShowCheckoutPage(false)}></PriceRequestPageWithCart>
         </PageTransition>
         <section className={ styles.cart_page }>
             <HeaderBar title="Giỏ hàng" onBack={ props.onBack }></HeaderBar>
@@ -312,5 +281,5 @@ const CartPage = (props: CartPageProps) => {
     </React.Fragment>
 }
 
-export const CartPageWithCart = withCart(CartPage)
-export default CartPageWithCart
+export const CartWithoutPricePageWithCart = withCart(CartWithoutPricePage)
+export default CartWithoutPricePageWithCart

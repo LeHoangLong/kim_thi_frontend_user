@@ -19,7 +19,6 @@ export function withCart<T>(Component: ComponentType<T>) {
         let productRepository = myContainer.get<IProductRepositories>(Symbols.PRODUCT_REPOSITORY)
         let dispatch = useAppDispatch()
         let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
-        let [stop, setStop] = useState(false)
 
         useEffect(() => {
             async function fetchProductDetails() {

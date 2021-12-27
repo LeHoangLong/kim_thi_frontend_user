@@ -215,14 +215,14 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         }
     }
 
-    function calculateBillBasedTransportFee(billBasedTransportFee: BillBasedTransportFee, billValue: number, transportFee: number) : Decimal {
+    function calculateBillBasedTransportFee(billBasedTransportFee: BillBasedTransportFee, billValue: Decimal, transportFee: number) : Decimal {
         let total = new Decimal(0)
         if (billBasedTransportFee.basicFee) {
             total = total.add(billBasedTransportFee.basicFee)
         }
 
         if (billBasedTransportFee.fractionOfBill) {
-            total = total.add(new Decimal(billBasedTransportFee.fractionOfBill).mul(new Decimal(billValue)))
+            total = total.add(new Decimal(billBasedTransportFee.fractionOfBill).mul(billValue))
         }
 
         if (billBasedTransportFee.fractionOfTotalTransportFee) {
@@ -232,7 +232,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         return total
     }
 
-    function displayTransportFees(billValue: number, transportFee: number) : React.ReactNode[] {
+    function displayTransportFees(billValue: Decimal, transportFee: number) : React.ReactNode[] {
         let ret : React.ReactNode[] = []
         for (let i = 0 ; i < billBasedTransportFees.length; i++) {
             let total = calculateBillBasedTransportFee(billBasedTransportFees[i], billValue, transportFee)
@@ -257,15 +257,15 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     }
 
     function calculateItemsValue() {
-        let total = 0
+        let total = new Decimal(0)
         for (let itemName in cart) {
             let item = cart[itemName]
             for (let unit in item) {
                 if (item[unit].selected) {
                     let product = productDetails[itemName]
-                    let quantity = item[unit].quantity
+                    let quantity = new Decimal(item[unit].quantity)
                     let [price, _] = calculatePriceAndMinQuantity(product, unit, quantity)
-                    total += price * quantity
+                    total = total.add(quantity.mul(price))
                 }
             }
         }
@@ -278,7 +278,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             for (let unit in item) {
                 if (item[unit].selected) {
                     let product = productDetails[itemName]
-                    let quantity = item[unit].quantity
+                    let quantity = new Decimal(item[unit].quantity)
                     let [price, _] = calculatePriceAndMinQuantity(product, unit, quantity)
                     if (product) {
                         ret.push(
@@ -292,7 +292,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
                                             { product.name }
                                         </strong>
                                     </h6>
-                                    <p className={ styles.item_total }>Tổng: { (price * quantity).toLocaleString('en') } đ </p>
+                                    <p className={ styles.item_total }>Tổng: { (quantity.mul(price)).toNumber().toLocaleString('en') } đ </p>
                                     <p className={ styles.item_quantity }> S.lg: { quantity } { unit }</p>
                                 </div>
                             </article>
@@ -311,14 +311,14 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             for (let unit in item) {
                 if (item[unit].selected) {
                     let product = productDetails[itemName]
-                    let quantity = item[unit].quantity
+                    let quantity = new Decimal(item[unit].quantity)
                     let [price, _] = calculatePriceAndMinQuantity(product, unit, quantity)
-                    total = total.add(new Decimal(price * quantity))
+                    total = total.add(quantity.mul(new Decimal(price)))
                 }
             }
         }
 
-        let checkedOutItemsValue = total.toNumber()
+        let checkedOutItemsValue = total
         for (let i = 0 ; i < billBasedTransportFees.length; i++) {
             total = total.add(calculateBillBasedTransportFee(billBasedTransportFees[i], checkedOutItemsValue, transportFee))
         }
@@ -340,9 +340,9 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             for (let productId in cart) {
                 items[productId] = {}
                 for (let unit in cart[productId]) {
-                    if (!(unit in items[productId])) {
+                    if (!(unit in items[productId]) && cart[productId][unit].selected) {
                         items[productId][unit] = {
-                            quantity: cart[productId][unit].quantity
+                            quantity: new Decimal(cart[productId][unit].quantity)
                         }
                     }
                 }

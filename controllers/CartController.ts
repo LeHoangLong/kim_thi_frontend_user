@@ -3,6 +3,7 @@ import { injectable, inject } from 'inversify'
 import Symbols from '../config/Symbols'
 import { ICartRepository } from '../repositories/ICartRepository'
 import { CartModel } from '../models/CartModel'
+import Decimal from 'decimal.js'
 
 @injectable()
 export class CartController {
@@ -38,7 +39,7 @@ export class CartController {
     async setItemQuantity(
         productId: number,
         unit: string,
-        quantity: number,
+        quantity: Decimal,
     ) {
         if (this.cart == undefined) {
             this.cart = await this.repository.fetchCart()
@@ -50,12 +51,12 @@ export class CartController {
 
         if (!(unit in this.cart[productId])) {
             this.cart[productId][unit] = {
-                quantity,
+                quantity: quantity.toString(),
                 selected: true
             }
         } else {
             this.cart[productId][unit] = {
-                quantity,
+                quantity: quantity.toString(),
                 selected: this.cart[productId][unit].selected
             }
         }
@@ -65,7 +66,7 @@ export class CartController {
     async addItemQuantity(
         productId: number,
         unit: string,
-        quantity: number,
+        quantity: Decimal,
     ) {
         if (this.cart == undefined) {
             this.cart = await this.repository.fetchCart()
@@ -77,12 +78,12 @@ export class CartController {
 
         if (!(unit in this.cart[productId])) {
             this.cart[productId][unit] = {
-                quantity,
+                quantity: quantity.toString(),
                 selected: true
             }
         } else {
             this.cart[productId][unit] = {
-                quantity: this.cart[productId][unit].quantity + quantity,
+                quantity: quantity.add(this.cart[productId][unit].quantity).toString(),
                 selected: true
             }
         }

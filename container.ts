@@ -17,6 +17,9 @@ import { RemoteProductRepository } from './repositories/RemoteProductRepository'
 import { RemoteGeocodingSerivce } from './services/RemoteGeocodingService';
 import { RemoteShippingFeeRepository } from './repositories/RemoteShippingFeeRepository';
 import { RemoteOrderRepository } from './repositories/RemoteOrderRepository';
+import { IPriceRequestRepository } from './repositories/IPriceRequestRepository';
+import { MockPriceRequestRepository } from './repositories/MockPriceRequestRepository';
+import { RemotePriceRequestRepository } from './repositories/RemotePriceRequestRepository';
 
 const myContainer = new Container()
 
@@ -27,7 +30,9 @@ myContainer.bind<IAddressRepository>(Symbols.ADDRESS_REPOSITORY).to(LocalAddress
 myContainer.bind<IGeocodingService>(Symbols.GEOCODING_SERVICE).to(RemoteGeocodingSerivce)
 myContainer.bind<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY).to(RemoteShippingFeeRepository)
 myContainer.bind<IOrderRepository>(Symbols.ORDER_REPOSITORY).to(RemoteOrderRepository)
+myContainer.bind<IPriceRequestRepository>(Symbols.PRICE_REQUEST_REPOSITORY).to(RemotePriceRequestRepository)
 
+// myContainer.bind<IPriceRequestRepository>(Symbols.PRICE_REQUEST_REPOSITORY).to(MockPriceRequestRepository)
 //let mockProductRepositories = new MockProductRepositories()
 //myContainer.rebind<IProductRepositories>(Symbols.PRODUCT_REPOSITORY).toConstantValue(mockProductRepositories)
 
