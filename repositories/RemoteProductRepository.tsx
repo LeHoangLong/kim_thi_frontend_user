@@ -72,6 +72,7 @@ export function jsonToProductDetail(json: any) : ProductDetailModel {
         rank: parseInt(json.product.rank),
         categories: [],
         isDeleted: json.product.isDeleted,
+        description: json.product.description,
     }
 
     for (let i = 0; i < json['alternativePrices'].length; i++) {

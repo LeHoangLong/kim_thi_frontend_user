@@ -98,3 +98,22 @@
     box-shadow: none;
     background-color: transparent;
 }
+
+.product_description_section {
+    margin: $m6;
+    margin-bottom: $m3;
+}
+
+.product_description_section .description_title {
+    font-weight: bold;
+    margin-bottom: $m3;
+}
+
+.search_related_products_section {
+    margin: $m6;
+    margin-bottom: $m3;
+}
+
+.search_bar {
+    width: 100%;
+}

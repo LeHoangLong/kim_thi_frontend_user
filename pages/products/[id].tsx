@@ -157,6 +157,21 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
         }
     }
 
+    function displayDescription() {
+        if (props.product.description.length > 0) {
+            return (
+                <section className={ styles.product_description_section }>
+                    <strong>
+                        <h4 className={ styles.description_title }>Miêu tả sản phẩm</h4>
+                    </strong>
+                    <p>
+                        { props.product.description }
+                    </p>
+                </section>
+            )
+        }
+    }
+
     function onQuantityChanged(event: React.ChangeEvent<HTMLInputElement>) {
         setQuantity(event.target.value)
     }
@@ -279,13 +294,15 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		                </article>
 		            </section>
 
-		            <section className="search-related-products">
+                    { displayDescription() }
+
+		            <section className={ styles.search_related_products_section }>
                         <h4>
                             Sản phẩm khác
                         </h4>
 
                         <div>
-                            <SearchBar onSearchButtonClicked={ onSearchButtonClicked } phrase={ searchPhrase } onChange={ setSearhPhrase }></SearchBar>
+                            <SearchBar className={ styles.search_bar} onSearchButtonClicked={ onSearchButtonClicked } phrase={ searchPhrase } onChange={ setSearhPhrase }></SearchBar>
                             <ProductSummaries products={ props.relatedProductSummaries } singleRow={ true }></ProductSummaries>
                         </div>
 		            </section>

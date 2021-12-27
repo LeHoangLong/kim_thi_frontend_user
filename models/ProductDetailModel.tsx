@@ -13,4 +13,5 @@ export interface ProductDetailModel {
     rank: number,
     categories: ProductCategoryModel[],
     isDeleted: boolean,
+    description: string,
 }
