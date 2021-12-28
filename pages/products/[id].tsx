@@ -247,19 +247,17 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
     function displaySideImages() : React.ReactNode[] {
         let ret: React.ReactNode[] = []
         if (images.length > 1) {
-            for (let j = 0; j < 5; j++) {
-                for (let i = 0; i < images.length; i++) {
-                    let className = styles.side_image_container
-                    if (i === selectedImageIndex) {
-                        className = styles.selected_side_image_container
-                    }
-
-                    ret.push(
-                        <li key={ i + j * 100 } className={ className } onClick={() => setSelectedImageIndex(i)}>
-                            <img className={ styles.side_image } src={ `${ images[i].path }` }/>
-                        </li>
-                    )
+            for (let i = 0; i < images.length; i++) {
+                let className = styles.side_image_container
+                if (i === selectedImageIndex) {
+                    className = styles.selected_side_image_container
                 }
+
+                ret.push(
+                    <li key={ images[i].id } className={ className } onClick={() => setSelectedImageIndex(i)}>
+                        <img className={ styles.side_image } src={ `${ images[i].path }` }/>
+                    </li>
+                )
             }
 
         }
