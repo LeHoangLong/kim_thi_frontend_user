@@ -98,6 +98,9 @@ export class RemoteProductRepository implements IProductRepositories {
             params: args
         })
 
+        console.log('get products')
+        console.log(response.data)
+
         let ret : ProductSummary[] = []
         for (let i = 0; i < response.data.length; i++) {
             ret.push(jsonToProductSummary(response.data[i]))
