@@ -14,13 +14,13 @@ const Page = () => {
 
         <section className={ styles.main_section }>
             <article className={ styles.delivery }>
-                <img src="/public/images/delivery.jpg"/>
+                <img alt="delivery" src="/public/images/delivery.jpg"/>
                 <p className={ styles.text }>Giao hàng đúng lúc, kịp thời</p>
             </article>
 
             <article className={ styles.food_certificate }>
                 <p className={ styles.text }>Bảo đảm an toàn vệ sinh thực phẩm</p>
-                <img src="/public/images/certificate.jpg"/>
+                <img alt="certificate" src="/public/images/certificate.jpg"/>
             </article>
 
             <article className={ styles.map }>

@@ -48,7 +48,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 
     useEffect(() => {
         dispatch(addProduct(props.product))
-    }, [])
+    }, [dispatch, props.product])
 
     useEffect(() => {
         if (props.product.defaultPrice != null) {
@@ -154,7 +154,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
                         <Tooltip icon={icon}>
                             <div className={ styles.tooltip }>
                                 <p>Vui lòng</p> 
-                                <Link href='/about'><p className={ styles.link }>liên hệ</p></Link> 
+                                <Link passHref={true} href='/about'><p className={ styles.link }>liên hệ</p></Link> 
                                 <p>với chúng tôi để được hưởng giá ưu đãi nhất</p>
                             </div>
                         </Tooltip>
@@ -255,7 +255,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 
                 ret.push(
                     <li key={ images[i].id } className={ className } onClick={() => setSelectedImageIndex(i)}>
-                        <img className={ styles.side_image } src={ `${ images[i].path }` }/>
+                        <img alt={`Product image`} className={ styles.side_image } src={ `${ images[i].path }` }/>
                     </li>
                 )
             }
@@ -311,7 +311,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		            <section className="product-detail">
                         <div className={ styles.images }>
                             <figure>
-                                <img className="main-img" src={ `${images[selectedImageIndex]?.path ?? ""}` }/>
+                                <img alt="Main product image" className="main-img" src={ `${images[selectedImageIndex]?.path ?? ""}` }/>
                             </figure>
 
                             <aside>
