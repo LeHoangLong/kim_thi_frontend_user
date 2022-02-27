@@ -20,25 +20,25 @@ export const AddressCard = (props: AddressCardProps) => {
     let dispatch = useAppDispatch()
     let shippingFeeRepository = myContainer.get<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY)
 
-    async function fetchShippingFee() {
-        try {
-            setIsLoading(true)
-            let shippingFee = await shippingFeeRepository.fetchAreaTransportFee(props.address.city, new Decimal(props.address.latitude), new Decimal(props.address.longitude))
-            dispatch(addAddressTransportFees({
-                transportFee: shippingFee.transportFee,
-                addressId: props.address.id,
-            }))
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     useEffect(() => {
+        async function fetchShippingFee() {
+            try {
+                setIsLoading(true)
+                let shippingFee = await shippingFeeRepository.fetchAreaTransportFee(props.address.city, new Decimal(props.address.latitude), new Decimal(props.address.longitude))
+                dispatch(addAddressTransportFees({
+                    transportFee: shippingFee.transportFee,
+                    addressId: props.address.id,
+                }))
+            } finally {
+                setIsLoading(false)
+            }
+        }
+
         let shippingFee = shippingFees.find(e => e.addressId == props.address.id)
         if (!shippingFee && !isLoading) {
             fetchShippingFee()
         }
-    }, [props.address, shippingFees, isLoading])
+    }, [props.address, shippingFees, isLoading, dispatch, shippingFeeRepository])
 
     function displayTransportFee() {
         let shippingFee = shippingFees.find(e => e.addressId == props.address.id)

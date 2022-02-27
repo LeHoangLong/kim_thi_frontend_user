@@ -4,7 +4,7 @@ import { Message } from '../components/Message'
 import styles from './withMessage.module.scss'
 
 export function withMessage<T>(Component: ComponentType<T>) {
-    return (hocProps: T) => {
+    const ComponentWithMessage = (hocProps: T) => {
         let message = useAppSelector(state => state.messages.message)
         let messageCount = useAppSelector(state => state.messages.count)
 
@@ -29,4 +29,6 @@ export function withMessage<T>(Component: ComponentType<T>) {
             <Message show={showMessage} message={message} className={ styles.mesage }></Message>
         </React.Fragment>
     }
+
+    return ComponentWithMessage
 }

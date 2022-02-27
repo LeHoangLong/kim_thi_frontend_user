@@ -35,7 +35,7 @@ export const Categories = (props: CategoriesProps) => {
 
             if ( isSelected ) {
                 ret.push(
-                    <Link key={ props.categories[i].category } href={`/?search=${ props.search }&category=&page=${ 0 }`}>
+                    <Link passHref={true} key={ props.categories[i].category } href={`/?search=${ props.search }&category=&page=${ 0 }`}>
                         <div className={ styles.selected_category }>
                             <strong>
                                 { props.categories[i].category }
@@ -45,7 +45,7 @@ export const Categories = (props: CategoriesProps) => {
                 )
             } else {
                 ret.push(
-                    <Link key={ props.categories[i].category } href={`/?search=${ props.search }&category=${ encodeURIComponent(props.categories[i].category) }&page=${ 0 }`}>
+                    <Link passHref={true} key={ props.categories[i].category } href={`/?search=${ props.search }&category=${ encodeURIComponent(props.categories[i].category) }&page=${ 0 }`}>
                         <div className={ styles.category }>
                             <p>
                                 { props.categories[i].category }
@@ -78,7 +78,7 @@ export const Categories = (props: CategoriesProps) => {
             return () => window.removeEventListener('resize', onResizeHandler)
         }
 
-    }, [containerRef, containerRef.current])
+    }, [containerRef, props.numberOfCategoriesPerRow, props.minCategoryWidth])
 
     return (
         <article className={ styles.categories_container } ref={ containerRef }>

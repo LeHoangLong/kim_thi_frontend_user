@@ -17,8 +17,8 @@ export const Footer = () => {
             </div>
         </article>
         <div className={ styles.social_buttons }>
-            <Link href="https://zalo.me/+6590551105">
-                <img src="/public/images/zalo.png" className={ styles.social_button }/>
+            <Link passHref={ true } href="https://zalo.me/+6590551105">
+                <img alt="zalo" src="/public/images/zalo.png" className={ styles.social_button }/>
             </Link>
         </div>
     </footer>

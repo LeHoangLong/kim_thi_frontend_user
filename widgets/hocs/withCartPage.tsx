@@ -1,12 +1,10 @@
 import React, { ComponentType, useEffect, useState } from "react";
 import { ConditionalRendering } from "../components/ConditionalRendering";
 import { PageTransition } from "../components/PageTransition";
-import CartPage from "../fragments/CartPage";
 import CartWithoutPricePage from "../fragments/CartWithoutPricePage";
 
 export function withCartPage<T>(Component: ComponentType<T>) {
-    return (hocProps: Omit<T, "showCartPage">) => {
-
+    const ComponentWithCartPage = (hocProps: Omit<T, "showCartPage">) => {
         let [showCartPage, setShowCartPage] = useState(false)
         let [renderCartPage, setRenderCartPage] = useState(false)
         let [displayChild, setDisplayChild] = useState(true)
@@ -46,4 +44,6 @@ export function withCartPage<T>(Component: ComponentType<T>) {
             </div>
         </React.Fragment>
     }
+
+    return ComponentWithCartPage
 }

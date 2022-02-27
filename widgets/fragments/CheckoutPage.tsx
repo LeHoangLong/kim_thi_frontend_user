@@ -1,5 +1,5 @@
 import Decimal from "decimal.js"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import Symbols from "../../config/Symbols"
 import { AddressPageZ, CheckoutPageZ } from "../../config/ZIndex"
 import myContainer from "../../container"
@@ -58,7 +58,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
     let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
     let addressRepository = myContainer.get<IAddressRepository>(Symbols.ADDRESS_REPOSITORY)
 
-    async function fetchBillBasedTransportFees(address: Address) {
+    let fetchBillBasedTransportFees = useCallback(async (address: Address) => {
         try {
             dispatch(setShippingFeeOperationStatus({
                 status: EStatus.IN_PROGRESS
@@ -89,11 +89,11 @@ const CheckoutPage = (props: CheckoutPageProps) => {
                 status: EStatus.IDLE
             }))
         }
-    }
+    }, [dispatch, addressRepository, addresses, shippingFeeRepository])
 
     let [isFetchingAddressShippingFee, setIsFetchingAddressShippingFee] = useState(false)
 
-    async function fetchAddressShippingFee(address: Address) {
+    let fetchAddressShippingFee = useCallback(async (address: Address) => {
         try {
             setIsFetchingAddressShippingFee(true)
             let transportFee = await shippingFeeRepository.fetchAreaTransportFee(address.city, new Decimal(address.latitude), new Decimal(address.longitude))
@@ -104,7 +104,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         } finally {
             setIsFetchingAddressShippingFee(false)
         }
-    }
+    }, [shippingFeeRepository, dispatch])
 
     useEffect(() => {
         async function init() {
@@ -117,6 +117,14 @@ const CheckoutPage = (props: CheckoutPageProps) => {
         }
     }, [addressOperationStatus])
 
+    let getSelectedAddress = useCallback(() => {
+        let selectedAddress = addresses.find(e => e.isSelected)
+        if (!selectedAddress) {
+            selectedAddress = addresses.find(e => e.isDefault)
+        }
+        return selectedAddress
+    }, [addresses])
+
     let [fetchedBillBasedTransportFeeAddressId, setFetchedBillBasedTransportFeeAddressId] = useState(-1)
     useEffect(() => {
         let selectedAddress = getSelectedAddress()
@@ -126,15 +134,8 @@ const CheckoutPage = (props: CheckoutPageProps) => {
             fetchBillBasedTransportFees(selectedAddress)
             setFetchedBillBasedTransportFeeAddressId(selectedAddress.id)
         }
-    }, [transportFeeOperationStatus, addresses])
+    }, [transportFeeOperationStatus, addresses, fetchBillBasedTransportFees, getSelectedAddress, fetchedBillBasedTransportFeeAddressId])
 
-    function getSelectedAddress() {
-        let selectedAddress = addresses.find(e => e.isSelected)
-        if (!selectedAddress) {
-            selectedAddress = addresses.find(e => e.isDefault)
-        }
-        return selectedAddress
-    }
     function getSelectedAddressShippingFee() {
         let selectedAddress = getSelectedAddress()
         if (selectedAddress) {
@@ -151,7 +152,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
                 fetchAddressShippingFee(selectedAddress)
             }
         }
-    }, [addresses])
+    }, [addresses, addressTransportFee, fetchAddressShippingFee, getSelectedAddress, isFetchingAddressShippingFee])
 
     useEffect(() => {
         if (numberOfAddresses === 0 && props.display) {
@@ -283,9 +284,7 @@ const CheckoutPage = (props: CheckoutPageProps) => {
                     if (product) {
                         ret.push(
                             <article className={ styles.item_card } key={ product.id + '_' + item[unit] }>
-                                <figure>
-                                    <img className={ styles.cart_item_avatar } src={ product.avatar.path }></img>
-                                </figure>
+                                <img alt="Ảnh sản phẩm" className={ styles.cart_item_avatar } src={ product.avatar.path }></img>
                                 <div>
                                     <h6 className={ styles.item_name }>
                                         <strong>

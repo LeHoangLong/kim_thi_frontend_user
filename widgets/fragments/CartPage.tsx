@@ -45,7 +45,8 @@ const CartPage = (props: CartPageProps) => {
         }
     }, [cartOperationStatus, productOperationStatus])
 
-    function calculateTotal() {
+
+    useEffect(() => {
         let total = new Decimal(0)
         for (let productId in cart) {
             if ((productId in productDetails)) {
@@ -60,10 +61,6 @@ const CartPage = (props: CartPageProps) => {
             }
         }
         setTotal(total)
-    }
-
-    useEffect(() => {
-        calculateTotal()
     }, [cart, productDetails])
 
     async function onCartItemSelectChanged(
@@ -97,7 +94,7 @@ const CartPage = (props: CartPageProps) => {
                             </aside>
                             <figure>
                                 <a className="cart-item-avatar-link">
-                                    <img className={ styles.cart_item_avatar } src={ `${productDetail.avatar.path}` }/>
+                                    <img alt="Ảnh sản phẩm" className={ styles.cart_item_avatar } src={ `${productDetail.avatar.path}` }/>
                                 </a>
                             </figure>
                             <div>

@@ -88,9 +88,7 @@ const PriceRequestPage = (props: PriceRequestPageProps) => {
                     if (product) {
                         ret.push(
                             <article className={ styles.item_card } key={ product.id + '_' + item[unit] }>
-                                <figure>
-                                    <img className={ styles.cart_item_avatar } src={ product.avatar.path }></img>
-                                </figure>
+                                <img alt="Ảnh sản phẩm" className={ styles.cart_item_avatar } src={ product.avatar.path }></img>
                                 <div>
                                     <h6 className={ styles.item_name }>
                                         <strong>

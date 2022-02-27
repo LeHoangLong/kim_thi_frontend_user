@@ -1,4 +1,4 @@
-import { ComponentType, useEffect, useState } from "react";
+import { ComponentType, useCallback, useEffect, useState } from "react";
 import Symbols from "../../config/Symbols";
 import myContainer from "../../container";
 import { CartController } from "../../controllers/CartController";
@@ -11,7 +11,7 @@ import { addProduct, setProductOperationStatus } from "../../reducers/productRed
 import { IProductRepositories } from "../../repositories/IProductRepositories";
 
 export function withCart<T>(Component: ComponentType<T>) {
-    return (hocProps: T) => {
+    const ComponentWithCart = (hocProps: T) => {
         let cart = useAppSelector(state => state.cart.cart)
         let productDetails = useAppSelector(state => state.products.productDetails)
         let productOperationStatus = useAppSelector(state => state.products.operationStatus)
@@ -19,6 +19,15 @@ export function withCart<T>(Component: ComponentType<T>) {
         let productRepository = myContainer.get<IProductRepositories>(Symbols.PRODUCT_REPOSITORY)
         let dispatch = useAppDispatch()
         let cartController = myContainer.get<CartController>(Symbols.CART_CONTROLLER)
+
+        const isAllCartItemDetailsFetched = useCallback(() => {
+            for (let productId in cart) {
+                if (!(productId in productDetails)) {
+                    return false
+                }
+            }
+            return true
+        }, [cart, productDetails])
 
         useEffect(() => {
             async function fetchProductDetails() {
@@ -65,16 +74,7 @@ export function withCart<T>(Component: ComponentType<T>) {
             ) {
                 fetchProductDetails()
             }
-        }, [cart, productOperationStatus])
-
-        function isAllCartItemDetailsFetched() {
-            for (let productId in cart) {
-                if (!(productId in productDetails)) {
-                    return false
-                }
-            }
-            return true
-        }
+        }, [cart, productOperationStatus, cartController, dispatch, isAllCartItemDetailsFetched, productDetails, productRepository])
 
         useEffect(() => {
             async function fetchCart() {
@@ -97,11 +97,13 @@ export function withCart<T>(Component: ComponentType<T>) {
             if (cartOperationStatus.status === EStatus.INIT) {
                 fetchCart()
             }
-        }, [cartOperationStatus])
+        }, [cartOperationStatus, cartController, dispatch])
 
         return <Component
             {...hocProps as T}
         >
         </Component>
     }
+
+    return ComponentWithCart
 }

@@ -30,14 +30,14 @@ export const CartButton = (props: CartButtonProps) => {
             dispatch(setCart(cart))
         }
         init()
-    }, [])
+    }, [cartController, dispatch])
 
     useEffect(() => {
         async function getCount() {
             setTotalItemCount(await cartController.getTotalItemsCount())
         }
         getCount()
-    }, [cart])
+    }, [cartController, cart])
 
     return (
         <FloatingActionButton onClick={ props.onClick }>

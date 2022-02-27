@@ -21,20 +21,20 @@ export const NavigationBar = () => {
 
     return (
         <div className={ styles.navigation_bar_container }>
-            <Link href="/">
-                <img className={ styles.logo } src="/public/logos/logo.png"/>
+            <Link passHref={true} href="/">
+                <img alt="logo" className={ styles.logo } src="/public/logos/logo.png"/>
             </Link>
 
             <nav className={ styles.navigation_bar }>
                 <div className={ `${selectedMenu == '/'? styles.selected : '' } ${styles.nav_link}` }>
-                    <Link href="/">
+                    <Link passHref={true} href="/">
                         <h4>
                             Trang chủ
                         </h4>
                     </Link>
                 </div>
                 <div className={ `${selectedMenu == '/about'? styles.selected : '' } ${styles.nav_link}` }>
-                    <Link href="/about">
+                    <Link passHref={true} href="/about">
                         <h4>
                             Giới thiệu
                         </h4>
@@ -51,14 +51,14 @@ export const NavigationBar = () => {
 
                 <nav className={ showExpandedMenu? styles.expanded_menu : styles.expanded_menu_hidden }>
                     <div className={ `${selectedMenu == '/'? styles.selected : '' } ${styles.nav_link}` }>
-                        <Link href="/">
+                        <Link passHref={true} href="/">
                             <h4>
                                 Trang chủ
                             </h4>
                         </Link>
                     </div>
                     <div className={ `${selectedMenu == '/about'? styles.selected : '' } ${styles.nav_link}` }>
-                        <Link href="/about">
+                        <Link passHref={true} href="/about">
                             <h4>
                                 Giới thiệu
                             </h4>
