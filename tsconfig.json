@@ -18,13 +18,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "../kim_thi_backend/src/services/EmailService.tsx"  ],
+    "**/*.tsx",
+    "../kim_thi_backend/src/services/EmailService.tsx"
+  ],
   "exclude": [
     "node_modules"
   ]
