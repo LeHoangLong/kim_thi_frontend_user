@@ -50,19 +50,22 @@ export class CartController {
             this.cart = await this.repository.fetchCart()
         }
 
+        this.cart = {...this.cart}
         if (!(productId in this.cart)) {
             this.cart[productId] = {}
         }
 
         if (!(unit in this.cart[productId])) {
+            this.cart[productId] = {...this.cart[productId]}
             this.cart[productId][unit] = {
                 quantity: quantity.toString(),
-                selected: true
+                selected: true,
             }
         } else {
+            this.cart[productId] = {...this.cart[productId]}
             this.cart[productId][unit] = {
                 quantity: quantity.toString(),
-                selected: this.cart[productId][unit].selected
+                selected: this.cart[productId][unit].selected,
             }
         }
         await this.saveCart(this.cart)
@@ -83,16 +86,17 @@ export class CartController {
                 [productId]: {}
             }
         }
+        this.cart = {...this.cart}
 
         if (!(unit in this.cart[productId])) {
             this.cart[productId][unit] = {
                 quantity: quantity.toString(),
-                selected: true
+                selected: true,
             }
         } else {
             this.cart[productId][unit] = {
                 quantity: quantity.add(this.cart[productId][unit].quantity).toString(),
-                selected: true
+                selected: true,
             }
         }
         await this.saveCart(this.cart)

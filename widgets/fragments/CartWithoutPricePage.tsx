@@ -78,7 +78,7 @@ const CartWithoutPricePage = (props: CartPageProps) => {
                                 </h6>
                                 <div className={ styles.quantity_form }>
                                     <label className={ styles.label } htmlFor={`quantity-${productId}_${unit}`}>Số lượng</label>
-                                    <input id={`quantity-${productId}_${unit}`} type="number" step={ 0.01 } className="cart-item-quantity" value={ cart[productId][unit].quantity.toString() } onChange={(e) => onQuantityChanged(parseInt(productId), unit, new Decimal(e.target.value))}></input>
+                                    <input id={`quantity-${productId}_${unit}`} type="number" step={ 0.01 } className="cart-item-quantity" value={ cart[productId][unit].quantity.toString() } onChange={(e) => onQuantityChanged(parseInt(productId), unit, new Decimal(e.target.value.length === 0? 0 : e.target.value))}></input>
                                 </div>
                                 <article className={ styles.unit_display }>
                                     <p className={ styles.label }>Đơn vị</p>
