@@ -21,6 +21,11 @@ export class CartController {
         return this.cart
     }
 
+    async saveCart(cart: CartModel) : Promise<void> {
+        this.cart = {...cart}
+        await this.repository.saveCart(this.cart)
+    }
+
     async setCartItemSelect(
         productId: number,
         unit: string,
@@ -32,7 +37,7 @@ export class CartController {
 
         if (productId in this.cart && unit in this.cart[productId]) {
             this.cart[productId][unit].selected = selected
-            await this.repository.saveCart(this.cart)
+            await this.saveCart(this.cart)
         }
     }
 
@@ -60,7 +65,7 @@ export class CartController {
                 selected: this.cart[productId][unit].selected
             }
         }
-        await this.repository.saveCart(this.cart)
+        await this.saveCart(this.cart)
     }
 
     async addItemQuantity(
@@ -73,7 +78,10 @@ export class CartController {
         }
 
         if (!(productId in this.cart)) {
-            this.cart[productId] = {}
+            this.cart = {
+                ...this.cart,
+                [productId]: {}
+            }
         }
 
         if (!(unit in this.cart[productId])) {
@@ -87,7 +95,7 @@ export class CartController {
                 selected: true
             }
         }
-        await this.repository.saveCart(this.cart)
+        await this.saveCart(this.cart)
     }
 
     async removeItem(
@@ -101,6 +109,7 @@ export class CartController {
         let newCart = {...this.cart}
         if (unit) {
             if (productId in newCart) {
+                newCart[productId] = {...newCart[productId]}
                 delete newCart[productId][unit]
             }
 
@@ -111,7 +120,7 @@ export class CartController {
             delete newCart[productId]
         }
 
-        await this.repository.saveCart(newCart)
+        await this.saveCart(newCart)
     }
 
     // Number of items (1 per unit)
@@ -132,6 +141,6 @@ export class CartController {
     async clearCart() : Promise<void> {
         this.cart = {
         }
-        await this.repository.saveCart(this.cart)
+        await this.saveCart(this.cart)
     }
 }

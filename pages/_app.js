@@ -7,13 +7,19 @@ import {Provider} from 'react-redux'
 import { createWrapper } from "next-redux-wrapper";
 
 import store from '../reducers/rootReducer.tsx'
+import Head from 'next/head';
 
 function MyApp({ Component, pageProps }) {
-  return <Provider store={ store }>
-      <React.Fragment>
-        <Component {...pageProps} />
-      </React.Fragment>
-  </Provider>
+  return <>
+    <Head>
+      <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    </Head>
+    <Provider store={ store }>
+        <React.Fragment>
+          <Component {...pageProps} />
+        </React.Fragment>
+    </Provider>
+  </>
 }
 
 const makestore = () => store

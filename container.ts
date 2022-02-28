@@ -23,14 +23,14 @@ import { RemotePriceRequestRepository } from './repositories/RemotePriceRequestR
 
 const myContainer = new Container()
 
-myContainer.bind<IProductRepositories>(Symbols.PRODUCT_REPOSITORY).to(RemoteProductRepository)
-myContainer.bind<ICartRepository>(Symbols.CART_REPOSITORY).to(LocalCartRepository)
-myContainer.bind<CartController>(Symbols.CART_CONTROLLER).to(CartController)
-myContainer.bind<IAddressRepository>(Symbols.ADDRESS_REPOSITORY).to(LocalAddressRepository)
-myContainer.bind<IGeocodingService>(Symbols.GEOCODING_SERVICE).to(RemoteGeocodingSerivce)
-myContainer.bind<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY).to(RemoteShippingFeeRepository)
-myContainer.bind<IOrderRepository>(Symbols.ORDER_REPOSITORY).to(RemoteOrderRepository)
-myContainer.bind<IPriceRequestRepository>(Symbols.PRICE_REQUEST_REPOSITORY).to(RemotePriceRequestRepository)
+myContainer.bind<IProductRepositories>(Symbols.PRODUCT_REPOSITORY).to(RemoteProductRepository).inSingletonScope()
+myContainer.bind<ICartRepository>(Symbols.CART_REPOSITORY).to(LocalCartRepository).inSingletonScope()
+myContainer.bind<CartController>(Symbols.CART_CONTROLLER).to(CartController).inSingletonScope()
+myContainer.bind<IAddressRepository>(Symbols.ADDRESS_REPOSITORY).to(LocalAddressRepository).inSingletonScope()
+myContainer.bind<IGeocodingService>(Symbols.GEOCODING_SERVICE).to(RemoteGeocodingSerivce).inSingletonScope()
+myContainer.bind<IShippingFeeRepository>(Symbols.SHIPPING_FEE_REPOSITORY).to(RemoteShippingFeeRepository).inSingletonScope()
+myContainer.bind<IOrderRepository>(Symbols.ORDER_REPOSITORY).to(RemoteOrderRepository).inSingletonScope()
+myContainer.bind<IPriceRequestRepository>(Symbols.PRICE_REQUEST_REPOSITORY).to(RemotePriceRequestRepository).inSingletonScope()
 
 // myContainer.bind<IPriceRequestRepository>(Symbols.PRICE_REQUEST_REPOSITORY).to(MockPriceRequestRepository)
 //let mockProductRepositories = new MockProductRepositories()

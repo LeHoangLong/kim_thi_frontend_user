@@ -67,11 +67,9 @@ const CartWithoutPricePage = (props: CartPageProps) => {
                             <aside className={ styles.cart_item_select }>
                                 <input type="radio" checked={ isSelected } readOnly onClick={_ => onCartItemSelectChanged(parseInt(productId), unit, !isSelected)}></input>
                             </aside>
-                            <figure>
-                                <a className="cart-item-avatar-link">
-                                    <img className={ styles.cart_item_avatar } src={ `${productDetail.avatar.path}` }/>
-                                </a>
-                            </figure>
+                            <a className="cart-item-avatar-link">
+                                <img alt="Ảnh sản phẩm" className={ styles.cart_item_avatar } src={ `${productDetail.avatar.path}` }/>
+                            </a>
                             <div>
                                 <h6>
                                     <strong className={ styles.product_name }>
