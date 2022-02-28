@@ -223,6 +223,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
             let cart = await cartController.getCart()
             dispatch(setCart(cart))
 
+            setQuantity('1')
             setDisplayQuantityAndUnitSelection(false)
             setShowAddedToCartMessage(true)
             setTimeout(() => {
