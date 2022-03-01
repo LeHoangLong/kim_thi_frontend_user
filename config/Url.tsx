@@ -7,12 +7,16 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 }
 
 let _BACKEND_URL = "http://kim_thi_backend_1/backend/enduser"
-if (process.browser) {
+if (typeof window !== 'undefined') {
     _BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL_FROM_BROWSER
 } else {
     _BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL_FROM_SERVER
 }
 
+console.log('_BACKEND_URL')
+console.log(_BACKEND_URL)
+console.log(process.env.NEXT_PUBLIC_BACKEND_URL_FROM_BROWSER)
+console.log(process.env.NEXT_PUBLIC_BACKEND_URL_FROM_SERVER)
 export const BACKEND_URL = _BACKEND_URL;
 
 export const FILESERVER_URL = process.env.NEXT_PUBLIC_FILESERVER_URL_FROM_BROWSER;
