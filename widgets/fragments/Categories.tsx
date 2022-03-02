@@ -30,7 +30,7 @@ export const Categories = (props: CategoriesProps) => {
     function displayCategories() {
         let ret: React.ReactNode[] = [];
         let selectedIndex = props.categories.findIndex(e => e.category == (props.category as string) )
-        for (var i = 0; i < props.categories.length; i++) {
+        for (var i = 0; i < props.categories.length && i < 4; i++) {
             let isSelected = selectedIndex === i
 
             if ( isSelected ) {
