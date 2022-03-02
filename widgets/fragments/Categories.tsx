@@ -80,20 +80,38 @@ export const Categories = (props: CategoriesProps) => {
 
     }, [containerRef, props.numberOfCategoriesPerRow, props.minCategoryWidth])
 
-    return (
-        <article className={ styles.categories_container } ref={ containerRef }>
-            <h2 className={ styles.categories_title }>Danh mục</h2>
-            <div className={ styles.categories_list_container }>
-                <button onClick={ leftButtonClickedHandler } className={ styles.left_button } style={{ display: showButton? 'block' : 'none' }}>
-                    <i className="fas fa-angle-left"></i>
-                </button>
-                <nav ref={ categoriesRef } className={ styles.categories } style={{ gridTemplateColumns: `repeat(${props.numberOfCategoriesPerRow}, minmax(${props.minCategoryWidth}px, 1fr))` }}>
-                    { displayCategories() }
-                </nav>
-                <button onClick={ rightButtonClickedHandler } className={ styles.right_button } style={{ display: showButton? 'block' : 'none' }}>
-                    <i className="fas fa-angle-right"></i>
-                </button>
-            </div>
-        </article>
-    )
+    if (props.categories.length > 0) {
+        return (
+            <article className={ styles.categories_container } ref={ containerRef }>
+                <h2 className={ styles.categories_title }>Danh mục</h2>
+                <div className={ styles.categories_list_container }>
+                    {
+                        /*
+                        (() => {
+                            if (props.categories.length > 4) {
+                                <button onClick={ leftButtonClickedHandler } className={ styles.left_button } style={{ display: showButton? 'block' : 'none' }}>
+                                    <i className="fas fa-angle-left"></i>
+                                </button>
+                            }
+                        })()
+                        */
+                    }
+                    <nav ref={ categoriesRef } className={ styles.categories } style={{ gridTemplateColumns: `repeat(auto-fit, minmax(${props.minCategoryWidth}px, 1fr))` }}>
+                        { displayCategories() }
+                    </nav>
+                    {
+                        /*
+                        (() => {
+                            if (props.categories.length > 4) {
+                                <button onClick={ rightButtonClickedHandler } className={ styles.right_button } style={{ display: showButton? 'block' : 'none' }}>
+                                    <i className="fas fa-angle-right"></i>
+                                </button>
+                            }
+                        })()
+                        */
+                    }
+                </div>
+            </article>
+        )
+    }
 }

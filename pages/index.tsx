@@ -69,7 +69,7 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
     useEffect(() => {
         function resizeHandler() {
             if (window.innerWidth < 500) {
-                setCarousellWidth(window.innerWidth)
+                setCarousellWidth(window.screen.width)
             } else {
                 setCarousellWidth(500)
             }
