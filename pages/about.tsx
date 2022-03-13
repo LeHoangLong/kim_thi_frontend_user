@@ -29,7 +29,7 @@ const Page = () => {
                     style={{border:0}}
                     loading="lazy"
                     allowFullScreen
-                    src="https://www.google.com/maps/embed/v1/place?q=86%20gia%20ph%C3%BA&key=AIzaSyCHXhGcaNM71NNmc8x3cu8wPj32F_haPKk"
+                    src="https://www.google.com/maps/embed/v1/place?q=86%20gia%20ph%C3%BA&key=AIzaSyAtVsLvrKqESskQ7dMDiMbSjHVM7SFe4SA"
                 />
                 <p className={ styles.text }>
                     Địa chỉ: 86 Gia Phú phường 1 quận 6
