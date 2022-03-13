@@ -24,9 +24,10 @@ export     function calculatePriceAndMinQuantity(
     let price = productPrice.defaultPrice
     let minQuantity = new Decimal(0)
     for (let i = 0; i < productPrice.priceLevels.length; i++) {
-        if (quantity >= productPrice.priceLevels[i].minQuantity) {
+        let priceLevelMinQuantity = new Decimal(productPrice.priceLevels[i].minQuantity)
+        if (quantity >= priceLevelMinQuantity) {
             price = productPrice.priceLevels[i].price
-            minQuantity = productPrice.priceLevels[i].minQuantity
+            minQuantity = priceLevelMinQuantity
         }
     }
 
