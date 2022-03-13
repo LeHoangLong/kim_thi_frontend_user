@@ -28,7 +28,7 @@ export function jsonToProductCategory(json: any) : ProductCategoryModel {
 
 export function jsonToPriceLevel(json: any) : PriceLevel {
     return {
-        minQuantity: new Decimal(json['minQuantity']), 
+        minQuantity: (new Decimal(json['minQuantity'])).toString(), 
         price: parseInt(json['price'])
     }
 }

@@ -29,11 +29,11 @@ export class MockProductRepositories implements IProductRepositories {
                     defaultPrice: i * 1000,
                     priceLevels: [
                         {
-                            minQuantity: new Decimal(i * 10),
+                            minQuantity: (new Decimal(i * 10)).toString(),
                             price: i * 1000 + 100,
                         },
                         {
-                            minQuantity: new Decimal(i * 20),
+                            minQuantity: (new Decimal(i * 20)).toString(),
                             price: i * 1000 + 200,
                         }
                     ]
@@ -45,11 +45,11 @@ export class MockProductRepositories implements IProductRepositories {
                         defaultPrice: i * 100,
                         priceLevels: [
                             {
-                                minQuantity: new Decimal(i * 10),
+                                minQuantity: (new Decimal(i * 10)).toString(),
                                 price: i * 100 + 10,
                             },
                             {
-                                minQuantity: new Decimal(i * 20),
+                                minQuantity: (new Decimal(i * 20)).toString(),
                                 price: i * 100 + 20,
                             }
                         ]
@@ -104,15 +104,23 @@ export class MockProductRepositories implements IProductRepositories {
         let count = 0
         this.products.forEach((product) => {
             if (product.name.includes(args.productSearch)) {
-                for (let i = 0; i < args.categories.length; i++) {
-                    let filterCategory = args.categories[i]
-                    if (product.categories.findIndex(e => e.category == filterCategory) != -1) {
-                        count = count + 1
-                        break;
+                if (args.categories.length > 0 && args.categories[0] != '') {
+                    for (let i = 0; i < args.categories.length; i++) {
+                        let filterCategory = args.categories[i]
+                        if (product.categories.findIndex(e => e.category == filterCategory) != -1) {
+                            count = count + 1
+                            break;
+                        }
                     }
+                } else {
+                    count = count + 1;
                 }
             }
         })
+
+        console.log('count')
+        console.log(count)
+        console.log(this.products.length)
         return count
     }
 

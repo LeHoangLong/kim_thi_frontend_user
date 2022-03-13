@@ -1,11 +1,9 @@
-import Decimal from "decimal.js";
-
 export const EPriceUnit : any = {
     0: "kg"
 }
 
 export interface PriceLevel {
-    minQuantity: Decimal, 
+    minQuantity: string, 
     price: number
 }
 
