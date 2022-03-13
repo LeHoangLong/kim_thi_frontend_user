@@ -116,11 +116,15 @@
 
 .search_bar {
     width: 100%;
+    
+}
+
+.search_bar .search-bar {
+    width: 100%;
 }
 
 .images {
-    width: 350px;
-    max-width: 100%;
+    max-width: 35rem;
     margin-right: $m4;
     margin-bottom: $m4;
 }
@@ -145,8 +149,8 @@
 }
 
 .side_image {
-    width: 50px;
-    height: 50px;
+    max-width: 7rem;
+    max-height: 7rem;
 }
 
 .side_image_container::before {
@@ -171,4 +175,13 @@
 
 .product_name {
     color: $primary-color;
+}
+
+
+.main_image {
+    max-width: 35rem;
+    max-height: 35rem;
+    object-fit: contain;
+    margin-right: var(--m6);
+    margin-bottom: var(--m6);
 }

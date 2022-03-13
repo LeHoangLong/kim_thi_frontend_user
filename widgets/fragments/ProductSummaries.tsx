@@ -14,7 +14,7 @@ export const ProductSummaries = (props: ProductSummariesProps) => {
 
     for (let i = 0; i < props.products.length; i++) {
         ret.push(
-            <div key={ props.products[i].id } className={ styles.card_container }>
+            <div key={ props.products[i].id } className={ props.singleRow? styles.single_row_card_container : styles.card_container }>
                 <Link href={`/products/${ props.products[i].id }`} passHref>
                     <a  className={ styles.link }>
                         <ProductSummaryCard product={ props.products[i] }></ProductSummaryCard>

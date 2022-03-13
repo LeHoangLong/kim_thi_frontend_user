@@ -1,3 +1,5 @@
+@import '../../styles/Common.scss';
+
 .single_row {
     display: flex;
     overflow-x: scroll;
@@ -13,6 +15,11 @@
     display: flex;
     justify-content: center;
     width: 100%;
+}
+
+.single_row_card_container {
+    width: 15rem;
+    margin-right: $m5;
 }
 
 .link {

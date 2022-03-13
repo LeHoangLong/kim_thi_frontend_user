@@ -295,14 +295,6 @@ strong {
     flex-wrap: wrap;
 }
 
-.product-detail .main-img {
-    width: 350px;
-    height: 350px;
-    max-width: 100%;
-    margin-right: var(--m6);
-    margin-bottom: var(--m6);
-}
-
 .product-detail article {
     flex-grow: 1;
 }
@@ -314,10 +306,12 @@ strong {
 .search-bar-container {
     display: flex;
     justify-content: center;
+    width: 80%;
+    margin: auto;
 }
 
 .search-bar {
-    width: 80%;
+    width: 100%;
     border-radius: 10px;
     border: 1px solid var(--border-color);
     display: flex;

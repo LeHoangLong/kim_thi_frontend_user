@@ -311,10 +311,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 
 		            <section className="product-detail">
                         <div className={ styles.images }>
-                            <figure>
-                                <img alt="Main product image" className="main-img" src={ `${images[selectedImageIndex]?.path ?? ""}` }/>
-                            </figure>
-
+                            <img alt="Main product image" className={ styles.main_image } src={ `${images[selectedImageIndex]?.path ?? ""}` }/>
                             <aside>
                                 <ol className={ styles.side_images }>
                                     { displaySideImages() }
