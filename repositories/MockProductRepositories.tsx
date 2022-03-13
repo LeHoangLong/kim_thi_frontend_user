@@ -3,7 +3,7 @@ import { injectable } from 'inversify'
 import { ProductSummary } from "../models/ProductSummary";
 import { ProductDetailModel } from '../models/ProductDetailModel'
 import { ProductCategoryModel } from "../models/ProductCategoryModel";
-import { GetCategoriesArgs, GetProductSummariesArgs, IProductRepositories } from "./IProductRepositories";
+import { GetCategoriesArgs, GetProductCountArgs, GetProductSummariesArgs, IProductRepositories } from "./IProductRepositories";
 import { NotFound } from '../exceptions/NotFound'
 import Decimal from 'decimal.js';
 
@@ -100,8 +100,20 @@ export class MockProductRepositories implements IProductRepositories {
         return summaries
     }
 
-    async getNumberOfProducts(): Promise<number> {
-        return this.products.length
+    async getNumberOfProducts(args: GetProductCountArgs): Promise<number> {
+        let count = 0
+        this.products.forEach((product) => {
+            if (product.name.includes(args.productSearch)) {
+                for (let i = 0; i < args.categories.length; i++) {
+                    let filterCategory = args.categories[i]
+                    if (product.categories.findIndex(e => e.category == filterCategory) != -1) {
+                        count = count + 1
+                        break;
+                    }
+                }
+            }
+        })
+        return count
     }
 
     async getCategories(args: GetCategoriesArgs): Promise<ProductCategoryModel[]> {

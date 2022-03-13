@@ -14,11 +14,13 @@ export const ProductSummaries = (props: ProductSummariesProps) => {
 
     for (let i = 0; i < props.products.length; i++) {
         ret.push(
-            <Link key={ props.products[i].id } href={`/products/${ props.products[i].id }`} passHref>
-                <a>
-                    <ProductSummaryCard product={ props.products[i] }></ProductSummaryCard>
-                </a>
-            </Link>
+            <div key={ props.products[i].id } className={ styles.card_container }>
+                <Link href={`/products/${ props.products[i].id }`} passHref>
+                    <a  className={ styles.link }>
+                        <ProductSummaryCard product={ props.products[i] }></ProductSummaryCard>
+                    </a>
+                </Link>
+            </div>
         )
     }
 

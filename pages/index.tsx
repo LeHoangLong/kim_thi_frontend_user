@@ -5,7 +5,7 @@ import { ProductSummaries } from '../widgets/fragments/ProductSummaries';
 import { ScrollingPageIndex } from '../widgets/components/ScrollingPageIndex'
 import { useRouter } from 'next/router'
 import { NavigationBar } from '../widgets/fragments/NavigationBar';
-import { IProductRepositories } from '../repositories/IProductRepositories';
+import { GetProductCountArgs, IProductRepositories } from '../repositories/IProductRepositories';
 import Symbols from '../config/Symbols';
 import { Pagination } from '../config/Pagination';
 import styles from './index.module.scss';
@@ -95,19 +95,21 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
                 <div className={ styles.search_bar }>
                     <SearchBar onSearchButtonClicked={ onSearchButtonClicked } phrase={ searchPhrase } onChange={ setSearhPhrase }></SearchBar>
                 </div>
-                <div className={ styles.banner }>
-                    <div className={ styles.images }>
-                        <div className={ styles.carousell_container }>
-                            <Carousell 
-                                images={[
-                                    "/public/logos/shop_orig.webp",
-                                    "/public/logos/shop_2.webp"
-                                ]} 
-                                width={ carousellWidth }
-                            />
-                        </div>
-                    </div>
-                </div>
+                {
+                // <div className={ styles.banner }>
+                //     <div className={ styles.images }>
+                //         <div className={ styles.carousell_container }>
+                //             <Carousell 
+                //                 images={[
+                //                     "/public/logos/shop_orig.webp",
+                //                     "/public/logos/shop_2.webp"
+                //                 ]} 
+                //                 width={ carousellWidth }
+                //             />
+                //         </div>
+                //     </div>
+                // </div>
+                }
 
                 <div className={ styles.categories_container }>
                     <Categories
@@ -173,7 +175,11 @@ export const getServerSideProps : GetServerSideProps = async (context) => {
         offset: 0
     })
 
-    let numberOfProducts = await productRepositories.getNumberOfProducts()
+    let arg : GetProductCountArgs = {
+        categories: queryCategories,
+        productSearch: search,
+    }
+    let numberOfProducts = await productRepositories.getNumberOfProducts(arg)
 
     let numberOfPages = Math.ceil(numberOfProducts / Pagination.DEFAULT_PAGE_SIZE)
     return {

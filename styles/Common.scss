@@ -32,7 +32,7 @@ $primary-color: #004800;
 $primary-color-2: #30a12f;
 $secondary-color: #96004B;
 $on-primary-color: white;
-$background-color: #F5F5F5;
+$background-color: var(--background-color);
 
 $red: red;
 $grey-color: #e6e6e6;

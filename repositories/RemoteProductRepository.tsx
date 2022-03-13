@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { ProductDetailModel } from "../models/ProductDetailModel";
 import { ProductSummary } from "../models/ProductSummary";
-import { GetCategoriesArgs, GetProductSummariesArgs, IProductRepositories } from "./IProductRepositories";
+import { GetCategoriesArgs, GetProductCountArgs, GetProductSummariesArgs, IProductRepositories } from "./IProductRepositories";
 import axios, { AxiosError } from 'axios'
 import { BACKEND_URL, FILESERVER_URL } from "../config/Url";
 import { ProductCategoryModel } from "../models/ProductCategoryModel";
@@ -105,8 +105,10 @@ export class RemoteProductRepository implements IProductRepositories {
         return ret
     }
 
-    async getNumberOfProducts(): Promise<number> {
-        let response = await axios.get(`${BACKEND_URL}/products/summaries/count`)
+    async getNumberOfProducts(args: GetProductCountArgs): Promise<number> {
+        let response = await axios.get(`${BACKEND_URL}/products/summaries/count`, {
+            params: args,
+        })
         return parseInt(response.data)
     }
 

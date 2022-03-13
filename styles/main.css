@@ -30,6 +30,12 @@
     --h6: 2rem;
     --body-1: 1.6rem;
     --body-2: 1.4rem;
+    --background-color: #F5F5F5;
+}
+
+html {
+    height: 100%;
+    background-color: var(--background-color);
 }
 
 a,
