@@ -111,24 +111,26 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
                 // </div>
                 }
 
-                <div className={ styles.categories_container }>
-                    <Categories
-                        search={search as string}
-                        category={category as string}
-                        categories={ props.categories }
-                        minCategoryWidth={120}
-                        numberOfCategoriesPerRow={5}
-                    />
-                </div>
-
-                <div className={ styles.main_area }>
-                    <div>
-                        <ProductSummaries products={ props.productSummaries }></ProductSummaries>
+                <div className={ styles.main_content }>
+                    <div className={ styles.categories_container }>
+                        <Categories
+                            search={search as string}
+                            category={category as string}
+                            categories={ props.categories }
+                            minCategoryWidth={120}
+                            numberOfCategoriesPerRow={5}
+                        />
                     </div>
 
-                    <footer className={`${styles.page_numbering}  h5`}>
-                        <ScrollingPageIndex indexElementClassName={ styles.index } onSelect={ onSelectPage } currentIndex={ page + 1} min={ 1 } max={ props.numberOfPages + 1 }></ScrollingPageIndex>
-                    </footer>
+                    <div className={ styles.main_area }>
+                        <div>
+                            <ProductSummaries products={ props.productSummaries }></ProductSummaries>
+                        </div>
+
+                        <footer className={`${styles.page_numbering}  h5`}>
+                            <ScrollingPageIndex indexElementClassName={ styles.index } onSelect={ onSelectPage } currentIndex={ page + 1} min={ 1 } max={ props.numberOfPages + 1 }></ScrollingPageIndex>
+                        </footer>
+                    </div>
                 </div>
             </section>
 
@@ -171,7 +173,7 @@ export const getServerSideProps : GetServerSideProps = async (context) => {
     })
 
     let categories = await productRepositories.getCategories({
-        limit: 10,
+        limit: 100,
         offset: 0
     })
 

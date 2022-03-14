@@ -107,3 +107,15 @@ $slide_show_height: 250px;
 .main_page {
     background-color: $background-color;
 }
+
+.main_content {
+    display: grid;
+    grid-template-columns: minmax(min-content, 20rem) 1fr;
+}
+
+@media screen and (max-width: 50rem) {
+    .main_content {
+        display: block;
+    }
+}
+
