@@ -28,16 +28,20 @@ export const NavigationBar = () => {
             <nav className={ styles.navigation_bar }>
                 <div className={ `${selectedMenu == '/'? styles.selected : '' } ${styles.nav_link}` }>
                     <Link passHref={true} href="/">
-                        <h4>
-                            Trang chủ
-                        </h4>
+                        <a>
+                            <h4>
+                                Trang chủ
+                            </h4>
+                        </a>
                     </Link>
                 </div>
                 <div className={ `${selectedMenu == '/about'? styles.selected : '' } ${styles.nav_link}` }>
                     <Link passHref={true} href="/about">
-                        <h4>
-                            Giới thiệu
-                        </h4>
+                        <a>
+                            <h4>
+                                Giới thiệu
+                            </h4>
+                        </a>
                     </Link>
                 </div>
             </nav>

@@ -55,9 +55,14 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
         setSearhPhrase(search as string)
     }, [ search ])
 
-
-    function onSelectPage(pageNumber: number) {
-        window.location.href = `/?search=${ search }&category=${ encodeURIComponent((category?? '').toString()) }&page=${ pageNumber - 1 }`
+    function renderPageIndex(index: number) : React.ReactNode {
+        return (
+            <div className={ styles.index_link + ` ${page + 1 === index? styles.selected_index_link : '' }` } key={index}>
+                <a href={`/?search=${ search }&category=${ encodeURIComponent((category?? '').toString()) }&page=${ index - 1 }`}>
+                    { index }
+                </a>
+            </div>
+        )
     }
 
     function onSearchButtonClicked() {
@@ -128,7 +133,7 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
                         </div>
 
                         <footer className={`${styles.page_numbering}  h5`}>
-                            <ScrollingPageIndex indexElementClassName={ styles.index } onSelect={ onSelectPage } currentIndex={ page + 1} min={ 1 } max={ props.numberOfPages + 1 }></ScrollingPageIndex>
+                            <ScrollingPageIndex indexElementClassName={ styles.index } renderer={ renderPageIndex } currentIndex={ page + 1 } min={ 1 } max={ props.numberOfPages + 1 }></ScrollingPageIndex>
                         </footer>
                     </div>
                 </div>
