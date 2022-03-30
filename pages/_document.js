@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import React from 'react'
 import { GOOGLE_ANALYTICS_TRACKING_ID } from '../config/GoogleAnalytics'
 
 class MyDocument extends Document {
@@ -6,17 +7,25 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${ GOOGLE_ANALYTICS_TRACKING_ID }`}></script>
-            <script
-                dangerouslySetInnerHTML={{
-                __html: `
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', '${ GOOGLE_ANALYTICS_TRACKING_ID }', { page_path: window.location.pathname });
-                `,
-                }}
-            />
+            {(() => {
+              if (typeof(process.env.NEXT_PUBLIC_ECOMMERCE_GA_TRACKING_ID) == 'string' && process.env.NEXT_PUBLIC_ECOMMERCE_GA_TRACKING_ID.length > 0) {
+                return (
+                  <React.Fragment>
+                    <script async src={`https://www.googletagmanager.com/gtag/js?id=${ GOOGLE_ANALYTICS_TRACKING_ID }`}></script>
+                    <script
+                        dangerouslySetInnerHTML={{
+                        __html: `
+                            window.dataLayer = window.dataLayer || [];
+                            function gtag(){dataLayer.push(arguments);}
+                            gtag('js', new Date());
+                            gtag('config', '${ GOOGLE_ANALYTICS_TRACKING_ID }', { page_path: window.location.pathname });
+                        `,
+                        }}
+                    />
+                  </React.Fragment>
+                )
+              }
+            })()}
             <link rel="icon" href="/public/logos/logo.png"></link>
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
