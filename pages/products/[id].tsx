@@ -274,7 +274,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 	        <header>
 	            <NavigationBar></NavigationBar>
 	        </header>
-		    <main>
+		    <main className={ styles.product_page }>
                 <CartButton onClick={ props.showCartPage }></CartButton>
 		        <section id="product-detail-page">
 		            <section id="quantity-and-unit-selection" className={ quantityAndUnitSelection }>
@@ -309,7 +309,7 @@ export const ProductDetailPage = (props: ProductDetailPageProps) => {
 		                </form>
 		            </section>
 
-		            <section className="product-detail">
+		            <section className={ styles.product_detail }>
                         <div className={ styles.images }>
                             <img alt="Main product image" className={ styles.main_image } src={ `${images[selectedImageIndex]?.path ?? ""}` }/>
                             <aside>
@@ -412,13 +412,13 @@ export const getServerSideProps : GetServerSideProps =  async (context) => {
     }
     let relatedProductSummaries = await productRepositories.getProductSummaries({
         categories: categories,
-        limit: Pagination.DEFAULT_PAGE_SIZE,
+        limit: Pagination.DEFAULT_PAGE_SIZE + 1,
         offset: 0,
         productSearch: search,
     })
 
     let relatedProductSummariesExceptThis = []
-    for (let i = 0; i < relatedProductSummaries.length; i++) {
+    for (let i = 0; i < relatedProductSummaries.length && relatedProductSummariesExceptThis.length < Pagination.DEFAULT_PAGE_SIZE; i++) {
         if (relatedProductSummaries[i].id != id) {
             relatedProductSummariesExceptThis.push(relatedProductSummaries[i])
         }

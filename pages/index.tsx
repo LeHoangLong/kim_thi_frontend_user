@@ -94,7 +94,7 @@ const ProductSummaryPage = (props: ProductSummaryPageProps) => {
         <header>
             <NavigationBar></NavigationBar>
         </header>
-        <main>
+        <main className={ styles.index_page }>
             <CartButton onClick={ props.showCartPage }></CartButton>
             <section className={ styles.main_page }>
                 <div className={ styles.search_bar }>

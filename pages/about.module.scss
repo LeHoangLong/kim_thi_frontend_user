@@ -20,7 +20,7 @@
 }
 
 .banner h1 {
-    @extend .h1;
+    font-size: $h1;
     color: white;
     z-index: 100;
     font-weight: bold;
@@ -46,7 +46,7 @@
 }
 
 .text {
-    @extend .h3;
+    font-size: $h3;
     margin: $m5;
     font-weight: normal;
     text-align: center;

@@ -1,5 +1,3 @@
-import '../styles/globals.css'
-import '../styles/normalize.css'
 import '../styles/main.css'
 import '../styles/Main.scss'
 import React from 'react';

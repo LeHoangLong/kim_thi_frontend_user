@@ -1,27 +1,57 @@
 @import '../../styles/Common.scss';
 
 .single_row {
-    display: flex;
-    overflow-x: scroll;
-}
-
-@media (min-width: 800px) {
-    .single_row {
-        overflow-x: hidden;
-    }
-}
-
-.card_container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    display: flex !important;
+    flex-wrap: nowrap;
+    overflow: auto;
 }
 
 .single_row_card_container {
-    width: 15rem;
+    min-width: 15rem;
     margin-right: $m5;
 }
 
+@media (min-width: 600px) {
+    .single_row {
+        display: grid !important;
+    }
+
+    .single_row_card_container {
+        margin-right: 0rem;
+    }
+}
+
+
 .link {
     width: 80%;
+}
+
+.product_summaries {
+    margin-top: var(--m6);
+    margin-bottom: var(--m6);
+    display: grid;
+    grid-gap: var(--m2) var(--m2);
+    list-style: none;
+    grid-auto-rows: max-content;
+    justify-items: start;
+}
+
+.product_summaries a {
+    text-decoration: none;
+}
+
+@media screen and (min-width: 350px) {
+    .product_summaries { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media screen and (min-width: 500px) {
+    .product_summaries { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media screen and (min-width: 650px) {
+    .product_summaries { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media screen and (min-width: 800px) {
+    .product_summaries { grid-template-columns: repeat(5, 1fr); }
 }

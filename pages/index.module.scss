@@ -1,11 +1,15 @@
-@import '../widgets/components/Common.scss';
 @import '../styles/Common.scss';
+
+.index_page {
+    padding-bottom: $p3;
+}
 
 .header,
 .main_area {
 	margin-left: $m3;
 	margin-right: $m3;
 }
+
 
 .page_numbering {
     display: flex;

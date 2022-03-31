@@ -33,7 +33,7 @@ myContainer.bind<IOrderRepository>(Symbols.ORDER_REPOSITORY).to(RemoteOrderRepos
 myContainer.bind<IPriceRequestRepository>(Symbols.PRICE_REQUEST_REPOSITORY).to(RemotePriceRequestRepository).inSingletonScope()
 
 // myContainer.bind<IPriceRequestRepository>(Symbols.PRICE_REQUEST_REPOSITORY).to(MockPriceRequestRepository)
-//let mockProductRepositories = new MockProductRepositories()
-//myContainer.rebind<IProductRepositories>(Symbols.PRODUCT_REPOSITORY).toConstantValue(mockProductRepositories)
+// let mockProductRepositories = new MockProductRepositories()
+// myContainer.rebind<IProductRepositories>(Symbols.PRODUCT_REPOSITORY).toConstantValue(mockProductRepositories)
 
 export default myContainer

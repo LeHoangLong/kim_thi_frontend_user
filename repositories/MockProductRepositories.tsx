@@ -86,7 +86,7 @@ export class MockProductRepositories implements IProductRepositories {
     async getProductSummaries(args: GetProductSummariesArgs): Promise<ProductSummary[]> {
         let summaries: ProductSummary[] = []
         let count = 0
-        for (let i = args.offset; i < this.products.length && count < args.limit; i++) {
+        for (let i = 0; i < this.products.length; i++) {
             if (args.categories.length === 0 || 
                 args.categories[0] == '' || 
                 this.products[i].categories.findIndex(e => args.categories.indexOf(e.category) !== -1) !== -1
@@ -97,13 +97,18 @@ export class MockProductRepositories implements IProductRepositories {
         }
 
         summaries = summaries.filter(e => e.name.includes(args.productSearch))
+        summaries = summaries.slice(args.offset, args.offset + args.limit)
         return summaries
     }
 
     async getNumberOfProducts(args: GetProductCountArgs): Promise<number> {
         let count = 0
+        console.log('args.productSearch')
+        console.log(args.productSearch)
         this.products.forEach((product) => {
             if (product.name.includes(args.productSearch)) {
+                console.log('product.name 1')
+                console.log(product.name)
                 if (args.categories.length > 0 && args.categories[0] != '') {
                     for (let i = 0; i < args.categories.length; i++) {
                         let filterCategory = args.categories[i]
@@ -113,6 +118,8 @@ export class MockProductRepositories implements IProductRepositories {
                         }
                     }
                 } else {
+                    console.log('product.name 2')
+                    console.log(product.name)
                     count = count + 1;
                 }
             }

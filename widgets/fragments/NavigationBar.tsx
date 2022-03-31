@@ -22,7 +22,9 @@ export const NavigationBar = () => {
     return (
         <div className={ styles.navigation_bar_container }>
             <Link passHref={true} href="/">
-                <img alt="logo" className={ styles.logo } src="/public/logos/logo.png"/>
+                <a>
+                    <img alt="logo" className={ styles.logo } src="/public/logos/logo.png"/>
+                </a>
             </Link>
 
             <nav className={ styles.navigation_bar }>

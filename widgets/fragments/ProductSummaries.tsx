@@ -24,7 +24,7 @@ export const ProductSummaries = (props: ProductSummariesProps) => {
         )
     }
 
-    return <nav className={`product-summaries ${ props.singleRow === true ? styles.single_row : '' }`}>
+    return <nav className={`${ styles.product_summaries } ${ props.singleRow === true ? styles.single_row : '' }`}>
         { ret }
     </nav>
 }
