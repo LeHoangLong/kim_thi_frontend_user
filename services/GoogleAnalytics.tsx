@@ -2,7 +2,7 @@ import { GOOGLE_ANALYTICS_TRACKING_ID } from "../config/GoogleAnalytics";
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (url: URL) => {
-  if (window.location.hostname == 'cuahangnhuquynh.com') {
+  if (GOOGLE_ANALYTICS_TRACKING_ID) {
     window.gtag("config", GOOGLE_ANALYTICS_TRACKING_ID, {
       page_path: url
     });
@@ -27,7 +27,7 @@ export const sendGoogleAnalyticsEvent = ({ eventName, action, category, label, v
   console.log('window.location.hostname')
   console.log(window.location.hostname)
   console.log(GOOGLE_ANALYTICS_TRACKING_ID)
-  if (window.location.hostname == 'cuahangnhuquynh.com') {
+  if (GOOGLE_ANALYTICS_TRACKING_ID) {
     console.log('send ga event')
     gtag('event', eventName, {
       action: action,
