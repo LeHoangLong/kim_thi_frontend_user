@@ -11,6 +11,10 @@
     margin-right: $m5;
 }
 
+.card_container {
+    width: 100%;
+}
+
 @media (min-width: 600px) {
     .single_row {
         display: grid !important;
